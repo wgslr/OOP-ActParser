@@ -18,4 +18,16 @@ public class CleanerTest {
 
         assertEquals(expected, c.filter(lines));
     }
+
+    @Test
+    public void filterHandlesMultiplePredicates() {
+        List<String> lines =
+                Arrays.asList("very bad", "preserve", "evil", "good",
+                              "bad evil");
+        List<String> expected = Arrays.asList("preserve", "good");
+
+        Cleaner c = new Cleaner(new String[]{"bad", "evil"});
+        assertEquals(expected, c.filter(lines));
+    }
+
 }
