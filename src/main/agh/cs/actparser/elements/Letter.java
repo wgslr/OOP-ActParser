@@ -1,5 +1,4 @@
 package agh.cs.actparser.elements;
 
-public abstract class DocumentNode {
-
+public class Letter extends Element{
 }
