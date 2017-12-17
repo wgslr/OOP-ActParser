@@ -4,7 +4,7 @@ import agh.cs.actparser.DocumentElement;
 
 public class ParserFactory {
 
-    public ParserAbstract getChildrenParser(DocumentElement currentElement) {
+    public AbstractParser makeParser(DocumentElement currentElement) {
         switch (currentElement) {
             case Document:
                 return new DocumentParser();

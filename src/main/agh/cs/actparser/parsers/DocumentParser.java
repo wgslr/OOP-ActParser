@@ -1,4 +1,4 @@
 package agh.cs.actparser.parsers;
 
-public class DocumentParser extends ParserAbstract {
+public class DocumentParser extends AbstractParser {
 }

@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class ParserAbstract {
+public abstract class AbstractParser {
 
     class Range {
         public int from;
@@ -30,12 +30,25 @@ public class ParserAbstract {
     public final String startPattern = "Art";
     private final Predicate<String> startPredicate;
 
-    public ParserAbstract() {
+    public AbstractParser() {
         this.startPredicate = Pattern.compile(startPattern).asPredicate();
     }
 
+    public List<Element> parse(List<String> lines) {
+        return splitLines(lines).stream()
+                .map(this::createElement)
+                .collect(Collectors.toList());
+    }
 
-    public List<Range> getPartsIndices(List<String> lines) {
+    public abstract Element createElement(List<String> linesPart);
+
+    private List<List<String>> splitLines(List<String> lines) {
+        return getPartsIndices(lines).stream()
+                .map(r -> lines.subList(r.from, r.to))
+                .collect(Collectors.toList());
+    }
+
+    private List<Range> getPartsIndices(List<String> lines) {
         List<Range> ranges = new ArrayList<>();
         int i = 0;
         for (String line : lines) {
@@ -48,12 +61,6 @@ public class ParserAbstract {
             ++i;
         }
         return ranges;
-    }
-
-    public List<List<String>> splitLines(List<String> lines) {
-        return getPartsIndices(lines).stream()
-                .map(r -> lines.subList(r.from, r.to))
-                .collect(Collectors.toList());
     }
 
 }
