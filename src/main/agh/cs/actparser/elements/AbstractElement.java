@@ -2,6 +2,7 @@ package agh.cs.actparser.elements;
 
 import agh.cs.actparser.ElementKind;
 
+import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractElement {
@@ -16,8 +17,12 @@ public abstract class AbstractElement {
     }
 
     public String toString() {
-        return getKind().toString() + " " + identifier + "\n\t"  + children
-                .stream()
+        String indent = String.join("",
+                                    Collections.nCopies(getKind().toLevel(),
+                                                        " "));
+        return indent + getKind().toString()
+                + " " + identifier + "\n"
+                + children.stream()
                 .map(AbstractElement::toString)
                 .reduce(String::concat)
                 .orElse("");

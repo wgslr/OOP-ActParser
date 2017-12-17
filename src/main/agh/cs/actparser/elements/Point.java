@@ -7,7 +7,7 @@ import java.util.List;
 public class Point extends AbstractElement {
     @Override
     public ElementKind getKind() {
-        return null;
+        return ElementKind.Point;
     }
 
     public Point(String identifier, List<AbstractElement> children) {

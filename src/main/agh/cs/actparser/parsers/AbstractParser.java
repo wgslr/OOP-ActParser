@@ -1,8 +1,11 @@
 package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.elements.AbstractElement;
+import agh.cs.actparser.elements.Plaintext;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
@@ -23,6 +26,16 @@ public abstract class AbstractParser {
         @Override
         public String toString() {
             return "Range{from=" + from + ", to=" + to + '}';
+        }
+    }
+
+    class ElementStructure {
+        String identifier;
+        List<String> bodyLines;
+
+        public ElementStructure(String identifier, List<String> lines) {
+            this.identifier = identifier;
+            this.bodyLines = lines;
         }
     }
 
@@ -60,78 +73,77 @@ public abstract class AbstractParser {
     }
 
     public List<AbstractElement> parse(List<String> lines) {
-        return getPartsIndices(lines).stream()
+        List<Range> childrenRanges = getPartsIndices(lines);
+
+        List<String> plaintextLines;
+        if(childrenRanges.isEmpty()){
+            plaintextLines = lines;
+        } else {
+            plaintextLines = lines.subList(0, childrenRanges.get(0).from);
+        }
+
+        List<AbstractElement> elements = childrenRanges.stream()
                 .map(r -> new ArrayList<String>(lines.subList(r.from, r.to)))
-                // all sublista must be crated before handleMatch as
-                // handle match modifies indexes
+                .filter(list -> !list.isEmpty())
                 .map(this::handleMatch)
                 .collect(Collectors.toList());
+
+        if (!plaintextLines.isEmpty()) {
+            Plaintext plaintext = new Plaintext(joinLines(plaintextLines));
+            elements.add(0, plaintext);
+        }
+
+        return elements;
     }
 
-    private List<Range> getPartsIndices(List<String> lines) {
+    protected List<Range> getPartsIndices(List<String> lines) {
         List<Range> ranges = new ArrayList<>();
-        int i = 0;
-        for (String line : lines) {
+        for(int i = 0; i < lines.size(); ++i){
+            String line = lines.get(i);
             if (startPattern.asPredicate().test(line)) {
                 if (!ranges.isEmpty()) {
                     ranges.get(ranges.size() - 1).to = i;
                 }
                 ranges.add(new Range(i, lines.size()));
             }
-            ++i;
         }
-        System.out.println("Ranges: " + ranges );
         return ranges;
     }
 
     protected AbstractElement handleMatch(List<String> lines) {
+        ElementStructure st = parseStructure(lines);
+        List<AbstractElement> children = parseChildren(st.bodyLines);
 
-        System.out.println("Looking for header in \"" + lines.get(0) + "\"");
-        System.out.println("Regexp: " + startPattern.pattern());
+        return createElement(st.identifier, children);
+    }
 
+    protected ElementStructure parseStructure(List<String> lines) {
         Matcher startMatcher = startPattern.matcher(lines.get(0));
+        startMatcher.find();
 
-        boolean found = startMatcher.find();
-
-        if(!found)
-        {
-            throw new RuntimeException(lines.get(0) + "-- does not match --" +
-                                               startMatcher.pattern());
-        }
-
-        System.out.println("Groups: " + startMatcher.groupCount());
 
         String identifier = startMatcher.group(1);
-
-        System.out.println("Identifier: " + identifier);
-
-        String bodyInFirstLine = "";
-        if(startMatcher.groupCount() < 2) {
-
-            throw new RuntimeException("'" + startMatcher.pattern() + "' " +
-                                               "should have matched '" +
-                                               lines.get(0) + "'");
-        }
-
-        bodyInFirstLine = startMatcher.group(2);
+        String bodyInFirstLine = startMatcher.group(2);
 
         if (!bodyInFirstLine.trim().isEmpty()) {
             lines.set(0, bodyInFirstLine);
         } else {
             lines.remove(0);
         }
-
-        List<AbstractElement> children = parseChildren(lines);
-
-        return createElement(identifier, children);
+        return new ElementStructure(identifier, lines);
     }
 
     protected List<AbstractElement> parseChildren(List<String> lines) {
         List<AbstractElement> children = new ArrayList<>();
         for (AbstractParser parser : childrenParsers) {
             children = parser.parse(lines);
+
+            // TODO NIE TAK - PLAINTEXT NIE WYSTARCZA
             if (children.size() != 0) {
                 break;
+            }
+            else {
+                System.out.println("No children found by " + parser);
             }
         }
         return children;

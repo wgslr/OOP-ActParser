@@ -15,6 +15,9 @@ public class Plaintext extends AbstractElement {
     }
 
     public String toString(){
-        return identifier + "\n";
+        String indent = String.join("",
+                                    Collections.nCopies(getKind().toLevel(),
+                                                        " "));
+        return indent + "Plaintext: " + identifier + "\n";
     }
 }

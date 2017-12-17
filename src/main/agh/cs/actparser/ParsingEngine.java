@@ -18,15 +18,15 @@ public class ParsingEngine {
 
         Cleaner c = new Cleaner();
 
-        //Path path = Paths.get("./assets/konstytucja.txt");
-        Path path = Paths.get("./assets/uokik.txt");
+        Path path = Paths.get("./assets/konstytucja.txt");
+        //Path path = Paths.get("./assets/uokik_min.txt");
         List<String> lines = c.filter(Files.readAllLines(path));
 
         //AbstractParser p = new ArticleParser(Collections.emptyList());
 
-        List<AbstractParser> parsers = new ParserFactory().getOrderedParsers();
+        AbstractParser parser = new ParserFactory().getNestedParsers();
 
-        List<AbstractElement> elements = parsers.get(0).parse(lines);
+        List<AbstractElement> elements = parser.parse(lines);
         for(AbstractElement ae : elements) {
             System.out.println(ae);
         }

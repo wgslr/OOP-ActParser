@@ -7,7 +7,7 @@ import java.util.List;
 public class Document extends AbstractElement {
     @Override
     public ElementKind getKind() {
-        return null;
+        return ElementKind.Document;
     }
 
     public Document(String identifier, List<AbstractElement> children) {
