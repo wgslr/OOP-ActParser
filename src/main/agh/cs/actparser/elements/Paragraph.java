@@ -1,4 +1,9 @@
 package agh.cs.actparser.elements;
 
-public class Paragraph extends Element {
+import java.util.List;
+
+public class Paragraph extends AbstractElement {
+    public Paragraph(List<AbstractElement> children) {
+        super(children);
+    }
 }

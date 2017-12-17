@@ -1,6 +1,6 @@
 package agh.cs.actparser;
 
-public enum DocumentElement {
+public enum ElementKind {
     Document,
     Section, // Dział
     Chapter, // Rozdział

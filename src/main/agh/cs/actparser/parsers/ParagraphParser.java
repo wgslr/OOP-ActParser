@@ -1,6 +1,6 @@
 package agh.cs.actparser.parsers;
 
-import agh.cs.actparser.elements.Element;
+import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Paragraph;
 
 import java.util.List;
@@ -8,7 +8,12 @@ import java.util.List;
 public class ParagraphParser extends AbstractParser {
 
     @Override
-    public Element createElement(List<String> linesPart) {
-        return new Paragraph();
+    String getStartPattern() {
+        return "\\b\\d+\\.";
+    }
+
+    @Override
+    public AbstractElement createElement(List<String> linesPart) {
+        return new Paragraph(null);
     }
 }

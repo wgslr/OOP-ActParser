@@ -1,4 +1,9 @@
 package agh.cs.actparser.elements;
 
-public class Letter extends Element{
+import java.util.List;
+
+public class Letter extends AbstractElement {
+    public Letter(List<String> lines) {
+        super(null);
+    }
 }

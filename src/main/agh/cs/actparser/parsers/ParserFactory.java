@@ -1,10 +1,10 @@
 package agh.cs.actparser.parsers;
 
-import agh.cs.actparser.DocumentElement;
+import agh.cs.actparser.ElementKind;
 
 public class ParserFactory {
 
-    public AbstractParser makeParser(DocumentElement currentElement) {
+    public AbstractParser makeParser(ElementKind currentElement) {
         switch (currentElement) {
             case Document:
                 return new DocumentParser();

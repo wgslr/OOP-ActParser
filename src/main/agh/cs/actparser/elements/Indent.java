@@ -1,4 +1,9 @@
 package agh.cs.actparser.elements;
 
-public class Indent extends Element {
+import java.util.List;
+
+public class Indent extends AbstractElement {
+    public Indent(List<AbstractElement> children) {
+        super(children);
+    }
 }

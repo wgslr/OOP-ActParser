@@ -1,4 +1,9 @@
 package agh.cs.actparser.elements;
 
-public class Chapter extends Element {
+import java.util.List;
+
+public class Chapter extends AbstractElement {
+    public Chapter(List<String> lines) {
+        super(null);
+    }
 }

@@ -1,4 +1,9 @@
 package agh.cs.actparser.elements;
 
-public class Point extends Element{
+import java.util.List;
+
+public class Point extends AbstractElement {
+    public Point(List<String> lines) {
+        super(null);
+    }
 }

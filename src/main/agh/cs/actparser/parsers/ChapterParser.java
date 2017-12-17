@@ -1,13 +1,18 @@
 package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.elements.Chapter;
-import agh.cs.actparser.elements.Element;
+import agh.cs.actparser.elements.AbstractElement;
 
 import java.util.List;
 
 public class ChapterParser extends AbstractParser {
     @Override
-    public Element createElement(List<String> linesPart) {
-        return new Chapter();
+    String getStartPattern() {
+        return "^Rozdział \\d+$";
+    }
+
+    @Override
+    public AbstractElement createElement(List<String> linesPart) {
+        return new Chapter(linesPart);
     }
 }

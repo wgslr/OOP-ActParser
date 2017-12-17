@@ -1,6 +1,6 @@
 package agh.cs.actparser.parsers;
 
-import agh.cs.actparser.elements.Element;
+import agh.cs.actparser.elements.AbstractElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,26 +28,25 @@ public abstract class AbstractParser {
         }
     }
 
-    public final String startPattern = "Art";
-    private final Predicate<String> startPredicate;
+    protected final Predicate<String> startPredicate;
+
+    protected abstract String getStartPattern();
+
+    protected abstract AbstractElement createElement(List<String> linesPart);
+
 
     public AbstractParser() {
-        this.startPredicate = Pattern.compile(startPattern).asPredicate();
+        this.startPredicate = Pattern.compile(
+                this.getStartPattern()).asPredicate();
     }
 
-    public List<Element> parse(List<String> lines) {
-        return splitLines(lines).stream()
+    public List<AbstractElement> parse(List<String> lines) {
+        return getPartsIndices(lines).stream()
+                .map(r -> lines.subList(r.from, r.to))
                 .map(this::createElement)
                 .collect(Collectors.toList());
     }
 
-    public abstract Element createElement(List<String> linesPart);
-
-    private List<List<String>> splitLines(List<String> lines) {
-        return getPartsIndices(lines).stream()
-                .map(r -> lines.subList(r.from, r.to))
-                .collect(Collectors.toList());
-    }
 
     private List<Range> getPartsIndices(List<String> lines) {
         List<Range> ranges = new ArrayList<>();
@@ -62,6 +61,11 @@ public abstract class AbstractParser {
             ++i;
         }
         return ranges;
+    }
+
+    protected String joinLines(List<String> lines) {
+        return lines.stream()
+                .collect(Collectors.joining(" "));
     }
 
 }
