@@ -1,6 +1,7 @@
 package agh.cs.actparser.parsers;
 
-import javax.xml.bind.Element;
+import agh.cs.actparser.elements.Element;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;

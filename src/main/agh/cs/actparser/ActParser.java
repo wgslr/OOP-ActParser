@@ -16,8 +16,8 @@ public class ActParser {
 
         Path path = Paths.get("./assets/konstytucja.txt");
         List<String> lines = Files.readAllLines(path);
-        List<List<String>> split = new AbstractParser().splitLines(lines);
-        System.out.println(split);
+        //List<List<String>> split = new AbstractParser().splitLines(lines);
+        //System.out.println(split);
 
 
     }
