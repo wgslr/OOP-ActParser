@@ -12,8 +12,8 @@ import java.util.List;
 public class ParsingEngine {
     // TODO handle non-existent file
     public static void main(String[] args) throws IOException {
-        System.out.println(ElementKind.Section.compareTo(ElementKind
-                                                                     .Letter));
+        //System.out.println(ElementKind.Section.compareTo(ElementKind
+        //                                                             .Letter));
 
         Cleaner c = new Cleaner();
 
@@ -21,7 +21,7 @@ public class ParsingEngine {
         Path path = Paths.get("./assets/uokik.txt");
         List<String> lines = c.filter(Files.readAllLines(path));
 
-        AbstractParser p = new ParagraphParser();
+        AbstractParser p = new ParagraphParser(null);
         List<AbstractElement> elements = p.parse(lines);
         for(AbstractElement ae : elements) {
             System.out.println(ae);

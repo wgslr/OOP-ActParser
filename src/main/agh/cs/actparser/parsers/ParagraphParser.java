@@ -7,13 +7,19 @@ import java.util.List;
 
 public class ParagraphParser extends AbstractParser {
 
-    @Override
-    String getStartPattern() {
-        return "\\b\\d+\\.";
+    public ParagraphParser(List<AbstractParser> childrenParsers) {
+        super(childrenParsers);
     }
 
     @Override
-    public AbstractElement createElement(List<String> linesPart) {
-        return new Paragraph(null);
+    protected String getStartPattern() {
+        return "\\b(\\d+)\\.(.*)$";
+    }
+
+    @Override
+    protected AbstractElement createElement(String identifier, List<String>
+            bodyLines) {
+        System.out.println("Creating paragraph: " + joinLines(bodyLines));
+        return null;
     }
 }
