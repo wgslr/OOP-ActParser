@@ -13,13 +13,11 @@ public class ParagraphParser extends AbstractParser {
 
     @Override
     protected String getStartPattern() {
-        return "\\b(\\d+)\\.(.*)$";
+        return "^(\\d+)\\.(.*)";
     }
 
     @Override
-    protected AbstractElement createElement(String identifier, List<String>
-            bodyLines) {
-        System.out.println("Creating paragraph: " + joinLines(bodyLines));
-        return null;
+    protected AbstractElement createElement(String identifier, List<AbstractElement> children) {
+        return new Paragraph(identifier, children);
     }
 }

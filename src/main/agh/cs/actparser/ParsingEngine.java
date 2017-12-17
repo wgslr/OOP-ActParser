@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 
 public class ParsingEngine {
@@ -21,8 +22,11 @@ public class ParsingEngine {
         Path path = Paths.get("./assets/uokik.txt");
         List<String> lines = c.filter(Files.readAllLines(path));
 
-        AbstractParser p = new ParagraphParser(null);
-        List<AbstractElement> elements = p.parse(lines);
+        //AbstractParser p = new ArticleParser(Collections.emptyList());
+
+        List<AbstractParser> parsers = new ParserFactory().getOrderedParsers();
+
+        List<AbstractElement> elements = parsers.get(0).parse(lines);
         for(AbstractElement ae : elements) {
             System.out.println(ae);
         }

@@ -45,11 +45,12 @@ public abstract class AbstractParser {
      * Creates document element found by this parser
      *
      * @param identifier Identifier extracted from element header
-     * @param bodyLines  Lines of the element's body
+     * @param children
      * @return Document element
      */
     protected abstract AbstractElement createElement(String identifier,
-                                                     List<String> bodyLines);
+                                                     List<AbstractElement>
+                                                             children);
 
 
     public AbstractParser(List<AbstractParser> childrenParsers) {
@@ -60,11 +61,12 @@ public abstract class AbstractParser {
 
     public List<AbstractElement> parse(List<String> lines) {
         return getPartsIndices(lines).stream()
-                .map(r -> lines.subList(r.from, r.to))
+                .map(r -> new ArrayList<String>(lines.subList(r.from, r.to)))
+                // all sublista must be crated before handleMatch as
+                // handle match modifies indexes
                 .map(this::handleMatch)
                 .collect(Collectors.toList());
     }
-
 
     private List<Range> getPartsIndices(List<String> lines) {
         List<Range> ranges = new ArrayList<>();
@@ -78,14 +80,40 @@ public abstract class AbstractParser {
             }
             ++i;
         }
+        System.out.println("Ranges: " + ranges );
         return ranges;
     }
 
     protected AbstractElement handleMatch(List<String> lines) {
+
+        System.out.println("Looking for header in \"" + lines.get(0) + "\"");
+        System.out.println("Regexp: " + startPattern.pattern());
+
         Matcher startMatcher = startPattern.matcher(lines.get(0));
-        startMatcher.matches();
+
+        boolean found = startMatcher.find();
+
+        if(!found)
+        {
+            throw new RuntimeException(lines.get(0) + "-- does not match --" +
+                                               startMatcher.pattern());
+        }
+
+        System.out.println("Groups: " + startMatcher.groupCount());
+
         String identifier = startMatcher.group(1);
-        String bodyInFirstLine = startMatcher.group(2);
+
+        System.out.println("Identifier: " + identifier);
+
+        String bodyInFirstLine = "";
+        if(startMatcher.groupCount() < 2) {
+
+            throw new RuntimeException("'" + startMatcher.pattern() + "' " +
+                                               "should have matched '" +
+                                               lines.get(0) + "'");
+        }
+
+        bodyInFirstLine = startMatcher.group(2);
 
         if (!bodyInFirstLine.trim().isEmpty()) {
             lines.set(0, bodyInFirstLine);
@@ -93,7 +121,20 @@ public abstract class AbstractParser {
             lines.remove(0);
         }
 
-        return createElement(identifier, lines);
+        List<AbstractElement> children = parseChildren(lines);
+
+        return createElement(identifier, children);
+    }
+
+    protected List<AbstractElement> parseChildren(List<String> lines) {
+        List<AbstractElement> children = new ArrayList<>();
+        for (AbstractParser parser : childrenParsers) {
+            children = parser.parse(lines);
+            if (children.size() != 0) {
+                break;
+            }
+        }
+        return children;
     }
 
     protected String joinLines(List<String> lines) {

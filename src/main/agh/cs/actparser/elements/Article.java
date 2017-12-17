@@ -1,17 +1,17 @@
 package agh.cs.actparser.elements;
 
+import agh.cs.actparser.ElementKind;
+
 import java.util.List;
 
 public class Article extends AbstractElement {
-    public final String identifier;
-
-    public Article(List<AbstractElement> children, String identifier){
-        super(children);
-        this.identifier = identifier;
+    @Override
+    public ElementKind getKind() {
+        return ElementKind.Article;
     }
 
-    public String toString(){
-        return "Artykuł " + identifier + ": " + toString();
+    public Article(String identifier, List<AbstractElement> children) {
+        super(identifier, children);
     }
 
 }

@@ -1,24 +1,23 @@
 package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.elements.AbstractElement;
-import agh.cs.actparser.elements.Article;
+import agh.cs.actparser.elements.Plaintext;
 
 import java.util.List;
 
-public class ArticleParser extends AbstractParser {
-
-    public ArticleParser(List<AbstractParser> childrenParsers) {
+public class PlaintextParser extends AbstractParser {
+    public PlaintextParser(List<AbstractParser> childrenParsers) {
         super(childrenParsers);
     }
 
     @Override
     protected String getStartPattern() {
-        return "Art\\. (\\S+)\\.(.*)";
+        return "(.*)()";
     }
 
     @Override
     protected AbstractElement createElement(String identifier,
                                             List<AbstractElement> children) {
-        return new Article(identifier, children);
-    };
+        return new Plaintext(identifier);
+    }
 }

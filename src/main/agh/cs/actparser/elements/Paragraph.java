@@ -1,9 +1,18 @@
 package agh.cs.actparser.elements;
 
+import agh.cs.actparser.ElementKind;
+
 import java.util.List;
 
 public class Paragraph extends AbstractElement {
-    public Paragraph(List<AbstractElement> children) {
-        super(children);
+    @Override
+    public ElementKind getKind() {
+        return ElementKind.Paragraph;
     }
+
+    public Paragraph(String identifier, List<AbstractElement> children) {
+        super(identifier, children);
+    }
+
+
 }

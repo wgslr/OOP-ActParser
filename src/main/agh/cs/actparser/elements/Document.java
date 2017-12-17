@@ -1,9 +1,16 @@
 package agh.cs.actparser.elements;
 
+import agh.cs.actparser.ElementKind;
+
 import java.util.List;
 
 public class Document extends AbstractElement {
-    public Document(List<AbstractElement> children) {
-        super(children);
+    @Override
+    public ElementKind getKind() {
+        return null;
+    }
+
+    public Document(String identifier, List<AbstractElement> children) {
+        super(identifier, children);
     }
 }

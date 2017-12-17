@@ -1,9 +1,16 @@
 package agh.cs.actparser.elements;
 
+import agh.cs.actparser.ElementKind;
+
 import java.util.List;
 
 public class Chapter extends AbstractElement {
-    public Chapter(List<String> lines) {
-        super(null);
+    @Override
+    public ElementKind getKind() {
+        return null;
+    }
+
+    public Chapter(String identifier, List<AbstractElement> children) {
+        super(identifier, children);
     }
 }
