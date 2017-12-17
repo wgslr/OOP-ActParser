@@ -20,6 +20,8 @@ public class ParserFactory {
                 return new PointParser();
             case Letter:
                 return new LetterParser();
+            case Indent:
+                return new IndentParser();
             default:
                 return new DocumentParser();
         }
