@@ -6,7 +6,7 @@ import agh.cs.actparser.elements.Section;
 
 import java.util.List;
 
-public class SectionParser extends AbstractParser {
+public class SectionParser extends TitledElementParser {
     String title;
 
     public SectionParser(List<String> linesToParse) {
@@ -21,15 +21,5 @@ public class SectionParser extends AbstractParser {
     @Override
     public AbstractElement makeElement() {
         return new Section(identifier, title, childrenElements);
-    }
-
-    @Override
-    protected void parseStructure(List<String> linesToParse) {
-        super.parseStructure(linesToParse);
-        if(linesToParse.size() < 2)  {
-            throw new IllegalArgumentException("Invalid Section");
-        }
-        title = linesToParse.get(1);
-        bodyLines = linesToParse.subList(2, linesToParse.size());
     }
 }

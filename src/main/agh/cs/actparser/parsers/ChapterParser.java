@@ -3,10 +3,11 @@ package agh.cs.actparser.parsers;
 import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Chapter;
+import agh.cs.actparser.elements.TitledElement;
 
 import java.util.List;
 
-public class ChapterParser extends AbstractParser {
+public class ChapterParser extends TitledElementParser {
     String title;
 
     public ChapterParser(List<String> linesToParse) {
@@ -21,16 +22,5 @@ public class ChapterParser extends AbstractParser {
     @Override
     public AbstractElement makeElement() {
         return new Chapter(identifier, title, childrenElements);
-    }
-
-    @Override
-    protected void parseStructure(List<String> linesToParse) {
-        super.parseStructure(linesToParse);
-
-        if(linesToParse.size() < 2)  {
-            throw new IllegalArgumentException("Invalid Chapter");
-        }
-        title = linesToParse.get(1);
-        bodyLines = linesToParse.subList(2, linesToParse.size());
     }
 }

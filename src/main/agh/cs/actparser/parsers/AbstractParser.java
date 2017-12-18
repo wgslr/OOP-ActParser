@@ -20,7 +20,7 @@ public abstract class AbstractParser {
 
     public AbstractParser(List<String> linesToParse) {
         parseStructure(linesToParse);
-        parseChildren(linesToParse);
+        parseChildren(bodyLines);
     }
 
     protected abstract ElementKind getKind();
