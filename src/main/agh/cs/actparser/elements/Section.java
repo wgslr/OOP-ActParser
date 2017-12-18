@@ -7,7 +7,7 @@ import java.util.List;
 public class Section extends AbstractElement {
     @Override
     public ElementKind getKind() {
-        return null;
+        return ElementKind.Section;
     }
 
     public Section(String identifier, List<AbstractElement> children) {

@@ -18,8 +18,9 @@ public class ParsingEngine {
 
         Cleaner c = new Cleaner();
 
-        Path path = Paths.get("./assets/konstytucja.txt");
+        //Path path = Paths.get("./assets/konstytucja.txt");
         //Path path = Paths.get("./assets/uokik_min.txt");
+        Path path = Paths.get("./assets/uokik.txt");
         List<String> lines = c.filter(Files.readAllLines(path));
 
         //AbstractParser p = new ArticleParser(Collections.emptyList());

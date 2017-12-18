@@ -1,11 +1,10 @@
 package agh.cs.actparser.parsers;
 
+import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Plaintext;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
@@ -139,7 +138,7 @@ public abstract class AbstractParser {
             children = parser.parse(lines);
 
             // TODO NIE TAK - PLAINTEXT NIE WYSTARCZA
-            if (children.size() != 0) {
+            if (areChildrenNontrivial(children)) {
                 break;
             }
             else {
@@ -148,6 +147,14 @@ public abstract class AbstractParser {
         }
         return children;
     }
+
+    private boolean areChildrenNontrivial(List<AbstractElement> children) {
+        return (children.size() != 0)
+                &&
+                (children.stream().anyMatch(c -> c.getKind() != ElementKind.Plaintext));
+    }
+
+    
 
     protected String joinLines(List<String> lines) {
         return lines.stream().collect(Collectors.joining(" "));

@@ -33,8 +33,8 @@ public class ParserFactory {
         switch (currentElement) {
             case Document:
                 return new DocumentParser(childrenParsers);
-            //case Section:
-            //    return new SectionParser();
+            case Section:
+                return new SectionParser(childrenParsers);
             //case Chapter:
             //    return new ChapterParser();
             case Article:
