@@ -2,6 +2,7 @@ package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.elements.AbstractElement;
+import agh.cs.actparser.elements.Document;
 import agh.cs.actparser.elements.Plaintext;
 
 import java.util.ArrayList;
@@ -11,6 +12,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ElementFinder {
+    /**
+     * Represents a range of indices.
+     */
     class Range {
         public final int from;
         public final int to;
@@ -26,7 +30,11 @@ public class ElementFinder {
         }
     }
 
+    /**
+     * Lines of document on which finder operates.
+     */
     List<String> lines;
+
     ElementKind currentLevel;
     IParserFactory parserFactory = new ParserFactory();
 
@@ -35,15 +43,26 @@ public class ElementFinder {
         this.currentLevel = currentLevel;
     }
 
-    List<AbstractElement> getElements() {
-        // Find first kind matching any elements
+    public ElementFinder(List<String> lines, ElementKind currentLevel,
+                         IParserFactory parserFactory) {
+        this.lines = lines;
+        this.currentLevel = currentLevel;
+        this.parserFactory = parserFactory;
+    }
+
+    List<AbstractElement> getChildrenElements() {
+        // Find most general kind for which children elements can be found
+
         List<Range> parts = new ArrayList<>();
+        List<ElementKind> availableKinds = ElementKind.getMoreSpecificThan
+                (currentLevel);
         ElementKind childrenKind = ElementKind.Plaintext;
-        for (ElementKind kind : ElementKind.getMoreSpecificThan(currentLevel)) {
-            Predicate<String> predicate = kindToPattern(kind).asPredicate();
+
+        for (ElementKind potentialKind : availableKinds) {
+            Predicate<String> predicate = kindToPattern(potentialKind).asPredicate();
             parts = getPartsIndices(predicate);
             if (parts.size() > 0) {
-                childrenKind = kind;
+                childrenKind = potentialKind;
                 break;
             }
         }
@@ -52,7 +71,7 @@ public class ElementFinder {
 
         List<String> plaintextLines = getPlaintextLines(parts);
         if (!plaintextLines.isEmpty()) {
-            result.add(new Plaintext(plaintextLines));
+            result.add(0, new Plaintext(plaintextLines));
         }
 
         return result;
@@ -104,34 +123,6 @@ public class ElementFinder {
 
 
     private Pattern kindToPattern(ElementKind kind) {
-        String regex;
-        switch (kind) {
-            case Section:
-                regex = "^DZIAŁ ([IVXCD]+)(.*)";
-                break;
-            case Article:
-                regex = "^Art\\. (\\d+)\\.";
-                break;
-            case Paragraph:
-                regex = "^(\\d+)\\.\\s";
-                break;
-            case Point:
-                regex = "^(\\d+)\\)\\s";
-                break;
-            case Letter:
-                regex = "^(\\p{L}+)\\)\\s";
-                break;
-            case Indent:
-                regex = "^-\\s";
-                break;
-            case Plaintext:
-                regex = "(?!)"; // never matches
-                break;
-            default:
-                // matches also Document as there cannot
-                // be more than one Document in a file
-                throw new IllegalArgumentException();
-        }
-        return Pattern.compile(regex);
+        return Pattern.compile(kind.getRegexp());
     }
 }
