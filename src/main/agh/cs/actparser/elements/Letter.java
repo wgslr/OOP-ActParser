@@ -7,7 +7,7 @@ import java.util.List;
 public class Letter extends AbstractElement {
     @Override
     public ElementKind getKind() {
-        return null;
+        return ElementKind.Letter;
     }
 
     public Letter(String identifier, List<AbstractElement> children) {

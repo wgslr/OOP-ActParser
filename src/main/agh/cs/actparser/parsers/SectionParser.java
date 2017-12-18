@@ -26,7 +26,6 @@ public class SectionParser extends AbstractParser {
     @Override
     protected void parseStructure(List<String> linesToParse) {
         super.parseStructure(linesToParse);
-
         if(linesToParse.size() < 2)  {
             throw new IllegalArgumentException("Invalid Section");
         }

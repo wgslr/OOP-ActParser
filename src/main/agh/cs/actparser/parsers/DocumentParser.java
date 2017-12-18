@@ -1,36 +1,30 @@
-/*package agh.cs.actparser.parsers;
+package agh.cs.actparser.parsers;
 
+import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Document;
 
-import java.util.Collections;
+import javax.print.Doc;
 import java.util.List;
 
 public class DocumentParser extends AbstractParser {
-    public DocumentParser(List<String> contentLines) {
-        super(contentLines);
+    public DocumentParser(List<String> linesToParse) {
+        super(linesToParse);
     }
 
     @Override
-    public AbstractElement makeElement() {
-        return null;
+    protected void parseStructure(List<String> linesToParse) {
+        identifier = "";
+        bodyLines = linesToParse;
     }
 
-    //    @Override
-    protected String getStartPattern() {
-        return "(?!)";
+    @Override
+    protected ElementKind getKind() {
+        return ElementKind.Document;
     }
 
-//    @Override
-    protected List<Range> getPartsIndices(List<String> lines) {
-        return Collections.singletonList(new Range(0, lines.size()));
+    @Override
+    public Document makeElement() {
+        return new Document(identifier, childrenElements);
     }
-
-//    @Override
-
-//    @Override
-    protected AbstractElement createElement(String identifier,
-                                            List<AbstractElement> children) {
-        return new Document(identifier, children);
-    }
-}*/
+}

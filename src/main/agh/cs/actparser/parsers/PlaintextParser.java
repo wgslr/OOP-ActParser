@@ -1,5 +1,6 @@
-/*package agh.cs.actparser.parsers;
+package agh.cs.actparser.parsers;
 
+import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Plaintext;
 
@@ -7,25 +8,26 @@ import java.util.Collections;
 import java.util.List;
 
 public class PlaintextParser extends AbstractParser {
-    public PlaintextParser(List<AbstractParser> childrenParsers) {
-        super(childrenParsers);
+    public PlaintextParser(List<String> linesToParse) {
+        super(linesToParse);
     }
 
     @Override
-    protected String getStartPattern() {
-        return "(.*)()";
+    protected ElementKind getKind() {
+        return ElementKind.Plaintext;
     }
 
     @Override
-    public List<AbstractElement> parse(List<String> lines) {
-        AbstractElement element = createElement(joinLines(lines), Collections
-                .emptyList());
-        return Collections.singletonList(element);
+    protected void parseStructure(List<String> linesToParse) {
+        identifier = null;
+        bodyLines = linesToParse;
     }
 
     @Override
-    protected AbstractElement createElement(String identifier,
-                                            List<AbstractElement> children) {
-        return new Plaintext(identifier);
+    protected void parseChildren(List<String> bodyLines) { }
+
+    @Override
+    public AbstractElement makeElement() {
+        return new Plaintext(bodyLines);
     }
-}*/
+}

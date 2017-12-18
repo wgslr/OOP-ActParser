@@ -25,6 +25,10 @@ public enum ElementKind {
                 .collect(Collectors.toList());
     }
 
+    public static ElementKind getMostSpecific() {
+        return Plaintext;
+    }
+
     public int getLevel(){
         return this.compareTo(Document);
     }

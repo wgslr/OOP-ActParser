@@ -7,7 +7,7 @@ import java.util.List;
 public class Indent extends AbstractElement {
     @Override
     public ElementKind getKind() {
-        return null;
+        return ElementKind.Indent;
     }
 
     public Indent(String identifier, List<AbstractElement> children) {

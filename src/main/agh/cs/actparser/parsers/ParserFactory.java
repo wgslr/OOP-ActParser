@@ -1,31 +1,41 @@
 package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
+import agh.cs.actparser.elements.Plaintext;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
 public class ParserFactory implements IParserFactory {
 
-//    public AbstractParser getNestedParsers() {
-//        ElementKind[] kinds = ElementKind.values();
-
-//        ArrayList<ElementKind> fineToCoarse = new ArrayList<ElementKind>(
-//                Arrays.asList(kinds));
-//        Collections.reverse(fineToCoarse);
-
-//        List<AbstractParser> parsers = new ArrayList<>();
-
-//        for (ElementKind kind : fineToCoarse) {
-//            parsers.add(0, makeParser(kind, new ArrayList<>(parsers)));
-//        }
-//        return parsers.get(0);
-//    }
-
 
     @Override
     public AbstractParser makeParser(ElementKind kind, List<String>
-            bodyLines) {
-        throw new NotImplementedException();
+            linesToParse) {
+        switch (kind) {
+            case Document:
+                return new DocumentParser(linesToParse);
+            case Section:
+                return new SectionParser(linesToParse);
+            case Chapter:
+                return new ChapterParser(linesToParse);
+            case Article:
+                return new ArticleParser(linesToParse);
+            case Paragraph:
+                return new ParagraphParser(linesToParse);
+            case Point:
+                return new PointParser(linesToParse);
+            case Letter:
+                return new LetterParser(linesToParse);
+            case Indent:
+                return new IndentParser(linesToParse);
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    @Override
+    public AbstractParser makeLeafParser(List<String> bodyLines) {
+        return new PlaintextParser(bodyLines);
     }
 }

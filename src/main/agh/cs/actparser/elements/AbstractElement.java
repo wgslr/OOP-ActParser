@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class AbstractElement {
     protected final String identifier;
-    List<AbstractElement> children;
+    public List<AbstractElement> children;
 
     abstract public ElementKind getKind();
 
@@ -17,6 +17,7 @@ public abstract class AbstractElement {
     }
 
     public String toString() {
+        System.out.println("Printing " + getKind().toString());
         String indent = String.join("",
                                     Collections.nCopies(getKind().getLevel(),
                                                         " "));

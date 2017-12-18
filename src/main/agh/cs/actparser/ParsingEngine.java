@@ -1,6 +1,7 @@
 package agh.cs.actparser;
 
 import agh.cs.actparser.elements.AbstractElement;
+import agh.cs.actparser.elements.Document;
 import agh.cs.actparser.parsers.*;
 
 import java.io.IOException;
@@ -23,16 +24,12 @@ public class ParsingEngine {
         Path path = Paths.get("./assets/uokik.txt");
         List<String> lines = c.filter(Files.readAllLines(path));
 
-        //AbstractParser p = new ArticleParser(Collections.emptyList());
+        DocumentParser parser = new DocumentParser(lines);
+        Document doc = parser.makeElement();
 
-        //AbstractParser parser = new ParserFactory().getNestedParsers();
+        System.out.print(doc);
+        //System.out.print(doc.children);
 
-/*        List<AbstractElement> elements = parser.parse(lines);
-        for(AbstractElement ae : elements) {
-            System.out.println(ae);
-        }*/
 
-        //List<List<String>> split = new AbstractParser().splitLines(lines);
-        //System.out.println(split);
     }
 }

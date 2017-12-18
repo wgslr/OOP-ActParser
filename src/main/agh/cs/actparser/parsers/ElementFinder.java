@@ -3,10 +3,10 @@ package agh.cs.actparser.parsers;
 import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Document;
-import agh.cs.actparser.elements.Plaintext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -56,7 +56,7 @@ public class ElementFinder {
         List<Range> parts = new ArrayList<>();
         List<ElementKind> availableKinds = ElementKind.getMoreSpecificThan
                 (currentLevel);
-        ElementKind childrenKind = ElementKind.Plaintext;
+        ElementKind childrenKind = ElementKind.getMostSpecific();
 
         for (ElementKind potentialKind : availableKinds) {
             Predicate<String> predicate = kindToPattern(potentialKind).asPredicate();
@@ -69,11 +69,11 @@ public class ElementFinder {
 
         List<AbstractElement> result = parseChildren(childrenKind, parts);
 
-        List<String> plaintextLines = getPlaintextLines(parts);
-        if (!plaintextLines.isEmpty()) {
-            result.add(0, new Plaintext(plaintextLines));
+        List<String> leafLines = getLeafLines(parts);
+        if (!leafLines.isEmpty()) {
+            AbstractParser leafParser = parserFactory.makeLeafParser(leafLines);
+            result.add(0, leafParser.makeElement());
         }
-
         return result;
     }
 
@@ -91,7 +91,7 @@ public class ElementFinder {
      * @param ranges Ranges identified as containing children elements
      * @return
      */
-    private List<String> getPlaintextLines(List<Range> ranges) {
+    private List<String> getLeafLines(List<Range> ranges) {
         if (ranges.isEmpty()) {
             return lines;
         } else {
