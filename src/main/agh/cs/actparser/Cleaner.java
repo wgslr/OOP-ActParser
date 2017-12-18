@@ -13,8 +13,9 @@ public class Cleaner {
     Cleaner() {
         this.patternsToRemove = new String[]{
                 "\\d{4}-\\d{2}-\\d{2}",
-                ".*uchylony.*$",
+                ".*\\(uchylony\\).*$",
                 ".*pominięt[ey].*$",
+                "^?$"
         };
     }
 

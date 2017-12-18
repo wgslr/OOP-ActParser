@@ -42,7 +42,7 @@ public enum ElementKind {
             case Chapter:
                 return "^Rozdział (\\d+)\\s?(.*)";
             case Article:
-                return "^Art\\. (\\d+)\\.";
+                return "^Art\\. (\\d+)\\.\\s?(.*)";
             case Paragraph:
                 return "^(\\d+)\\.\\s";
             case Point:
