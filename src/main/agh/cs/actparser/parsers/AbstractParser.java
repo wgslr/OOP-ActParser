@@ -47,6 +47,8 @@ public abstract class AbstractParser {
     protected final Pattern startPattern;
     protected final Predicate<String> startPredicate;
 
+    protected final List<String> lines;
+
     /**
      * @return Regular expression containing two capture groups - for element
      * identifier and rest of the line
@@ -63,6 +65,12 @@ public abstract class AbstractParser {
     protected abstract AbstractElement createElement(String identifier,
                                                      List<AbstractElement>
                                                              children);
+
+    public abstract AbstractElement makeElement();
+
+    public AbstractParser(List<String> lines) {
+        this.lines = lines;
+    }
 
 
     public AbstractParser(List<AbstractParser> childrenParsers) {
@@ -154,7 +162,7 @@ public abstract class AbstractParser {
                 (children.stream().anyMatch(c -> c.getKind() != ElementKind.Plaintext));
     }
 
-    
+
 
     protected String joinLines(List<String> lines) {
         return lines.stream().collect(Collectors.joining(" "));
