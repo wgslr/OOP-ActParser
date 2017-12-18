@@ -1,6 +1,7 @@
 package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.text.AbstractDocument;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ParserFactory {
+public class ParserFactory implements IParserFactory {
 
     public AbstractParser getNestedParsers() {
         ElementKind[] kinds = ElementKind.values();
@@ -50,5 +51,11 @@ public class ParserFactory {
             default:
                 return new PlaintextParser(childrenParsers);
         }
+    }
+
+    @Override
+    public AbstractParser makeParser(ElementKind kind, List<String>
+            bodyLines) {
+        throw new NotImplementedException();
     }
 }
