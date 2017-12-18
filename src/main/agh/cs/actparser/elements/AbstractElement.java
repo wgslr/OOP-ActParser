@@ -18,7 +18,7 @@ public abstract class AbstractElement {
 
     public String toString() {
         String indent = String.join("",
-                                    Collections.nCopies(getKind().toLevel(),
+                                    Collections.nCopies(getKind().getLevel(),
                                                         " "));
         return indent + getKind().toString()
                 + " " + identifier + "\n"

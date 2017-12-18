@@ -4,13 +4,14 @@ import agh.cs.actparser.ElementKind;
 
 import java.util.List;
 
-public class Section extends AbstractElement {
+public class Section extends TitledElement {
     @Override
     public ElementKind getKind() {
         return ElementKind.Section;
     }
 
-    public Section(String identifier, List<AbstractElement> children) {
-        super(identifier, children);
+    public Section(String identifier, String title, List<AbstractElement>
+            children) {
+        super(identifier, title, children);
     }
 }
