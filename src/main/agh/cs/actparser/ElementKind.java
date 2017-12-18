@@ -38,21 +38,21 @@ public enum ElementKind {
     public String getRegexp() {
         switch (this) {
             case Section:
-                return "^DZIAŁ ([IVXCD]+)(.*)";
+                return "^DZIAŁ ([IVXCD]+)\\s*(.*)";
             case Chapter:
-                return "^Rozdział (\\d+)\\s?(.*)";
+                return "^Rozdział (\\d+)\\s*(.*)";
             case Article:
-                return "^Art\\. (\\d+)\\.\\s?(.*)";
+                return "^Art\\. (\\d+)\\.\\s*(.*)";
             case Paragraph:
-                return "^(\\d+)\\.\\s";
+                return "^(\\d+)\\.\\s(.*)";
             case Point:
-                return "^(\\d+)\\)\\s";
+                return "^(\\d+)\\)\\s(.*)";
             case Letter:
-                return "^(\\p{L}+)\\)\\s";
+                return "^(\\p{L}+)\\)\\s(.*)";
             case Indent:
-                return "^-\\s";
+                return "^-\\s()(.*)";
             case Plaintext:
-                return "(?!)"; // never matches
+                return "(?!)()"; // never matches
             default:
                 // matches also Document as there cannot
                 // be more than one Document in a file

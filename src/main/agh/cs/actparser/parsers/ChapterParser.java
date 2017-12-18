@@ -2,25 +2,25 @@ package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.elements.AbstractElement;
-import agh.cs.actparser.elements.Section;
+import agh.cs.actparser.elements.Chapter;
 
 import java.util.List;
 
-public class SectionParser extends AbstractParser {
+public class ChapterParser extends AbstractParser {
     String title;
 
-    public SectionParser(List<String> linesToParse) {
+    public ChapterParser(List<String> linesToParse) {
         super(linesToParse);
     }
 
     @Override
     protected ElementKind getKind() {
-        return ElementKind.Section;
+        return ElementKind.Chapter;
     }
 
     @Override
     public AbstractElement makeElement() {
-        return new Section(identifier, title, childrenElements);
+        return new Chapter(identifier, title, childrenElements);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class SectionParser extends AbstractParser {
         super.parseStructure(linesToParse);
 
         if(linesToParse.size() < 2)  {
-            throw new IllegalArgumentException("Invalid Section");
+            throw new IllegalArgumentException("Invalid Chapter");
         }
         title = linesToParse.get(1);
         bodyLines = linesToParse.subList(2, linesToParse.size());

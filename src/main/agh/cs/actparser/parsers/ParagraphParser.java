@@ -1,5 +1,6 @@
 package agh.cs.actparser.parsers;
 
+import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Paragraph;
 
@@ -7,17 +8,17 @@ import java.util.List;
 
 public class ParagraphParser extends AbstractParser {
 
-    public ParagraphParser(List<AbstractParser> childrenParsers) {
-        super(childrenParsers);
+    public ParagraphParser(List<String> linesToParse) {
+        super(linesToParse);
     }
 
     @Override
-    protected String getStartPattern() {
-        return "^(\\d+)\\.(.*)";
+    protected ElementKind getKind() {
+        return ElementKind.Paragraph;
     }
 
     @Override
-    protected AbstractElement createElement(String identifier, List<AbstractElement> children) {
-        return new Paragraph(identifier, children);
+    public AbstractElement makeElement() {
+        return new Paragraph(identifier, childrenElements);
     }
 }

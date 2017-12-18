@@ -1,4 +1,4 @@
-package agh.cs.actparser.parsers;
+/*package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Plaintext;
@@ -28,4 +28,4 @@ public class PlaintextParser extends AbstractParser {
                                             List<AbstractElement> children) {
         return new Plaintext(identifier);
     }
-}
+}*/

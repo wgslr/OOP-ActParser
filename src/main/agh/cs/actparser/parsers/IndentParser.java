@@ -2,23 +2,22 @@ package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.elements.AbstractElement;
-import agh.cs.actparser.elements.Article;
+import agh.cs.actparser.elements.Indent;
 
-import javax.print.Doc;
 import java.util.List;
 
-public class ArticleParser extends AbstractParser {
-    public ArticleParser(List<String> linesToParse) {
+public class IndentParser extends AbstractParser {
+    public IndentParser(List<String> linesToParse) {
         super(linesToParse);
     }
 
     @Override
     protected ElementKind getKind() {
-        return ElementKind.Article;
+        return ElementKind.Indent;
     }
 
     @Override
     public AbstractElement makeElement() {
-        return new Article(identifier, childrenElements);
+        return new Indent(identifier, childrenElements);
     }
 }

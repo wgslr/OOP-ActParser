@@ -2,23 +2,22 @@ package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.elements.AbstractElement;
-import agh.cs.actparser.elements.Article;
+import agh.cs.actparser.elements.Letter;
 
-import javax.print.Doc;
 import java.util.List;
 
-public class ArticleParser extends AbstractParser {
-    public ArticleParser(List<String> linesToParse) {
+public class LetterParser extends AbstractParser {
+    public LetterParser(List<String> linesToParse) {
         super(linesToParse);
     }
 
     @Override
     protected ElementKind getKind() {
-        return ElementKind.Article;
+        return ElementKind.Letter;
     }
 
     @Override
     public AbstractElement makeElement() {
-        return new Article(identifier, childrenElements);
+        return new Letter(identifier, childrenElements);
     }
 }

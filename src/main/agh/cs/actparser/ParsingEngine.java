@@ -25,12 +25,12 @@ public class ParsingEngine {
 
         //AbstractParser p = new ArticleParser(Collections.emptyList());
 
-        AbstractParser parser = new ParserFactory().getNestedParsers();
+        //AbstractParser parser = new ParserFactory().getNestedParsers();
 
-        List<AbstractElement> elements = parser.parse(lines);
+/*        List<AbstractElement> elements = parser.parse(lines);
         for(AbstractElement ae : elements) {
             System.out.println(ae);
-        }
+        }*/
 
         //List<List<String>> split = new AbstractParser().splitLines(lines);
         //System.out.println(split);

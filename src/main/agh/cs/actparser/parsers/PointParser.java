@@ -1,22 +1,24 @@
 package agh.cs.actparser.parsers;
 
+import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Point;
 
 import java.util.List;
 
 public class PointParser extends AbstractParser {
-    @Override
-    protected String getStartPattern() {
-        return "^(\\d+)\\)\\s(.*)";
+
+    public PointParser(List<String> linesToParse) {
+        super(linesToParse);
     }
 
     @Override
-    protected AbstractElement createElement(String identifier, List<AbstractElement> children) {
-        return new Point(identifier, children);
+    protected ElementKind getKind() {
+        return ElementKind.Point;
     }
 
-    public PointParser(List<AbstractParser> childrenParsers) {
-        super(childrenParsers);
+    @Override
+    public AbstractElement makeElement() {
+        return new Point(identifier, childrenElements);
     }
 }
