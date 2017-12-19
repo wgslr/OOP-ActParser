@@ -4,14 +4,16 @@ import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Article;
 
 import java.util.LinkedHashMap;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 public class ArticleRegistry implements IElementRegistry{
-    LinkedHashMap<Identifier, AbstractElement> articles;
+    NavigableMap<Identifier, AbstractElement> articles = new TreeMap<>();
 
     @Override
-    public void Add(AbstractElement article) {
+    public void add(AbstractElement article) {
         if (article instanceof Article) {
-            //articles.put(new Identifier(article.identifier), article);
+            articles.put(Identifier.fromString(article.identifier), article);
         }
     }
 }

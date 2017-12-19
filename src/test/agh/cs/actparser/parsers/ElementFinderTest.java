@@ -1,11 +1,12 @@
 package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
+import agh.cs.actparser.IElementRegistry;
 import agh.cs.actparser.elements.AbstractElement;
-import agh.cs.actparser.elements.Plaintext;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -14,26 +15,15 @@ import static org.junit.Assert.*;
 
 public class ElementFinderTest {
 
-    IParserFactory parserFactoryMock = (kind, bodyLines) -> new AbstractParser(
-            bodyLines) {
+    IParserFactory parserFactoryMock = (kind, bodyLines, registries) -> new
+            AbstractParser(bodyLines, registries) {
+        @Override
         protected ElementKind getKind() {
             return null;
         }
 
+        @Override
         public AbstractElement makeElement() {
-            return null;
-        }
-
-        @Override
-        protected void parseStructure(List<String> linesToParse) {
-        }
-
-        @Override
-        protected void parseChildren(List<String> bodyLines) {
-        }
-
-        @Override
-        protected Pattern getStartPattern() {
             return null;
         }
     };
@@ -49,7 +39,7 @@ public class ElementFinderTest {
 
         ElementFinder testSubject = new ElementFinder(inputLines,
                 // One step above Article
-                ElementKind.Chapter,
+                ElementKind.Chapter, Collections.emptyList(),
                 parserFactoryMock);
         assertEquals(4, testSubject.makeChildrenElements().size());
     }
@@ -58,7 +48,7 @@ public class ElementFinderTest {
     public void getElementsReturnsEmptyListOnEmptyInput() {
         List<String> inputLines = Collections.emptyList();
         ElementFinder testSubject = new ElementFinder(inputLines,
-                ElementKind.Chapter,
+                ElementKind.Chapter, Collections.emptyList(),
                 parserFactoryMock);
 
         assertEquals(Collections.emptyList(),

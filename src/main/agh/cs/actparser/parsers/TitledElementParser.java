@@ -1,17 +1,16 @@
 package agh.cs.actparser.parsers;
 
-import agh.cs.actparser.ElementKind;
-import agh.cs.actparser.elements.AbstractElement;
+import agh.cs.actparser.IElementRegistry;
 
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public abstract class TitledElementParser extends AbstractParser {
     String title;
 
-    public TitledElementParser(List<String> linesToParse) {
-        super(linesToParse);
+    public TitledElementParser(List<String> linesToParse,
+                               List<IElementRegistry> registries) {
+        super(linesToParse, registries);
     }
 
     @Override

@@ -1,13 +1,15 @@
 package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
+import agh.cs.actparser.IElementRegistry;
 import agh.cs.actparser.elements.Document;
 
 import java.util.List;
 
 public class DocumentParser extends AbstractParser {
-    public DocumentParser(List<String> linesToParse) {
-        super(linesToParse);
+    public DocumentParser(List<String> linesToParse, List<IElementRegistry>
+            registries) {
+        super(linesToParse, registries);
     }
 
     @Override

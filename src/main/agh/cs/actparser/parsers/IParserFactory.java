@@ -1,6 +1,7 @@
 package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
+import agh.cs.actparser.IElementRegistry;
 
 import java.util.List;
 
@@ -13,5 +14,5 @@ public interface IParserFactory {
      * @return Parser matching given kind
      */
     AbstractParser makeParser(ElementKind kind, List<String>
-            bodyLines);
+            bodyLines, List<IElementRegistry> registries);
 }

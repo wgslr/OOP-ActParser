@@ -1,15 +1,16 @@
 package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
+import agh.cs.actparser.IElementRegistry;
 import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Plaintext;
 
-import java.util.Collections;
 import java.util.List;
 
 public class PlaintextParser extends AbstractParser {
-    public PlaintextParser(List<String> linesToParse) {
-        super(linesToParse);
+    public PlaintextParser(List<String> linesToParse, List<IElementRegistry>
+            registries) {
+        super(linesToParse, registries);
     }
 
     @Override

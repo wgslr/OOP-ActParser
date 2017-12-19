@@ -6,5 +6,5 @@ public interface IElementRegistry {
     /**
      * Adds element to registry.
      */
-    void Add(AbstractElement element);
+    void add(AbstractElement element);
 }

@@ -1,6 +1,7 @@
 package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
+import agh.cs.actparser.IElementRegistry;
 import agh.cs.actparser.elements.AbstractElement;
 
 import java.util.ArrayList;
@@ -48,21 +49,27 @@ public class ElementFinder {
      */
     ElementKind currentLevel;
 
+    List<IElementRegistry> registries;
+
     /**
      * Supplier of children parsers.
      */
     IParserFactory parserFactory = new ParserFactory();
 
-    public ElementFinder(List<String> lines, ElementKind currentLevel) {
+    public ElementFinder(List<String> lines, ElementKind currentLevel, List
+            <IElementRegistry> registries) {
         this.lines = lines;
         this.currentLevel = currentLevel;
+        this.registries = registries;
     }
 
     public ElementFinder(List<String> lines, ElementKind currentLevel,
+                         List<IElementRegistry> registries,
                          IParserFactory parserFactory) {
         this.lines = lines;
         this.currentLevel = currentLevel;
         this.parserFactory = parserFactory;
+        this.registries = registries;
     }
 
     public List<AbstractElement> makeChildrenElements() {
@@ -94,9 +101,17 @@ public class ElementFinder {
     private List<AbstractElement> parseChildren(List<Range> childrenRanges) {
         return childrenRanges.stream()
                 .map(range -> parserFactory.makeParser(range.kind,
-                        range.makeSublist(lines)))
+                        range.makeSublist(lines), registries))
                 .map(AbstractParser::makeElement)
+                .map(this::registerElement)
                 .collect(Collectors.toList());
+    }
+
+    private AbstractElement registerElement(AbstractElement element) {
+        for (IElementRegistry registry : registries) {
+            registry.add(element);
+        }
+        return element;
     }
 
     /**

@@ -1,6 +1,7 @@
 package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
+import agh.cs.actparser.IElementRegistry;
 import agh.cs.actparser.elements.AbstractElement;
 
 import java.util.List;
@@ -16,9 +17,13 @@ public abstract class AbstractParser {
      */
     protected List<String> bodyLines;
 
+    protected List<IElementRegistry> registries;
+
     protected List<AbstractElement> childrenElements;
 
-    public AbstractParser(List<String> linesToParse) {
+    public AbstractParser(List<String> linesToParse, List<IElementRegistry>
+            registries) {
+        this.registries = registries;
         parseStructure(linesToParse);
         parseChildren(bodyLines);
     }
@@ -58,7 +63,8 @@ public abstract class AbstractParser {
     }
 
     protected void parseChildren(List<String> bodyLines) {
-        ElementFinder finder = new ElementFinder(bodyLines, getKind());
+        ElementFinder finder = new ElementFinder(bodyLines, getKind(),
+                registries);
         childrenElements = finder.makeChildrenElements();
     }
 

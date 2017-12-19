@@ -17,6 +17,14 @@ public class Identifier implements Comparable<Identifier>{
     }
 
     @Override
+    public String toString() {
+        return "Identifier{" +
+                "number=" + number +
+                ", letters='" + letters + '\'' +
+                '}';
+    }
+
+    @Override
     public int compareTo(Identifier identifier) {
         if(number != identifier.number) {
             return number - identifier.number;

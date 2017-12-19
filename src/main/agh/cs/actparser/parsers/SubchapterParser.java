@@ -1,14 +1,16 @@
 package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
+import agh.cs.actparser.IElementRegistry;
 import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Subchapter;
 
 import java.util.List;
 
 public class SubchapterParser extends TitledElementParser {
-    public SubchapterParser(List<String> linesToParse) {
-        super(linesToParse);
+    public SubchapterParser(List<String> linesToParse, List<IElementRegistry>
+            registries) {
+        super(linesToParse, registries);
     }
 
     @Override
