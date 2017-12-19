@@ -31,6 +31,8 @@ public class ParserFactory implements IParserFactory {
                 return new LetterParser(linesToParse);
             case Indent:
                 return new IndentParser(linesToParse);
+            case Plaintext:
+                return new PlaintextParser(linesToParse);
             default:
                 throw new IllegalArgumentException();
         }

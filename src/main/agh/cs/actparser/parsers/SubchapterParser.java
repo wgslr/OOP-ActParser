@@ -18,8 +18,7 @@ public class SubchapterParser extends TitledElementParser {
 
     @Override
     protected void parseStructure(List<String> linesToParse) {
-        identifier = "";
-        title = linesToParse.get(0);
+        identifier = title = linesToParse.get(0);
         bodyLines = linesToParse.subList(1, linesToParse.size());
     }
 

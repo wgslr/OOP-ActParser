@@ -2,11 +2,10 @@ package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.elements.AbstractElement;
-import agh.cs.actparser.elements.Document;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -51,38 +50,46 @@ public class ElementFinder {
     }
 
     List<AbstractElement> getChildrenElements() {
-        // Find most general kind for which children elements can be found
+        // Descend by element kind specificty trying to parse with lower
+        // kind what was left by highers
 
         List<Range> parts = new ArrayList<>();
         List<ElementKind> availableKinds = currentLevel.getMoreSpecific();
-        ElementKind childrenKind = ElementKind.getMostSpecific();
+        List<String> linesToParse = lines;
+        List<AbstractElement> result = new ArrayList<>();
 
-        for (ElementKind potentialKind : availableKinds) {
-            Predicate<String> predicate = kindToPattern(potentialKind).asPredicate();
-            parts = getPartsIndices(predicate);
-            if (parts.size() > 0) {
-                childrenKind = potentialKind;
-                break;
-            }
+
+        for (int i = 0; i < availableKinds.size() && !linesToParse.isEmpty(); ++i) {
+            ElementKind searchedKind = availableKinds.get(i);
+            Predicate<String> predicate = kindToPredicate(searchedKind);
+            parts = getPartsIndices(linesToParse, predicate);
+
+            result.addAll(0, parseChildren(searchedKind, parts));
+            linesToParse = getUnmatchedLines(linesToParse, parts);
         }
 
-        List<AbstractElement> result = parseChildren(childrenKind, parts);
-
-        List<String> leafLines = getLeafLines(parts);
-        if (!leafLines.isEmpty()) {
-            AbstractParser leafParser = parserFactory.makeLeafParser(leafLines);
+        if (!linesToParse.isEmpty()) {
+            AbstractParser leafParser = parserFactory.makeLeafParser(linesToParse);
             result.add(0, leafParser.makeElement());
         }
+
         return result;
     }
 
+    private List<String> getUnmatchedLines(List<String> linesToParse, List<Range> identifiedRanges) {
+        if (identifiedRanges.isEmpty()) {
+            return linesToParse;
+        } else {
+            return linesToParse.subList(0, identifiedRanges.get(0).from);
+        }
+    }
+
     private List<AbstractElement> parseChildren(ElementKind childrenKind,
-                                            List<Range>
-            childrenRanges) {
+                                                List<Range> childrenRanges) {
         return childrenRanges.stream()
                 .map(range -> lines.subList(range.from, range.to))
                 .map(sublist -> parserFactory.makeParser(childrenKind, sublist))
-                .map(parser -> parser.makeElement())
+                .map(AbstractParser::makeElement)
                 .collect(Collectors.toList());
     }
 
@@ -101,12 +108,12 @@ public class ElementFinder {
     /**
      * Splits input on lines matching the predicate
      */
-    private List<Range> getPartsIndices(Predicate<String> predicate) {
+    private List<Range> getPartsIndices(List<String> linesToParse, Predicate<String> predicate) {
         List<Range> ranges = new ArrayList<>();
         Integer previous = null;
 
-        for (int i = 0; i < lines.size(); ++i) {
-            String line = lines.get(i);
+        for (int i = 0; i < linesToParse.size(); ++i) {
+            String line = linesToParse.get(i);
             if (predicate.test(line)) {
                 if (previous != null) {
                     ranges.add(new Range(previous, i));
@@ -115,13 +122,13 @@ public class ElementFinder {
             }
         }
         if (previous != null) {
-            ranges.add(new Range(previous, lines.size()));
+            ranges.add(new Range(previous, linesToParse.size()));
         }
         return ranges;
     }
 
 
-    private Pattern kindToPattern(ElementKind kind) {
-        return Pattern.compile(kind.getRegexp());
+    private Predicate<String> kindToPredicate(ElementKind kind) {
+        return Pattern.compile(kind.getRegexp()).asPredicate();
     }
 }
