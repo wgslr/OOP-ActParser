@@ -49,7 +49,7 @@ public enum ElementKind {
             case Subchapter:
                 return "^([\\p{Lu} ]+)\\s*$";
             case Article:
-                return "^Art\\. (\\d+)\\.\\s*(.*)";
+                return "^Art\\. (\\d+[a-z]*)\\.\\s*(.*)";
             case Paragraph:
                 return "^(\\d+)\\.\\s(.*)";
             case Point:
