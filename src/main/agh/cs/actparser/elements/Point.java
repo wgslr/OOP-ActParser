@@ -13,4 +13,9 @@ public class Point extends AbstractElement {
     public Point(String identifier, List<AbstractElement> children) {
         super(identifier, children);
     }
+
+    @Override
+    protected String headerToString() {
+        return identifier + ") ";
+    }
 }

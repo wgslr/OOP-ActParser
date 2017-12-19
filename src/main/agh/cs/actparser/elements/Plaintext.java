@@ -20,18 +20,13 @@ public class Plaintext extends AbstractElement {
     }
 
     public String toString(){
-        String indent = String.join("",
-                                    Collections.nCopies(getKind().getLevel(),
-                                                        " "));
-        return indent + body;
+        return body;
     }
 
     private String joinLines(List<String> lines) {
         String joined = String.join("\n", lines);
-        System.out.println(joined);
-        // remove hyphenation on linebreaks
-        joined.replace("-\n", "");
-        joined.replace("\n", " ");
-        return joined;
+        joined = joined.replace("-\n", "");
+        joined = joined.replace("\n", " ");
+        return joined + "\n";
     }
 }

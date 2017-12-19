@@ -17,14 +17,14 @@ public abstract class AbstractElement {
     }
 
     public String toString() {
-        String indent = String.join("",
-                Collections.nCopies(getKind().getLevel(),
-                        " "));
-        return indent + getKind().toString()
-                + " " + identifier + "\n"
-                + children.stream()
-                .map(AbstractElement::toString)
-                .reduce(String::concat)
-                .orElse("");
+        return headerToString() +
+                children.stream()
+                        .map(AbstractElement::toString)
+                        .reduce(String::concat)
+                        .orElse("");
+    }
+
+    protected String headerToString() {
+        return "";
     }
 }

@@ -13,4 +13,9 @@ public class Letter extends AbstractElement {
     public Letter(String identifier, List<AbstractElement> children) {
         super(identifier, children);
     }
+
+    @Override
+    protected String headerToString() {
+        return identifier + ") ";
+    }
 }

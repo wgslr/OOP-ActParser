@@ -13,4 +13,9 @@ public class Indent extends AbstractElement {
     public Indent(String identifier, List<AbstractElement> children) {
         super(identifier, children);
     }
+
+    @Override
+    protected String headerToString() {
+        return "- ";
+    }
 }

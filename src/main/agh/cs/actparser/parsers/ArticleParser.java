@@ -4,7 +4,6 @@ import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Article;
 
-import javax.print.Doc;
 import java.util.List;
 
 public class ArticleParser extends AbstractParser {

@@ -14,4 +14,8 @@ public class Article extends AbstractElement {
         super(identifier, children);
     }
 
+    @Override
+    protected String headerToString() {
+        return "Art. " + identifier + ".\n";
+    }
 }

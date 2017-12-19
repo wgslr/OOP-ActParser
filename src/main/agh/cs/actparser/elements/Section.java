@@ -14,4 +14,9 @@ public class Section extends TitledElement {
             children) {
         super(identifier, title, children);
     }
+
+    @Override
+    protected String headerToString() {
+        return String.format("DZIAŁ %s\n%s\n", identifier, title);
+    }
 }

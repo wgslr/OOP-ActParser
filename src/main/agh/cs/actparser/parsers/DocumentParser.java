@@ -1,10 +1,8 @@
 package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
-import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Document;
 
-import javax.print.Doc;
 import java.util.List;
 
 public class DocumentParser extends AbstractParser {

@@ -41,7 +41,6 @@ public class ListsTest {
 
         assertEquals(Arrays.asList(0), original);
         assertEquals(Arrays.asList(0), sub);
-        System.out.println(sub);
 
         original.add(0, 1);
         assertEquals(Arrays.asList(1, 0), original);

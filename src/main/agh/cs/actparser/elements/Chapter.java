@@ -14,4 +14,9 @@ public class Chapter extends TitledElement {
             children) {
         super(identifier, title, children);
     }
+
+    @Override
+    protected String headerToString() {
+        return String.format("Rozdział %s\n%s\n", identifier, title);
+    }
 }
