@@ -62,7 +62,7 @@ public class ElementFinderTest {
                 // One step above Article
                 ElementKind.Chapter,
                 parserFactoryMock);
-        assertEquals(4, testSubject.getChildrenElements().size());
+        assertEquals(4, testSubject.makeChildrenElements().size());
     }
 
     @Test
@@ -73,7 +73,7 @@ public class ElementFinderTest {
                 parserFactoryMock);
 
         assertEquals(Collections.emptyList(),
-                testSubject.getChildrenElements());
+                testSubject.makeChildrenElements());
     }
 
     @Test
@@ -91,7 +91,7 @@ public class ElementFinderTest {
                 // One step above Article
                 ElementKind.Chapter,
                 parserFactoryMock);
-        List<AbstractElement> foundChildren = testSubject.getChildrenElements();
+        List<AbstractElement> foundChildren = testSubject.makeChildrenElements();
 
         assertEquals(5, foundChildren.size());
         assert(foundChildren.get(0) instanceof Plaintext);
