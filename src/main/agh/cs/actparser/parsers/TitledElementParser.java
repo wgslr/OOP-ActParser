@@ -39,7 +39,6 @@ public abstract class TitledElementParser extends AbstractParser {
                 throw new IllegalArgumentException("Titled element has no " +
                         "title!");
             }
-            System.out.println("Setting bodyLines from " + linesToParse);
             bodyLines = linesToParse.subList(2, linesToParse.size());
             System.out.println(bodyLines);
         }

@@ -2,16 +2,16 @@ package agh.cs.actparser.elements;
 
 import agh.cs.actparser.ElementKind;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class Plaintext extends AbstractElement {
-    public Plaintext(String body) {
-        super(body, Collections.emptyList());
-    }
+    String body;
 
     public Plaintext(List<String> bodyLines) {
-        super(String.join(" ", bodyLines), Collections.emptyList());
+        super("", null);
+        body = joinLines(bodyLines);
     }
 
     @Override
@@ -23,6 +23,15 @@ public class Plaintext extends AbstractElement {
         String indent = String.join("",
                                     Collections.nCopies(getKind().getLevel(),
                                                         " "));
-        return indent + "Plaintext: " + identifier + "\n";
+        return indent + body;
+    }
+
+    private String joinLines(List<String> lines) {
+        String joined = String.join("\n", lines);
+        System.out.println(joined);
+        // remove hyphenation on linebreaks
+        joined.replace("-\n", "");
+        joined.replace("\n", " ");
+        return joined;
     }
 }

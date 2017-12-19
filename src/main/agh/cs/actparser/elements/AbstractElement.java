@@ -18,8 +18,8 @@ public abstract class AbstractElement {
 
     public String toString() {
         String indent = String.join("",
-                                    Collections.nCopies(getKind().getLevel(),
-                                                        " "));
+                Collections.nCopies(getKind().getLevel(),
+                        " "));
         return indent + getKind().toString()
                 + " " + identifier + "\n"
                 + children.stream()
@@ -27,6 +27,4 @@ public abstract class AbstractElement {
                 .reduce(String::concat)
                 .orElse("");
     }
-
-
 }
