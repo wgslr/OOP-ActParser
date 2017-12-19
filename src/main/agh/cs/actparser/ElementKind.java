@@ -12,6 +12,7 @@ public enum ElementKind {
     Document,
     Section, // Dział
     Chapter, // Rozdział
+    Subchapter,
     Article, // Artykuł
     Paragraph, // Ustęp
     Point, // Punkt
@@ -19,9 +20,9 @@ public enum ElementKind {
     Indent, // Tiret
     Plaintext;
 
-    public static List<ElementKind> getMoreSpecificThan(ElementKind kind) {
+    public List<ElementKind> getMoreSpecific() {
         return Arrays.stream(ElementKind.values())
-                .filter(k -> k.compareTo(kind) > 0)
+                .filter(k -> k.compareTo(this) > 0)
                 .collect(Collectors.toList());
     }
 
@@ -45,6 +46,8 @@ public enum ElementKind {
                 return "^DZIAŁ ([IVXCD]+)\\s*(.*)";
             case Chapter:
                 return "^Rozdział (\\d+|[IVXCD]+)\\s*(.*)";
+            case Subchapter:
+                return "^(\\p{Lu}+)$";
             case Article:
                 return "^Art\\. (\\d+)\\.\\s*(.*)";
             case Paragraph:

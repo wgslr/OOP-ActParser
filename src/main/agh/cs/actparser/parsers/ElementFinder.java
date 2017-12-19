@@ -54,8 +54,7 @@ public class ElementFinder {
         // Find most general kind for which children elements can be found
 
         List<Range> parts = new ArrayList<>();
-        List<ElementKind> availableKinds = ElementKind.getMoreSpecificThan
-                (currentLevel);
+        List<ElementKind> availableKinds = currentLevel.getMoreSpecific();
         ElementKind childrenKind = ElementKind.getMostSpecific();
 
         for (ElementKind potentialKind : availableKinds) {
