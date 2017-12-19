@@ -65,27 +65,4 @@ public class ElementFinderTest {
                 testSubject.makeChildrenElements());
     }
 
-    @Test
-    public void getElementMakesLeafElementWhenNeeded() {
-        List<String> inputLines = Arrays.asList(
-                "Preface", "Preface 2",
-                "Art. 1. Title",
-                "Article one body",
-                "Art. 2. Title2",
-                "Art2 body", "Body etc",
-                "Art. 3.",
-                "Art. 4.");
-
-        ElementFinder testSubject = new ElementFinder(inputLines,
-                // One step above Article
-                ElementKind.Chapter,
-                parserFactoryMock);
-        List<AbstractElement> foundChildren = testSubject
-                .makeChildrenElements();
-
-        assertEquals(5, foundChildren.size());
-        assert (foundChildren.get(0) instanceof Plaintext);
-        assert (!(foundChildren.get(1) instanceof Plaintext));
-
-    }
 }

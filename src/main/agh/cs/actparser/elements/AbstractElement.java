@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractElement {
-    protected final String identifier;
-    public List<AbstractElement> children;
+    public final String identifier;
+    protected final List<AbstractElement> children;
 
     abstract public ElementKind getKind();
 

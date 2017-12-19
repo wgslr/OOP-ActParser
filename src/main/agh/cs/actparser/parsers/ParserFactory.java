@@ -1,8 +1,6 @@
 package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
-import agh.cs.actparser.elements.Plaintext;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
@@ -38,8 +36,4 @@ public class ParserFactory implements IParserFactory {
         }
     }
 
-    @Override
-    public AbstractParser makeLeafParser(List<String> bodyLines) {
-        return new PlaintextParser(bodyLines);
-    }
 }

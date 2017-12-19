@@ -29,7 +29,5 @@ public class ParsingEngine {
 
         System.out.print(doc);
         //System.out.print(doc.children);
-
-
     }
 }
