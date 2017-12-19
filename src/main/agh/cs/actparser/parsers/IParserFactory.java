@@ -14,12 +14,4 @@ public interface IParserFactory {
      */
     AbstractParser makeParser(ElementKind kind, List<String>
             bodyLines);
-
-
-    /**
-     * Creates parser for elements with no children
-     * @param bodyLines Document lines
-     * @return
-     */
-    AbstractParser makeLeafParser(List<String> bodyLines);
 }

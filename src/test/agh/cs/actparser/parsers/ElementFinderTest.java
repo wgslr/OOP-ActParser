@@ -14,38 +14,27 @@ import static org.junit.Assert.*;
 
 public class ElementFinderTest {
 
-    IParserFactory parserFactoryMock = new IParserFactory() {
-        @Override
-        public AbstractParser makeParser(ElementKind kind, List<String>
-                bodyLines) {
-            return new AbstractParser(bodyLines) {
-                protected ElementKind getKind() {
-                    return null;
-                }
+    IParserFactory parserFactoryMock = (kind, bodyLines) -> new AbstractParser(
+            bodyLines) {
+        protected ElementKind getKind() {
+            return null;
+        }
 
-                public AbstractElement makeElement() {
-                    return null;
-                }
-
-                @Override
-                protected void parseStructure(List<String> linesToParse) {
-                    ;
-                }
-
-                @Override
-                protected void parseChildren(List<String> bodyLines) {
-                }
-
-                @Override
-                protected Pattern getStartPattern() {
-                    return null;
-                }
-            };
+        public AbstractElement makeElement() {
+            return null;
         }
 
         @Override
-        public AbstractParser makeLeafParser(List<String> bodyLines) {
-            return new PlaintextParser(bodyLines);
+        protected void parseStructure(List<String> linesToParse) {
+        }
+
+        @Override
+        protected void parseChildren(List<String> bodyLines) {
+        }
+
+        @Override
+        protected Pattern getStartPattern() {
+            return null;
         }
     };
 
@@ -91,11 +80,12 @@ public class ElementFinderTest {
                 // One step above Article
                 ElementKind.Chapter,
                 parserFactoryMock);
-        List<AbstractElement> foundChildren = testSubject.makeChildrenElements();
+        List<AbstractElement> foundChildren = testSubject
+                .makeChildrenElements();
 
         assertEquals(5, foundChildren.size());
-        assert(foundChildren.get(0) instanceof Plaintext);
-        assert(!(foundChildren.get(1) instanceof Plaintext));
+        assert (foundChildren.get(0) instanceof Plaintext);
+        assert (!(foundChildren.get(1) instanceof Plaintext));
 
     }
 }

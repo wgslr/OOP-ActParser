@@ -118,8 +118,7 @@ public class ElementFinder {
             }
         }
         if (previous != null) {
-            // Only one lead was found, element extends to the end of parsed
-            // range
+            // last element extends to the last parsed lines
             ranges.add(new Range(previous, linesToParse.size(), kindToFind));
         }
         return ranges;
