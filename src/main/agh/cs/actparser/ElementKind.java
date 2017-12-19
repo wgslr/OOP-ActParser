@@ -44,7 +44,7 @@ public enum ElementKind {
             case Section:
                 return "^DZIAŁ ([IVXCD]+)\\s*(.*)";
             case Chapter:
-                return "^Rozdział (\\d+)\\s*(.*)";
+                return "^Rozdział (\\d+|[IVXCD]+)\\s*(.*)";
             case Article:
                 return "^Art\\. (\\d+)\\.\\s*(.*)";
             case Paragraph:

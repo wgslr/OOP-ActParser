@@ -8,8 +8,6 @@ import agh.cs.actparser.elements.TitledElement;
 import java.util.List;
 
 public class ChapterParser extends TitledElementParser {
-    String title;
-
     public ChapterParser(List<String> linesToParse) {
         super(linesToParse);
     }

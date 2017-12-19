@@ -40,7 +40,6 @@ public abstract class TitledElementParser extends AbstractParser {
                         "title!");
             }
             bodyLines = linesToParse.subList(2, linesToParse.size());
-            System.out.println(bodyLines);
         }
     }
 }

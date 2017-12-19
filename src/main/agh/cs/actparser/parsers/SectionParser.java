@@ -7,8 +7,6 @@ import agh.cs.actparser.elements.Section;
 import java.util.List;
 
 public class SectionParser extends TitledElementParser {
-    String title;
-
     public SectionParser(List<String> linesToParse) {
         super(linesToParse);
     }
