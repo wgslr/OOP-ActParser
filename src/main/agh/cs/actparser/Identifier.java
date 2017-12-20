@@ -1,6 +1,5 @@
 package agh.cs.actparser;
 
-import javax.xml.bind.Element;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,7 +29,7 @@ public class Identifier implements Comparable<Identifier> {
     }
 
     public static Identifier fromString(String idString, ElementKind kind) {
-        if(Pattern.matches("^[IVXL]+$", idString)){
+        if (RomanConverter.isRomanNumeral(idString)) {
             return fromRoman(idString, kind);
         } else {
             return fromMixed(idString, kind);
@@ -58,12 +57,14 @@ public class Identifier implements Comparable<Identifier> {
 
     /**
      * Creates Identifier basing on a roman numeral.
+     *
      * @param romanNumeral Numeral string to be parsed
-     * @param kind Kind of element this identifier describes
+     * @param kind         Kind of element this identifier describes
      * @return Created Identifier
      */
     private static Identifier fromRoman(String romanNumeral, ElementKind kind) {
-        return new Identifier(romanToInteger(romanNumeral), "", kind);
+        return new Identifier(RomanConverter.romanToInteger(romanNumeral),
+                "", kind);
     }
 
     @Override
@@ -110,31 +111,4 @@ public class Identifier implements Comparable<Identifier> {
         return this.compareTo(that) == 0;
     }
 
-    private static int romanToInteger(String romanNumber) {
-        if (romanNumber.isEmpty()) {
-            return 0;
-        }
-        if (romanNumber.startsWith("L")) {
-            return 50 + romanToInteger(romanNumber.substring(1));
-        }
-        if (romanNumber.startsWith("XL")) {
-            return 40 + romanToInteger(romanNumber.substring(2));
-        }
-        if (romanNumber.startsWith("X")) {
-            return 10 + romanToInteger(romanNumber.substring(1));
-        }
-        if (romanNumber.startsWith("IX")) {
-            return 9 + romanToInteger(romanNumber.substring(2));
-        }
-        if (romanNumber.startsWith("V")) {
-            return 5 + romanToInteger(romanNumber.substring(1));
-        }
-        if (romanNumber.startsWith("IV")) {
-            return 4 + romanToInteger(romanNumber.substring(2));
-        }
-        if (romanNumber.startsWith("I")) {
-            return 1 + romanToInteger(romanNumber.substring(1));
-        }
-        throw new IllegalArgumentException("Invalid roman numeral");
-    }
 }
