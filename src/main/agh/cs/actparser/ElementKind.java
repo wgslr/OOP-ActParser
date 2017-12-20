@@ -17,7 +17,6 @@ public enum ElementKind {
     Paragraph, // Ustęp
     Point, // Punkt
     Letter, // litera
-    Indent, // Tiret
     Plaintext;
 
     public List<ElementKind> getMoreSpecific() {
@@ -26,12 +25,10 @@ public enum ElementKind {
                 .collect(Collectors.toList());
     }
 
-    public static ElementKind getMostSpecific() {
-        return Plaintext;
-    }
-
-    public int getLevel(){
-        return this.compareTo(Document);
+    public List<ElementKind> getLessSpecific() {
+        return Arrays.stream(ElementKind.values())
+                .filter(k -> k.compareTo(this) < 0)
+                .collect(Collectors.toList());
     }
 
 
@@ -56,14 +53,12 @@ public enum ElementKind {
                 return "^(\\d+)\\)\\s(.*)";
             case Letter:
                 return "^(\\p{L}+)\\)\\s(.*)";
-            case Indent:
-                return "^-\\s()(.*)";
             case Plaintext:
-                return "(?!)()"; // never matches
+                return "()().*"; // always matches
+            case Document:
+                return "(?!)"; // never matches - there can be only one document
             default:
-                // matches also Document as there cannot
-                // be more than one Document in a file
-                throw new UnsupportedOperationException();
+                throw new IllegalArgumentException();
         }
     }
 }

@@ -25,6 +25,11 @@ public class Identifier implements Comparable<Identifier>{
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(number, letters);
+    }
+
+    @Override
     public int compareTo(Identifier identifier) {
         if(number != identifier.number) {
             return number - identifier.number;

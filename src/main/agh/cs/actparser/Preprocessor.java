@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class Preprocessor {
@@ -33,20 +32,20 @@ public class Preprocessor {
     /**
      * Join lines when then do not introduce new element
      */
-    protected List<String> joinLines(List<String> lines){
-        List<Predicate<String>> headerPredicates = Arrays.stream(ElementKind
-                .values())
-                .map(ElementKind::getRegexp)
-                .map(Pattern::compile)
-                .map(Pattern::asPredicate)
-                .collect(Collectors.toList());
+    protected List<String> joinLines(List<String> lines) {
+        List<Predicate<String>> headerPredicates =
+                ElementKind.Plaintext.getLessSpecific().stream()
+                        .map(ElementKind::getRegexp)
+                        .map(Pattern::compile)
+                        .map(Pattern::asPredicate)
+                        .collect(Collectors.toList());
 
         List<String> result = new ArrayList<>();
         result.add(lines.get(0));
 
-        for(int i = 1; i < lines.size(); ++i){
+        for (int i = 1; i < lines.size(); ++i) {
             String line = lines.get(i);
-            if(headerPredicates.stream()
+            if (headerPredicates.stream()
                     .anyMatch(pred -> pred.test(line))) {
                 // Line begins new element
                 result.add(line);
@@ -58,7 +57,7 @@ public class Preprocessor {
                 previous = previous.replace("-\n", "");
                 previous = previous.replace("\n", " ");
 
-                result.set(result.size() -1, previous);
+                result.set(result.size() - 1, previous);
             }
         }
         return result;
