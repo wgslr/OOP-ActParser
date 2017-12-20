@@ -11,7 +11,7 @@ public class CleanerTest {
 
     @Test
     public void filter() {
-        Cleaner c = new Cleaner(new String[]{"remove"});
+        Preprocessor c = new Preprocessor(new String[]{"remove"});
         List<String> lines = Arrays.asList("preserve", "remove", "will be " +
                 "removed");
         List<String> expected = Arrays.asList("preserve");
@@ -26,7 +26,7 @@ public class CleanerTest {
                               "bad evil");
         List<String> expected = Arrays.asList("preserve", "good");
 
-        Cleaner c = new Cleaner(new String[]{"bad", "evil"});
+        Preprocessor c = new Preprocessor(new String[]{"bad", "evil"});
         assertEquals(expected, c.filter(lines));
     }
 

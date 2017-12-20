@@ -28,8 +28,6 @@ public class ParserFactory implements IParserFactory {
                 return new PointParser(linesToParse, registries);
             case Letter:
                 return new LetterParser(linesToParse, registries);
-            case Indent:
-                return new IndentParser(linesToParse, registries);
             case Plaintext:
                 return new PlaintextParser(linesToParse, registries);
             default:
