@@ -1,19 +1,21 @@
 package agh.cs.actparser.elements;
 
 import agh.cs.actparser.ElementKind;
+import agh.cs.actparser.Identifier;
 
-import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractElement {
-    public final String identifier;
+    public final String idString;
+    public final Identifier identifier;
     protected final List<AbstractElement> children;
 
     abstract public ElementKind getKind();
 
-    public AbstractElement(String identifier, List<AbstractElement> children) {
-        this.identifier = identifier;
+    public AbstractElement(String idString, List<AbstractElement> children) {
+        this.idString = idString;
         this.children = children;
+        this.identifier = Identifier.fromString(idString, getKind());
     }
 
     public String toString() {

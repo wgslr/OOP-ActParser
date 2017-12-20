@@ -16,6 +16,6 @@ public class Point extends AbstractElement {
 
     @Override
     protected String headerToString() {
-        return identifier + ") ";
+        return idString + ") ";
     }
 }

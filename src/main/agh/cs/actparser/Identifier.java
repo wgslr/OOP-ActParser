@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Describes an identifier which my consist of a numeric and alphabetic parts.
+ * Describes an idString which my consist of a numeric and alphabetic parts.
  */
 public class Identifier implements Comparable<Identifier> {
 
@@ -43,7 +43,8 @@ public class Identifier implements Comparable<Identifier> {
         Matcher m = splitter.matcher(idString);
 
         if (!m.matches()) {
-            throw new NumberFormatException("Invalid identifier string");
+            throw new NumberFormatException(
+                    "Invalid idString '" + idString + "'");
         }
 
         Integer number = 0;
@@ -59,7 +60,7 @@ public class Identifier implements Comparable<Identifier> {
      * Creates Identifier basing on a roman numeral.
      *
      * @param romanNumeral Numeral string to be parsed
-     * @param kind         Kind of element this identifier describes
+     * @param kind         Kind of element this idString describes
      * @return Created Identifier
      */
     private static Identifier fromRoman(String romanNumeral, ElementKind kind) {
@@ -77,15 +78,19 @@ public class Identifier implements Comparable<Identifier> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(numericPart, stringPart);
+        return Objects.hash(kind, numericPart, stringPart);
     }
 
     @Override
-    public int compareTo(Identifier identifier) {
-        if (numericPart != identifier.numericPart) {
-            return numericPart - identifier.numericPart;
+    public int compareTo(Identifier other) {
+        if(kind != other.kind) {
+            // more specific kinds should be first
+            // at least when being children of the same element
+            return -kind.compareTo(other.kind);
+        } else if (numericPart != other.numericPart) {
+            return numericPart - other.numericPart;
         } else {
-            return compareLetterPart(stringPart, identifier.stringPart);
+            return compareLetterPart(stringPart, other.stringPart);
         }
     }
 

@@ -16,6 +16,6 @@ public class Article extends AbstractElement {
 
     @Override
     protected String headerToString() {
-        return "Art. " + identifier + ".\n";
+        return "Art. " + idString + ".\n";
     }
 }

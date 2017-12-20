@@ -20,6 +20,6 @@ public class ArticleParser extends AbstractParser {
 
     @Override
     public AbstractElement makeElement() {
-        return new Article(identifier, childrenElements);
+        return new Article(idString, childrenElements);
     }
 }

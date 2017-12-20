@@ -14,24 +14,35 @@ public class ParsingEngine {
     // TODO handle non-existent file
     public static void main(String[] args) throws IOException {
         //System.out.println(ElementKind.Section.compareTo(ElementKind
-        //                                                             .Letter));
+        //
+        // .Letter));
 
-        Cleaner c = new Cleaner();
+        Preprocessor c = new Preprocessor();
 
         //Path path = Paths.get("./assets/konstytucja.txt");
         //Path path = Paths.get("./assets/uokik_min.txt");
         Path path = Paths.get("./assets/uokik.txt");
-        List<String> lines = c.filter(Files.readAllLines(path));
+        List<String> lines = c.process(Files.readAllLines(path));
+
+        System.out.println(String.join("\n", lines));
 
         ArticleRegistry registry = new ArticleRegistry();
 
-        DocumentParser parser = new DocumentParser(lines, Arrays.asList(registry));
-        Document doc = parser.makeElement();
+        //DocumentParser parser = new DocumentParser(lines,
+                //Arrays.asList(registry));
+        //Document doc = parser.makeElement();
 
-        System.out.print(doc);
+//        System.out.print(doc);
 
-        System.out.println(registry.articles.size());
-        System.out.println(registry.articles.keySet());
+//        System.out.println(registry.articles.size());
+//        System.out.println(registry.articles.keySet());
+
+//        registry.getRange(Identifier.fromString("104", null),
+//                Identifier.fromString
+//                ("105j", null))
+//                .forEach(a ->
+//                System.out.print(a));
         //System.out.print(doc.children);
+
     }
 }

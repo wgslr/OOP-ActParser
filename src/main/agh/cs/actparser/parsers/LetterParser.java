@@ -20,6 +20,6 @@ public class LetterParser extends AbstractParser {
 
     @Override
     public AbstractElement makeElement() {
-        return new Letter(identifier, childrenElements);
+        return new Letter(idString, childrenElements);
     }
 }

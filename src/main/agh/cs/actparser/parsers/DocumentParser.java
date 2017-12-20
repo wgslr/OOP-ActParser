@@ -14,7 +14,7 @@ public class DocumentParser extends AbstractParser {
 
     @Override
     protected void parseStructure(List<String> linesToParse) {
-        identifier = "";
+        idString = "";
         bodyLines = linesToParse;
     }
 
@@ -25,6 +25,6 @@ public class DocumentParser extends AbstractParser {
 
     @Override
     public Document makeElement() {
-        return new Document(identifier, childrenElements);
+        return new Document(idString, childrenElements);
     }
 }

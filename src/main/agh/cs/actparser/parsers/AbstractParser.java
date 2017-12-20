@@ -10,10 +10,10 @@ import java.util.regex.Pattern;
 
 public abstract class AbstractParser {
 
-    protected String identifier;
+    protected String idString;
 
     /**
-     * Element content with identifier dropped
+     * Element content with idString dropped
      */
     protected List<String> bodyLines;
 
@@ -51,7 +51,7 @@ public abstract class AbstractParser {
                     "Given content cannot be parsed as " + getKind());
         }
 
-        identifier = startMatcher.group(1);
+        idString = startMatcher.group(1);
         String bodyInFirstLine = startMatcher.group(2);
 
         if (!bodyInFirstLine.trim().isEmpty()) {
@@ -71,7 +71,7 @@ public abstract class AbstractParser {
 
     /**
      * @return Regular expression containing two capture groups - for element
-     * identifier and rest of the line
+     * idString and rest of the line
      */
     protected Pattern getStartPattern() {
         return Pattern.compile(getKind().getRegexp());

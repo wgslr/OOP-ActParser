@@ -21,6 +21,6 @@ public class PointParser extends AbstractParser {
 
     @Override
     public AbstractElement makeElement() {
-        return new Point(identifier, childrenElements);
+        return new Point(idString, childrenElements);
     }
 }

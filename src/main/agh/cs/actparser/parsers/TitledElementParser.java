@@ -24,7 +24,7 @@ public abstract class TitledElementParser extends AbstractParser {
                     "Given content cannot be parsed as " + getKind());
         }
 
-        identifier = startMatcher.group(1);
+        idString = startMatcher.group(1);
         String textAfterIdentifier = startMatcher.group(2);
 
         if(!textAfterIdentifier.trim().isEmpty()){

@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public class RomanConverter {
     public static boolean isRomanNumeral(String numeral) {
-        return (Pattern.matches("^[IVXLCDM]+$", numeral);
+        return Pattern.matches("^[IVXLCDM]+$", numeral);
     }
 
     public static int romanToInteger(String romanNumber) {

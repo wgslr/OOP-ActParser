@@ -20,6 +20,6 @@ public class SectionParser extends TitledElementParser {
 
     @Override
     public AbstractElement makeElement() {
-        return new Section(identifier, title, childrenElements);
+        return new Section(idString, title, childrenElements);
     }
 }

@@ -5,6 +5,8 @@ import agh.cs.actparser.IElementRegistry;
 import agh.cs.actparser.elements.AbstractElement;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -55,6 +57,10 @@ public class ElementFinder {
      * Supplier of children parsers.
      */
     IParserFactory parserFactory = new ParserFactory();
+
+    public ElementFinder(List<String> lines, ElementKind currentLevel){
+        this(lines, currentLevel, Collections.emptyList());
+    }
 
     public ElementFinder(List<String> lines, ElementKind currentLevel, List
             <IElementRegistry> registries) {

@@ -20,6 +20,6 @@ public class ChapterParser extends TitledElementParser {
 
     @Override
     public AbstractElement makeElement() {
-        return new Chapter(identifier, title, childrenElements);
+        return new Chapter(idString, title, childrenElements);
     }
 }

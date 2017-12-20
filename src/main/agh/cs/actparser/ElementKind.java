@@ -34,7 +34,7 @@ public enum ElementKind {
 
     /**
      * Returns regular expression identifing start of this element. The
-     * expression contains two groups, first matching the identifier of element
+     * expression contains two groups, first matching the idString of element
      * and second any leftover content.
      */
     public String getRegexp() {
@@ -52,7 +52,7 @@ public enum ElementKind {
             case Point:
                 return "^(\\d+)\\)\\s(.*)";
             case Letter:
-                return "^(\\p{L}+)\\)\\s(.*)";
+                return "^(\\p{L})\\)\\s(.*)";
             case Plaintext:
                 return "()().*"; // always matches
             case Document:

@@ -20,7 +20,7 @@ public class PlaintextParser extends AbstractParser {
 
     @Override
     protected void parseStructure(List<String> linesToParse) {
-        identifier = null;
+        idString = "";
         bodyLines = linesToParse;
     }
 

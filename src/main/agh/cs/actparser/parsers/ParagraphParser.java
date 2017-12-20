@@ -21,6 +21,6 @@ public class ParagraphParser extends AbstractParser {
 
     @Override
     public AbstractElement makeElement() {
-        return new Paragraph(identifier, childrenElements);
+        return new Paragraph(idString, childrenElements);
     }
 }
