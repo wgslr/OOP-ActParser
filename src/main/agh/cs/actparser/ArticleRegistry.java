@@ -11,7 +11,9 @@ public class ArticleRegistry implements IElementRegistry{
     @Override
     public void add(AbstractElement article) {
         if (article instanceof Article) {
-            articles.put(Identifier.fromString(article.identifier), article);
+            articles.put(Identifier.fromString(article.identifier,
+                    article.getKind()),
+                    article);
         }
     }
 

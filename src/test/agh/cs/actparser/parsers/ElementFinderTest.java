@@ -19,7 +19,7 @@ public class ElementFinderTest {
             AbstractParser(bodyLines, registries) {
         @Override
         protected ElementKind getKind() {
-            return null;
+            return ElementKind.Plaintext;
         }
 
         @Override

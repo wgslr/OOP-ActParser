@@ -8,24 +8,24 @@ public class IdentifierTest {
 
     @Test
     public void convertStringToIdentifier() {
-        Identifier number = Identifier.fromString("12");
-        Identifier string = Identifier.fromString("ai");
-        Identifier mixed = Identifier.fromString("12a");
+        Identifier number = Identifier.fromString("12", ElementKind.Article);
+        Identifier string = Identifier.fromString("ai", ElementKind.Article);
+        Identifier mixed = Identifier.fromString("12a", ElementKind.Article);
 
-        assertEquals(12, number.number);
-        assertEquals("", number.letters);
-        assertEquals(0, string.number);
-        assertEquals("ai", string.letters);
-        assertEquals(12, mixed.number);
-        assertEquals("a", mixed.letters);
+        assertEquals(12, number.numericPart);
+        assertEquals("", number.stringPart);
+        assertEquals(0, string.numericPart);
+        assertEquals("ai", string.stringPart);
+        assertEquals(12, mixed.numericPart);
+        assertEquals("a", mixed.stringPart);
     }
 
 
     @Test
     public void compareNumericalIdentifiers() {
-        Identifier id1 = Identifier.fromString("2");
-        Identifier id2 = Identifier.fromString("11");
-        Identifier id3 = Identifier.fromString("11");
+        Identifier id1 = Identifier.fromString("2", ElementKind.Article);
+        Identifier id2 = Identifier.fromString("11", ElementKind.Article);
+        Identifier id3 = Identifier.fromString("11", ElementKind.Article);
 
         assertTrue(id1.compareTo(id2) < 0);
         assertTrue(id2.compareTo(id1) > 0);
@@ -34,9 +34,9 @@ public class IdentifierTest {
 
     @Test
     public void compareTextIdentifiers() {
-        Identifier id1 = Identifier.fromString("a");
-        Identifier id2 = Identifier.fromString("c");
-        Identifier id3 = Identifier.fromString("ad");
+        Identifier id1 = Identifier.fromString("a", ElementKind.Article);
+        Identifier id2 = Identifier.fromString("c", ElementKind.Article);
+        Identifier id3 = Identifier.fromString("ad", ElementKind.Article);
 
         assertTrue(id1.compareTo(id2) < 0);
         assertTrue(id2.compareTo(id1) > 0);
@@ -48,10 +48,12 @@ public class IdentifierTest {
 
     @Test
     public void equalsTest() {
-        Identifier fromString1 = Identifier.fromString("25a");
-        Identifier fromString2 = Identifier.fromString("25a");
-        Identifier literal1 = new Identifier(25, "a");
-        Identifier literal2 = new Identifier(25, "a");
+        Identifier fromString1 = Identifier.fromString("25a",
+                ElementKind.Article);
+        Identifier fromString2 = Identifier.fromString("25a",
+                ElementKind.Article);
+        Identifier literal1 = new Identifier(25, "a", ElementKind.Article);
+        Identifier literal2 = new Identifier(25, "a", ElementKind.Article);
 
         assertTrue(fromString1.equals(fromString2));
         assertTrue(literal1.equals(literal2));
@@ -60,16 +62,27 @@ public class IdentifierTest {
 
     @Test
     public void compareEquals() {
-        Identifier fromString1 = Identifier.fromString("25a");
-        Identifier fromString2 = Identifier.fromString("25a");
-        Identifier literal1 = new Identifier(25, "a");
-        Identifier literal2 = new Identifier(25, "a");
+        Identifier fromString1 = Identifier.fromString("25a",
+                ElementKind.Article);
+        Identifier fromString2 = Identifier.fromString("25a",
+                ElementKind.Article);
+        Identifier literal1 = new Identifier(25, "a", ElementKind.Article);
+        Identifier literal2 = new Identifier(25, "a", ElementKind.Article);
 
         assertTrue(fromString1.compareTo(fromString2) == 0);
         assertTrue(literal1.compareTo(literal2) == 0);
         assertTrue(literal1.compareTo(fromString1) == 0);
-
     }
 
+    @Test
+    public void romanConversionTest() {
+        Identifier id1 = Identifier.fromString("IX" );
+        assertEquals(9, id1.numericPart);
+        assertEquals("", id1.stringPart);
+
+        Identifier id2 = Identifier.fromString("XLVI" );
+        assertEquals(46, id2.numericPart);
+        assertEquals("", id2.stringPart);
+    }
 
 }
