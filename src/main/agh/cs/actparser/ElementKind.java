@@ -12,7 +12,7 @@ public enum ElementKind {
     Document,
     Section, // Dział
     Chapter, // Rozdział
-    Subchapter,
+    Title,
     Article, // Artykuł
     Paragraph, // Ustęp
     Point, // Punkt
@@ -43,7 +43,7 @@ public enum ElementKind {
                 return "^DZIAŁ ([IVXCD]+)\\s*(.*)";
             case Chapter:
                 return "^Rozdział (\\d+|[IVXCD]+)\\s*(.*)";
-            case Subchapter:
+            case Title:
                 return "^([\\p{Lu} ]+)\\s*$";
             case Article:
                 return "^Art\\. (\\d+[a-z]*)\\.\\s*(.*)";

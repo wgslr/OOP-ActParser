@@ -76,11 +76,11 @@ public class IdentifierTest {
 
     @Test
     public void romanConversionTest() {
-        Identifier id1 = Identifier.fromString("IX" );
+        Identifier id1 = Identifier.fromString("IX" , ElementKind.Article);
         assertEquals(9, id1.numericPart);
         assertEquals("", id1.stringPart);
 
-        Identifier id2 = Identifier.fromString("XLVI" );
+        Identifier id2 = Identifier.fromString("XLVI", ElementKind.Article);
         assertEquals(46, id2.numericPart);
         assertEquals("", id2.stringPart);
     }

@@ -19,7 +19,7 @@ public class Article extends AbstractElement {
     }
 
     @Override
-    protected String headerToString() {
+    public String headerToString() {
         return "Art. " + idString + ".\n";
     }
 }

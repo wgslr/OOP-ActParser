@@ -17,7 +17,7 @@ public class Paragraph extends AbstractElement {
     }
 
     @Override
-    protected String headerToString() {
+    public String headerToString() {
         return idString + ". ";
     }
 }

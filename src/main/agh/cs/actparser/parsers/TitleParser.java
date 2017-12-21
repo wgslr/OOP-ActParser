@@ -3,19 +3,19 @@ package agh.cs.actparser.parsers;
 import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.IElementRegistry;
 import agh.cs.actparser.elements.AbstractElement;
-import agh.cs.actparser.elements.Subchapter;
+import agh.cs.actparser.elements.Title;
 
 import java.util.List;
 
-public class SubchapterParser extends TitledElementParser {
-    public SubchapterParser(List<String> linesToParse, List<IElementRegistry>
+public class TitleParser extends TitledElementParser {
+    public TitleParser(List<String> linesToParse, List<IElementRegistry>
             registries) {
         super(linesToParse, registries);
     }
 
     @Override
     protected ElementKind getKind() {
-        return ElementKind.Subchapter;
+        return ElementKind.Title;
     }
 
     @Override
@@ -32,6 +32,6 @@ public class SubchapterParser extends TitledElementParser {
      */
     @Override
     public AbstractElement makeElement() {
-        return new Subchapter(idString, title, childrenElements);
+        return new Title(idString, title, childrenElements);
     }
 }

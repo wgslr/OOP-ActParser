@@ -17,7 +17,7 @@ public class Letter extends AbstractElement {
     }
 
     @Override
-    protected String headerToString() {
+    public String headerToString() {
         return idString + ") ";
     }
 }

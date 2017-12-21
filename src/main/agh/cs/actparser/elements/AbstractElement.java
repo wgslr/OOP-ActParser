@@ -52,7 +52,7 @@ public abstract class AbstractElement {
     }
 
 
-    protected String headerToString() {
+    public String headerToString() {
         return "";
     }
 }

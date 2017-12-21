@@ -6,18 +6,18 @@ import agh.cs.actparser.Identifier;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class Subchapter extends TitledElement {
-    public Subchapter(String identifier, String title, LinkedHashMap<Identifier, AbstractElement> children) {
+public class Title extends TitledElement {
+    public Title(String identifier, String title, LinkedHashMap<Identifier, AbstractElement> children) {
         super(identifier, title, children);
     }
 
     @Override
     public ElementKind getKind() {
-        return ElementKind.Subchapter;
+        return ElementKind.Title;
     }
 
     @Override
-    protected String headerToString() {
+    public String headerToString() {
         return title + "\n";
     }
 }

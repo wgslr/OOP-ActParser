@@ -18,8 +18,8 @@ public class ParserFactory implements IParserFactory {
                 return new SectionParser(linesToParse, registries);
             case Chapter:
                 return new ChapterParser(linesToParse, registries);
-            case Subchapter:
-                return new SubchapterParser(linesToParse, registries);
+            case Title:
+                return new TitleParser(linesToParse, registries);
             case Article:
                 return new ArticleParser(linesToParse, registries);
             case Paragraph:
