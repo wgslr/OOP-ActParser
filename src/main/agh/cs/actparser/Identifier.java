@@ -70,10 +70,7 @@ public class Identifier implements Comparable<Identifier> {
 
     @Override
     public String toString() {
-        return "Identifier{" +
-                "numericPart=" + numericPart +
-                ", stringPart='" + stringPart + '\'' +
-                '}';
+        return String.format("Id(%s, %d, %s)", kind, numericPart, stringPart);
     }
 
     @Override

@@ -19,20 +19,20 @@ public class ParsingEngine {
 
         Preprocessor c = new Preprocessor();
 
-        //Path path = Paths.get("./assets/konstytucja.txt");
+        Path path = Paths.get("./assets/konstytucja.txt");
         //Path path = Paths.get("./assets/uokik_min.txt");
-        Path path = Paths.get("./assets/uokik.txt");
+        //Path path = Paths.get("./assets/uokik.txt");
         List<String> lines = c.process(Files.readAllLines(path));
 
         System.out.println(String.join("\n", lines));
 
         ArticleRegistry registry = new ArticleRegistry();
 
-        //DocumentParser parser = new DocumentParser(lines,
-                //Arrays.asList(registry));
-        //Document doc = parser.makeElement();
+        DocumentParser parser = new DocumentParser(lines,
+                Arrays.asList(registry));
+        Document doc = parser.makeElement();
 
-//        System.out.print(doc);
+        System.out.print(doc);
 
 //        System.out.println(registry.articles.size());
 //        System.out.println(registry.articles.keySet());

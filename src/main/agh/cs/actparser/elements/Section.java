@@ -1,7 +1,9 @@
 package agh.cs.actparser.elements;
 
 import agh.cs.actparser.ElementKind;
+import agh.cs.actparser.Identifier;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Section extends TitledElement {
@@ -10,8 +12,8 @@ public class Section extends TitledElement {
         return ElementKind.Section;
     }
 
-    public Section(String identifier, String title, List<AbstractElement>
-            children) {
+    public Section(String identifier, String title,
+                   LinkedHashMap<Identifier, AbstractElement> children) {
         super(identifier, title, children);
     }
 

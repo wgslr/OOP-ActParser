@@ -1,7 +1,9 @@
 package agh.cs.actparser.elements;
 
 import agh.cs.actparser.ElementKind;
+import agh.cs.actparser.Identifier;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Letter extends AbstractElement {
@@ -10,7 +12,7 @@ public class Letter extends AbstractElement {
         return ElementKind.Letter;
     }
 
-    public Letter(String identifier, List<AbstractElement> children) {
+    public Letter(String identifier, LinkedHashMap<Identifier, AbstractElement> children) {
         super(identifier, children);
     }
 

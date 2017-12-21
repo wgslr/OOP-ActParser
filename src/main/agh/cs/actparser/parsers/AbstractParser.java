@@ -2,8 +2,10 @@ package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.IElementRegistry;
+import agh.cs.actparser.Identifier;
 import agh.cs.actparser.elements.AbstractElement;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,7 +21,8 @@ public abstract class AbstractParser {
 
     protected List<IElementRegistry> registries;
 
-    protected List<AbstractElement> childrenElements;
+    protected LinkedHashMap<Identifier, AbstractElement> childrenElements =
+            new LinkedHashMap<>();
 
     public AbstractParser(List<String> linesToParse, List<IElementRegistry>
             registries) {
@@ -32,6 +35,7 @@ public abstract class AbstractParser {
 
     /**
      * Create Element object for given content.
+     *
      * @return Created Element instance.
      */
     public abstract AbstractElement makeElement();
@@ -39,6 +43,7 @@ public abstract class AbstractParser {
     /**
      * Identifies main parts of the parsed element and sets them in the
      * parser's fields.
+     *
      * @param linesToParse
      */
     protected void parseStructure(List<String> linesToParse) {
@@ -65,7 +70,11 @@ public abstract class AbstractParser {
     protected void parseChildren(List<String> bodyLines) {
         ElementFinder finder = new ElementFinder(bodyLines, getKind(),
                 registries);
-        childrenElements = finder.makeChildrenElements();
+        List<AbstractElement> children = finder.makeChildrenElements();
+        System.out.println("Mapping children of " + this.getKind());
+
+        children.forEach(
+                child -> childrenElements.put(child.identifier, child));
     }
 
 

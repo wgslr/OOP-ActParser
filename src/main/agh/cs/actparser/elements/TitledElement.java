@@ -1,7 +1,9 @@
 package agh.cs.actparser.elements;
 
 import agh.cs.actparser.ElementKind;
+import agh.cs.actparser.Identifier;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -10,7 +12,8 @@ import java.util.List;
 public abstract class TitledElement extends AbstractElement {
     String title;
 
-    public TitledElement(String identifier, String title, List<AbstractElement>
+    public TitledElement(String identifier, String title,
+                         LinkedHashMap<Identifier, AbstractElement>
             children) {
         super(identifier, children);
         this.title = title;
