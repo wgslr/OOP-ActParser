@@ -6,6 +6,8 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public abstract class AbstractElement {
     public final String idString;
@@ -15,7 +17,8 @@ public abstract class AbstractElement {
     abstract public ElementKind getKind();
 
     public AbstractElement(String idString,
-                           LinkedHashMap<Identifier, AbstractElement> children) {
+                           LinkedHashMap<Identifier, AbstractElement>
+                                   children) {
         this.idString = idString;
         this.children = children;
         this.identifier = Identifier.fromString(idString, getKind());
@@ -29,12 +32,23 @@ public abstract class AbstractElement {
                         .orElse("");
     }
 
-    public String getDescendant(List<Identifier> location) {
-        if(location.isEmpty()) {
-            throw new IllegalArgumentException("Descendant specification is " +
-                    "empty!");
+    public AbstractElement getDescendant(List<Identifier> location) {
+        if (location.isEmpty()) {
+            throw new IllegalArgumentException("Location specification must " +
+                    "not be empty");
         }
-        throw new NotImplementedException();
+        Identifier needle = location.get(0);
+        AbstractElement child = children.get(needle);
+        if (child == null) {
+            throw new IllegalArgumentException(String.format(
+                    "There is no %s in %s", needle, identifier));
+        }
+
+        if(location.size() > 1)
+            return child.getDescendant(location.subList(1, location.size()));
+        else {
+            return child;
+        }
     }
 
 

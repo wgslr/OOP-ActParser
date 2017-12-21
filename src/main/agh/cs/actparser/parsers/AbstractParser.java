@@ -71,7 +71,6 @@ public abstract class AbstractParser {
         ElementFinder finder = new ElementFinder(bodyLines, getKind(),
                 registries);
         List<AbstractElement> children = finder.makeChildrenElements();
-        System.out.println("Mapping children of " + this.getKind());
 
         children.forEach(
                 child -> childrenElements.put(child.identifier, child));

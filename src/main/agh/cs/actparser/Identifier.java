@@ -24,10 +24,6 @@ public class Identifier implements Comparable<Identifier> {
         this.kind = kind;
     }
 
-    public static Identifier fromString(String idString) {
-        return fromString(idString, null);
-    }
-
     public static Identifier fromString(String idString, ElementKind kind) {
         if (RomanConverter.isRomanNumeral(idString)) {
             return fromRoman(idString, kind);
@@ -70,7 +66,9 @@ public class Identifier implements Comparable<Identifier> {
 
     @Override
     public String toString() {
-        return String.format("Id(%s, %d, %s)", kind, numericPart, stringPart);
+        return String.format("%s(%s%s)", kind,
+                numericPart != 0 ? numericPart : "",
+                stringPart);
     }
 
     @Override
@@ -80,7 +78,10 @@ public class Identifier implements Comparable<Identifier> {
 
     @Override
     public int compareTo(Identifier other) {
-        if(kind != other.kind) {
+        if (other == null) {
+            throw new NullPointerException();
+        }
+        if (kind != other.kind) {
             // more specific kinds should be first
             // at least when being children of the same element
             return -kind.compareTo(other.kind);
