@@ -20,8 +20,8 @@ public class TitleParser extends TitledElementParser {
 
     @Override
     protected void parseStructure(List<String> linesToParse) {
-        idString = "";
-        title = linesToParse.get(0);
+        //idString = "";
+        idString = title = linesToParse.get(0);
         bodyLines = linesToParse.subList(1, linesToParse.size());
     }
 

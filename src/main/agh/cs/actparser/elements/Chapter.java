@@ -19,6 +19,6 @@ public class Chapter extends TitledElement {
 
     @Override
     public String headerToString() {
-        return String.format("Rozdział %s\n%s\n", idString, title);
+        return String.format("Rozdział %s %s", idString, title);
     }
 }

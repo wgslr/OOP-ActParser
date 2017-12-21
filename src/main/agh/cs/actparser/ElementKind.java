@@ -40,9 +40,9 @@ public enum ElementKind {
     public String getRegexp() {
         switch (this) {
             case Section:
-                return "^DZIAŁ ([IVXCD]+)\\s*(.*)";
+                return "^DZIAŁ ([IVXCD]+[A-]*)\\s*(.*)";
             case Chapter:
-                return "^Rozdział (\\d+|[IVXCD]+)\\s*(.*)";
+                return "^Rozdział (\\d+|[IVXCDL]+[A-Z]*)\\s*(.*)";
             case Title:
                 return "^([\\p{Lu} ]+)\\s*$";
             case Article:

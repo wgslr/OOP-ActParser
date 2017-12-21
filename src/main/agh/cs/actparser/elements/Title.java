@@ -9,6 +9,7 @@ import java.util.List;
 public class Title extends TitledElement {
     public Title(String identifier, String title, LinkedHashMap<Identifier, AbstractElement> children) {
         super(identifier, title, children);
+        System.out.println("Title is born: " + title);
     }
 
     @Override
@@ -18,6 +19,6 @@ public class Title extends TitledElement {
 
     @Override
     public String headerToString() {
-        return title + "\n";
+        return title;
     }
 }

@@ -4,17 +4,18 @@ import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.Identifier;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public abstract class AbstractElement {
     public final String idString;
     public final Identifier identifier;
+
     protected final LinkedHashMap<Identifier, AbstractElement> children;
 
     abstract public ElementKind getKind();
+
 
     public AbstractElement(String idString,
                            LinkedHashMap<Identifier, AbstractElement>
@@ -22,6 +23,19 @@ public abstract class AbstractElement {
         this.idString = idString;
         this.children = children;
         this.identifier = Identifier.fromString(idString, getKind());
+
+        if(this instanceof Chapter) {
+            System.out.println("Children of " + identifier + ": ");
+            System.out.print(children.values().stream().map(e -> e
+                    .identifier).collect(Collectors.toList()));
+        }
+
+                //String.join(" ",
+                //children.values().stream().m(children)p(e -> e == null ? "" : e
+                //        .identifier
+                //        .toString())
+                //        .collect
+                //        (Collectors.toList())));
     }
 
     public String toString() {
@@ -49,6 +63,11 @@ public abstract class AbstractElement {
         else {
             return child;
         }
+    }
+
+    public LinkedHashMap<Identifier, AbstractElement> getChildren() {
+        //return new LinkedHashMap<>(children);
+        return children;
     }
 
 

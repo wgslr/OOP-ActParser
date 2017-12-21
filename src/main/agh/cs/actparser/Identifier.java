@@ -25,44 +25,33 @@ public class Identifier implements Comparable<Identifier> {
     }
 
     public static Identifier fromString(String idString, ElementKind kind) {
-        if (RomanConverter.isRomanNumeral(idString)) {
-            return fromRoman(idString, kind);
-        } else {
-            return fromMixed(idString, kind);
+        if(idString.isEmpty()) {
+            return new Identifier(0, "", kind);
         }
-    }
 
-    private static Identifier fromMixed(String idString, ElementKind kind)
-            throws
-            NumberFormatException {
-        Pattern splitter = Pattern.compile("^(\\d*)([a-z]*)$");
+        Pattern splitter = Pattern.compile("^(\\d*|[IVXCDL]+)([\\p{L}\\h]*)$");
         Matcher m = splitter.matcher(idString);
 
+
         if (!m.matches()) {
-            throw new NumberFormatException(
-                    "Invalid idString '" + idString + "'");
+            throw new NumberFormatException(String.format("idString '%s' " +
+                    "cannot be parsed", idString));
         }
 
-        Integer number = 0;
         String digits = m.group(1);
-        String chars = m.group(2);
-        if (!digits.isEmpty()) {
-            number = Integer.parseInt(digits);
+        String chars = m.group(2).toLowerCase();
+
+        int numeric = 0;
+
+        if(RomanConverter.isRomanNumeral(digits)) {
+            numeric = RomanConverter.romanToInteger(digits);
+        } else if (!digits.isEmpty()) {
+            numeric = Integer.parseInt(digits);
         }
-        return new Identifier(number, chars, kind);
+
+        return new Identifier(numeric, chars, kind);
     }
 
-    /**
-     * Creates Identifier basing on a roman numeral.
-     *
-     * @param romanNumeral Numeral string to be parsed
-     * @param kind         Kind of element this idString describes
-     * @return Created Identifier
-     */
-    private static Identifier fromRoman(String romanNumeral, ElementKind kind) {
-        return new Identifier(RomanConverter.romanToInteger(romanNumeral),
-                "", kind);
-    }
 
     @Override
     public String toString() {

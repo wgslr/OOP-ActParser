@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ParsingEngine {
@@ -21,12 +22,14 @@ public class ParsingEngine {
 
         Preprocessor c = new Preprocessor();
 
-        //Path path = Paths.get("./assets/konstytucja.txt");
+        Path path = Paths.get("./assets/konstytucja.txt");
         //Path path = Paths.get("./assets/uokik_min.txt");
-        Path path = Paths.get("./assets/uokik.txt");
+        //Path path = Paths.get("./assets/uokik.txt");
         List<String> lines = c.process(Files.readAllLines(path));
 
-        System.out.println(String.join("\n", lines));
+        Files.write(Paths.get("processed.txt"), lines);
+
+        //System.out.println(String.join("\n", lines));
 
         ArticleRegistry registry = new ArticleRegistry();
 
@@ -34,7 +37,7 @@ public class ParsingEngine {
                 Arrays.asList(registry));
         Document doc = parser.makeElement();
 
-        System.out.print(doc);
+        //System.out.print(doc);
 
 //        System.out.println(registry.articles.size());
 //        System.out.println(registry.articles.keySet());
@@ -49,24 +52,28 @@ public class ParsingEngine {
         System.out.println();
 
 
-        Identifier articleLocator = Identifier.fromString("2",
-                ElementKind.Article);
-        registry.articles.values().forEach(
-                art -> System.out.println(art.identifier)
-        );
-        Article root = (Article) registry.getRange(articleLocator,
-                articleLocator).get
-                (0);
-        System.out.println(
-                root
-                        .getDescendant(Arrays.asList(
-                                Identifier.fromString("2", ElementKind
-                                        .Paragraph),
-                                Identifier.fromString("2", ElementKind
-                                        .Point),
-                                Identifier.fromString("a", ElementKind
-                                        .Letter)
-                        )));
+//        Identifier articleLocator = Identifier.fromString("2",
+//                ElementKind.Article);
+//        registry.articles.values().forEach(
+//                art -> System.out.println(art.identifier)
+//        );
+//        Article root = (Article) registry.getRange(articleLocator,
+//                articleLocator).get
+//                (0);
+//        System.out.println(
+//                root
+//                        .getDescendant(Arrays.asList(
+//                                Identifier.fromString("2", ElementKind
+//                                        .Paragraph),
+//                                Identifier.fromString("2", ElementKind
+//                                        .Point),
+//                                Identifier.fromString("a", ElementKind
+//                                        .Letter)
+//                        )));
+
+
+        TableOfContentFormatter toc = new TableOfContentFormatter();
+        toc.print(Collections.singletonList(doc));
 
     }
 }

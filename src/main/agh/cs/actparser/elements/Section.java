@@ -19,6 +19,6 @@ public class Section extends TitledElement {
 
     @Override
     public String headerToString() {
-        return String.format("DZIAŁ %s\n%s\n", idString, title);
+        return String.format("DZIAŁ %s %s", idString, title);
     }
 }
