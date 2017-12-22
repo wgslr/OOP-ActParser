@@ -18,4 +18,9 @@ public abstract class TitledElement extends AbstractElement {
         super(identifier, children);
         this.title = title;
     }
+
+    @Override
+    public boolean isHeaderInline() {
+        return false;
+    }
 }

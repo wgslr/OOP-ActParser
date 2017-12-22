@@ -74,4 +74,12 @@ public abstract class AbstractElement {
     public String headerToString() {
         return "";
     }
+
+    /**
+     * @return True if this element's content should be on the same line as
+     * header
+     */
+    public boolean isHeaderInline() {
+        return false;
+    };
 }
