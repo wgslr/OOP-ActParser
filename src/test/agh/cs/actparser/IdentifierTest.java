@@ -83,6 +83,10 @@ public class IdentifierTest {
         Identifier id2 = Identifier.fromString("XLVI", ElementKind.Article);
         assertEquals(46, id2.numericPart);
         assertEquals("", id2.stringPart);
+
+        Identifier id3 = Identifier.fromString("IIIA", ElementKind.Article);
+        assertEquals(3, id3.numericPart);
+        assertEquals("A", id3.stringPart);
     }
 
 }

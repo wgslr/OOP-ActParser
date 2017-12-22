@@ -1,8 +1,6 @@
 package agh.cs.actparser;
 
 import agh.cs.actparser.elements.AbstractElement;
-import agh.cs.actparser.elements.Article;
-import agh.cs.actparser.parsers.ElementFinder;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -14,23 +12,29 @@ public class TableOfContentFormatter implements IFormatter {
 
     @Override
     public void print(List<AbstractElement> elements) {
-        print(elements, 0);
+        printOne(elements, 0);
     }
 
-    private void print(Collection<AbstractElement> elements, final int depth) {
+    private void printOne(Collection<AbstractElement> elements, final int
+            depth) {
         elements.stream()
                 .filter(e -> e.getKind().compareTo(MaxPrecision) <= 0)
                 .forEach(e -> {
                     System.out.println(
                             formatElement(e, depth) + formatSpecialInfo(e)
                     );
-                    print(e.getChildren().values(), depth + 1);
+                    printOne(e.getChildren().values(), depth + 1);
                 });
     }
 
     private String formatElement(AbstractElement element, int depth) {
         String indent = String.join("", Collections.nCopies(depth, " "));
         return indent + element.headerToString();
+    }
+
+    private String formatHeader(AbstractElement element) {
+        return element.headerToString() +
+                (element.isHeaderInline() ? "" : "\n");
     }
 
     // TODO Should consider indirect descendants

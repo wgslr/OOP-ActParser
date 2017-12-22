@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ParsingEngine {
     // TODO handle non-existent file
@@ -22,9 +23,9 @@ public class ParsingEngine {
 
         Preprocessor c = new Preprocessor();
 
-        Path path = Paths.get("./assets/konstytucja.txt");
+//        Path path = Paths.get("./assets/konstytucja.txt");
         //Path path = Paths.get("./assets/uokik_min.txt");
-        //Path path = Paths.get("./assets/uokik.txt");
+        Path path = Paths.get("./assets/uokik.txt");
         List<String> lines = c.process(Files.readAllLines(path));
 
         Files.write(Paths.get("processed.txt"), lines);
@@ -52,24 +53,24 @@ public class ParsingEngine {
         System.out.println();
 
 
-//        Identifier articleLocator = Identifier.fromString("2",
-//                ElementKind.Article);
-//        registry.articles.values().forEach(
-//                art -> System.out.println(art.identifier)
-//        );
-//        Article root = (Article) registry.getRange(articleLocator,
-//                articleLocator).get
-//                (0);
-//        System.out.println(
-//                root
-//                        .getDescendant(Arrays.asList(
-//                                Identifier.fromString("2", ElementKind
-//                                        .Paragraph),
-//                                Identifier.fromString("2", ElementKind
-//                                        .Point),
-//                                Identifier.fromString("a", ElementKind
-//                                        .Letter)
-//                        )));
+        Identifier articleLocator = Identifier.fromString("114",
+                ElementKind.Article);
+        registry.articles.values().forEach(
+                art -> System.out.println(art.identifier)
+        );
+        Article root = (Article) registry.getRange(articleLocator,
+                articleLocator).get
+                (0);
+        System.out.println(
+                root
+                        .getDescendant(/*Arrays.asList(
+                                Identifier.fromString("2", ElementKind
+                                        .Paragraph),
+                                Identifier.fromString("2", ElementKind
+                                        .Point),
+                                Identifier.fromString("a", ElementKind
+                                        .Letter)*/
+                                Collections.emptyList()));
 
 
         TableOfContentFormatter toc = new TableOfContentFormatter();

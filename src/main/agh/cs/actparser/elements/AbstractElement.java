@@ -48,8 +48,7 @@ public abstract class AbstractElement {
 
     public AbstractElement getDescendant(List<Identifier> location) {
         if (location.isEmpty()) {
-            throw new IllegalArgumentException("Location specification must " +
-                    "not be empty");
+            return this;
         }
         Identifier needle = location.get(0);
         AbstractElement child = children.get(needle);

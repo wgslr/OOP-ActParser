@@ -1,5 +1,7 @@
 package agh.cs.actparser;
 
+import sun.rmi.server.Activation$ActivationSystemImpl_Stub;
+
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,13 +27,13 @@ public class Identifier implements Comparable<Identifier> {
     }
 
     public static Identifier fromString(String idString, ElementKind kind) {
+        System.out.println(idString);
         if(idString.isEmpty()) {
             return new Identifier(0, "", kind);
         }
 
-        Pattern splitter = Pattern.compile("^(\\d*|[IVXCDL]+)([\\p{L}\\h]*)$");
+        Pattern splitter = Pattern.compile("^(\\d+|[IVXCDL]+|)([\\p{L}\\h]*)$");
         Matcher m = splitter.matcher(idString);
-
 
         if (!m.matches()) {
             throw new NumberFormatException(String.format("idString '%s' " +
@@ -41,11 +43,16 @@ public class Identifier implements Comparable<Identifier> {
         String digits = m.group(1);
         String chars = m.group(2).toLowerCase();
 
+        System.out.println(String.format("digits: %s, chars: %s", digits,
+                chars));
+
         int numeric = 0;
 
         if(RomanConverter.isRomanNumeral(digits)) {
+            System.out.println(digits + " seems to be a roman nnumer");
             numeric = RomanConverter.romanToInteger(digits);
         } else if (!digits.isEmpty()) {
+            System.out.println(String.format("Parsing %s as decimal", digits));
             numeric = Integer.parseInt(digits);
         }
 
