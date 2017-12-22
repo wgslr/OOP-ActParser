@@ -1,5 +1,6 @@
 package agh.cs.actparser;
 
+import agh.cs.actparser.argparser.ArgumentParser;
 import agh.cs.actparser.elements.Article;
 import agh.cs.actparser.elements.Document;
 import agh.cs.actparser.parsers.*;
@@ -78,6 +79,9 @@ public class ParsingEngine {
 
         PlaintextFormatter pf = new PlaintextFormatter();
         pf.print(Collections.singletonList(doc));
+
+        ArgumentParser ap = new ArgumentParser();
+        ap.parse(args);
 
     }
 }

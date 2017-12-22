@@ -10,8 +10,7 @@ import java.util.stream.Collectors;
 public class PlaintextFormatter implements IFormatter {
     @Override
     public void print(Collection<AbstractElement> elements) {
-        elements.stream()
-                .forEach(e -> {
+        elements.forEach(e -> {
                     System.out.print(
                             formatElement(e)
                     );
