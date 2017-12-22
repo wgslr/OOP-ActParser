@@ -21,29 +21,17 @@ public abstract class AbstractElement {
                            LinkedHashMap<Identifier, AbstractElement>
                                    children) {
         this.idString = idString;
+        if(children == null) {
+            System.out.println(this.getKind() + " " + this.idString + "has " +
+                    "null " +
+                    "children");
+        }
         this.children = children;
         this.identifier = Identifier.fromString(idString, getKind());
-
-        if(this instanceof Chapter) {
-            System.out.println("Children of " + identifier + ": ");
-            System.out.print(children.values().stream().map(e -> e
-                    .identifier).collect(Collectors.toList()));
-        }
-
-                //String.join(" ",
-                //children.values().stream().m(children)p(e -> e == null ? "" : e
-                //        .identifier
-                //        .toString())
-                //        .collect
-                //        (Collectors.toList())));
     }
 
     public String toString() {
-        return identifier.toString() + headerToString() +
-                children.values().stream()
-                        .map(AbstractElement::toString)
-                        .reduce(String::concat)
-                        .orElse("");
+        return headerToString();
     }
 
     public AbstractElement getDescendant(List<Identifier> location) {
@@ -79,6 +67,6 @@ public abstract class AbstractElement {
      * header
      */
     public boolean isHeaderInline() {
-        return false;
+        return true;
     };
 }

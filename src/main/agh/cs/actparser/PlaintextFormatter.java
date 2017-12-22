@@ -12,7 +12,7 @@ public class PlaintextFormatter implements IFormatter {
     public void print(Collection<AbstractElement> elements) {
         elements.stream()
                 .forEach(e -> {
-                    System.out.println(
+                    System.out.print(
                             formatElement(e)
                     );
                     print(e.getChildren().values());

@@ -11,11 +11,11 @@ public class TableOfContentFormatter implements IFormatter {
     private final static ElementKind MaxPrecision = ElementKind.Title;
 
     @Override
-    public void print(List<AbstractElement> elements) {
-        printOne(elements, 0);
+    public void print(Collection<AbstractElement> elements) {
+        print(elements, 0);
     }
 
-    private void printOne(Collection<AbstractElement> elements, final int
+    private void print(Collection<AbstractElement> elements, final int
             depth) {
         elements.stream()
                 .filter(e -> e.getKind().compareTo(MaxPrecision) <= 0)
@@ -23,18 +23,13 @@ public class TableOfContentFormatter implements IFormatter {
                     System.out.println(
                             formatElement(e, depth) + formatSpecialInfo(e)
                     );
-                    printOne(e.getChildren().values(), depth + 1);
+                    print(e.getChildren().values(), depth + 1);
                 });
     }
 
     private String formatElement(AbstractElement element, int depth) {
         String indent = String.join("", Collections.nCopies(depth, " "));
         return indent + element.headerToString();
-    }
-
-    private String formatHeader(AbstractElement element) {
-        return element.headerToString() +
-                (element.isHeaderInline() ? "" : "\n");
     }
 
     // TODO Should consider indirect descendants

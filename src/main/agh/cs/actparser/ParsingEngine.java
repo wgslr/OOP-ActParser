@@ -76,5 +76,8 @@ public class ParsingEngine {
         TableOfContentFormatter toc = new TableOfContentFormatter();
         toc.print(Collections.singletonList(doc));
 
+        PlaintextFormatter pf = new PlaintextFormatter();
+        pf.print(Collections.singletonList(doc));
+
     }
 }
