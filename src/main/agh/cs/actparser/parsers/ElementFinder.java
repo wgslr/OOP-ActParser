@@ -2,10 +2,10 @@ package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.IElementRegistry;
+import agh.cs.actparser.Range;
 import agh.cs.actparser.elements.AbstractElement;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
@@ -17,17 +17,14 @@ public class ElementFinder {
      * Represents a range to be parsed for an element child.
      * Identified child type is stored in `kind`.
      */
-    class Range {
-        public final int from;
-        public final int to;
+    class RangeToParse extends Range<Integer> {
         /**
          * Kind of element to be created from this lines range.
          */
         public final ElementKind kind;
 
-        public Range(int from, int to, ElementKind kind) {
-            this.from = from;
-            this.to = to;
+        public RangeToParse(int from, int to, ElementKind kind) {
+            super(from, to);
             this.kind = kind;
         }
 
@@ -37,7 +34,7 @@ public class ElementFinder {
 
         @Override
         public String toString() {
-            return "Range{from=" + from + ", to=" + to + '}';
+            return "RangeToParse{from=" + from + ", to=" + to + '}';
         }
     }
 
@@ -79,12 +76,12 @@ public class ElementFinder {
     }
 
     public List<AbstractElement> makeChildrenElements() {
-        List<Range> childrenRanges = getChildrenRanges();
+        List<RangeToParse> childrenRanges = getChildrenRanges();
         return parseChildren(childrenRanges);
     }
 
-    private List<Range> getChildrenRanges() {
-        List<Range> ranges = new ArrayList<>();
+    private List<RangeToParse> getChildrenRanges() {
+        List<RangeToParse> ranges = new ArrayList<>();
         int firstChildLine = lines.size();
         List<ElementKind> availableKinds = currentLevel.getMoreSpecific();
 
@@ -99,12 +96,12 @@ public class ElementFinder {
             }
         }
         if (firstChildLine != 0) {
-            ranges.add(new Range(0, firstChildLine, ElementKind.Plaintext));
+            ranges.add(new RangeToParse(0, firstChildLine, ElementKind.Plaintext));
         }
         return ranges;
     }
 
-    private List<AbstractElement> parseChildren(List<Range> childrenRanges) {
+    private List<AbstractElement> parseChildren(List<RangeToParse> childrenRanges) {
         return childrenRanges.stream()
                 .map(range -> parserFactory.makeParser(range.kind,
                         range.makeSublist(lines), registries))
@@ -123,24 +120,24 @@ public class ElementFinder {
     /**
      * Splits input on lines matching the kind's predicate
      */
-    private List<Range> getPartsIndices(List<String> linesToParse,
-                                        ElementKind kindToFind) {
+    private List<RangeToParse> getPartsIndices(List<String> linesToParse,
+                                               ElementKind kindToFind) {
         Predicate<String> predicate = kindToPredicate(kindToFind);
-        List<Range> ranges = new ArrayList<>();
+        List<RangeToParse> ranges = new ArrayList<>();
         Integer previous = null;
 
         for (int i = 0; i < linesToParse.size(); ++i) {
             String line = linesToParse.get(i);
             if (predicate.test(line)) {
                 if (previous != null) {
-                    ranges.add(new Range(previous, i, kindToFind));
+                    ranges.add(new RangeToParse(previous, i, kindToFind));
                 }
                 previous = i;
             }
         }
         if (previous != null) {
             // last element extends to the last parsed lines
-            ranges.add(new Range(previous, linesToParse.size(), kindToFind));
+            ranges.add(new RangeToParse(previous, linesToParse.size(), kindToFind));
         }
         return ranges;
     }

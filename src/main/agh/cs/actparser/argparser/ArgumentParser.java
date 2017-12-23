@@ -2,8 +2,10 @@ package agh.cs.actparser.argparser;
 
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,9 +57,16 @@ public class ArgumentParser {
     }
 
     public void parse(String[] args) {
-        for (int i = 0; i < args.length; ++i) {
+        for (int i = 0; i < args.length; i += 2) {
             Option param = matchOption(args[i]);
-            if(param.type)
+            Function<String, Object> parser = param.type.getParser();
+
+            if (args.length <= i + 1) {
+                throw new IllegalArgumentException(
+                        "Missing value for argument \"" + args[i] + "\"");
+            }
+
+            nameToResult.put(param.name, parser.apply(args[i + 1]));
         }
     }
 
@@ -84,6 +93,11 @@ public class ArgumentParser {
                                 arg)));
 
         return searchResult;
+    }
+
+    public Object getResult(String name) {
+        System.out.println(nameToResult);
+        return nameToResult.get(name);
     }
 
 }

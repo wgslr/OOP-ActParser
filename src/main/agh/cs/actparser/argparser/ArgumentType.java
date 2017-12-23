@@ -13,22 +13,24 @@ public enum ArgumentType {
     Range,
     Text;
 
-    public Function<String, ?> getParser() {
+    public Function<String, Object> getParser() {
         switch (this) {
             case Number:
                 return Integer::parseInt;
             case Range:
                 return this::RangeParser;
             case Text:
-                return Function.identity();
+                return (x -> x);
+            default:
+                throw new InternalError("Invalid enum value");
         }
     }
 
     private Object RangeParser(String arg) {
-        Pattern pattern = Pattern.compile("(\\d+)..(\\d+)");
+        Pattern pattern = Pattern.compile("(\\d+[a-z]*)..(\\d+[a-z]*)");
         Matcher m = pattern.matcher(arg);
         if (m.matches()) {
-
+            return new agh.cs.actparser.Range<String>(m.group(1), m.group(2));
         } else {
             throw new IllegalArgumentException("Bad range specifier \"" + arg
                     + "\"");
