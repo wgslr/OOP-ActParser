@@ -19,8 +19,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ParsingEngine {
-    // TODO handle non-existent file
+public class ActParserApplication {
     public static void main(String[] args) throws IOException {
 
         ArgumentParser argparser = new ArgumentParser();
@@ -78,23 +77,21 @@ public class ParsingEngine {
         }
 
 
-        // TODO access chapters beneath sections
-
         String filepath = (String) argparser.getResult("file");
 
-        List<String> inputLines;
+        List<String> inputLines = null;
 
         try {
             Path path = Paths.get(filepath);
             inputLines = Files.readAllLines(path);
         } catch (IOException e) {
             System.out.println("File \"" + filepath + "\" could not be read!");
-            return;
+            System.exit(1);
         }
 
         inputLines = new Preprocessor().process(inputLines);
 
-        IFormatter formatter = (Boolean) argparser.getResult("toc") ?
+        IFormatter formatter = argparser.getResult("toc") ?
                 new TableOfContentFormatter()
                 : new PlaintextFormatter();
 
@@ -111,7 +108,14 @@ public class ParsingEngine {
         ));
 
         // TODO error handling
-        Document root = docparser.makeElement();
+        Document root = null;
+        try {
+            root = docparser.makeElement();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error occured during parsing of the document:" +
+                    e.getMessage());
+            System.exit(1);
+        }
 
         List<AbstractElement> elementsToDisplay;
 
@@ -133,7 +137,8 @@ public class ParsingEngine {
                         (Identifier) argparser.getResult("paragraph"),
                         (Identifier) argparser.getResult("point"),
                         (Identifier) argparser.getResult("letter")
-                ).filter(Objects::nonNull)
+                )
+                        .filter(Objects::nonNull)
                         .collect(Collectors.toList());
 
         if (elementSpecification.isEmpty()) {
@@ -142,79 +147,15 @@ public class ParsingEngine {
             if (elementsToDisplay.size() != 1 ||
                     !(elementsToDisplay.get(0) instanceof Article)) {
                 System.out.println("Single article must be chosen to " +
-                        "display more speciifc elements.");
-                return;
+                        "display more specific elements.");
+                System.exit(1);
             }
 
             AbstractElement singleElement = elementsToDisplay.get(0)
                     .getDescendant(elementSpecification);
             formatter.print(singleElement);
         }
+
+        System.exit(0);
     }
-
-
-    //System.out.println(ElementKind.Section.compareTo(ElementKind
-    //
-    // .Letter));
-//
-//        Preprocessor c = new Preprocessor();
-//
-////        Path path = Paths.get("./assets/konstytucja.txt");
-//        //Path path = Paths.get("./assets/uokik_min.txt");
-//        Path path = Paths.get("./assets/uokik.txt");
-//        List<String> lines = c.process(Files.readAllLines(path));
-//
-//        Files.write(Paths.get("processed.txt"), lines);
-//
-//        //System.out.println(String.join("\n", lines));
-//
-//        ElementRegistry registry = new ElementRegistry();
-//
-//        DocumentParser parser = new DocumentParser(lines,
-//                Arrays.asList(registry));
-//        Document doc = parser.makeElement();
-//
-//        //System.out.print(doc);
-//
-////        System.out.println(registry.articles.size());
-////        System.out.println(registry.articles.keySet());
-//
-////        registry.getRange(Identifier.fromString("104", null),
-////                Identifier.fromString
-////                ("105j", null))
-////                .forEach(a ->
-////                System.out.print(a));
-//        //System.out.print(doc.children);
-//
-//        System.out.println();
-//
-//
-//        Identifier articleLocator = Identifier.fromString("114",
-//                ElementKind.Article);
-//        registry.articles.values().forEach(
-//                art -> System.out.println(art.identifier)
-//        );
-//        Article root = (Article) registry.getRange(articleLocator,
-//                articleLocator).get
-//                (0);
-//        System.out.println(
-//                root
-//                        .getDescendant(/*Arrays.asList(
-//                                Identifier.fromString("2", ElementKind
-//                                        .Paragraph),
-//                                Identifier.fromString("2", ElementKind
-//                                        .Point),
-//                                Identifier.fromString("a", ElementKind
-//                                        .Letter)*/
-//                                Collections.emptyList()));
-//
-//
-//        TableOfContentFormatter toc = new TableOfContentFormatter();
-//        toc.print(Collections.singletonList(doc));
-//
-//        PlaintextFormatter pf = new PlaintextFormatter();
-//        pf.print(Collections.singletonList(doc));
-//
-//        ArgumentParser ap = new ArgumentParser();
-//        ap.parse(args);
 }
