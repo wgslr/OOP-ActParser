@@ -4,7 +4,6 @@ import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.Identifier;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 
 public class Chapter extends TitledElement {
     @Override

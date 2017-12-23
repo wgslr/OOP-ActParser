@@ -2,11 +2,9 @@ package agh.cs.actparser.elements;
 
 import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.Identifier;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public abstract class AbstractElement {
     public final String idString;

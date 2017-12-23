@@ -1,9 +1,11 @@
 package agh.cs.actparser;
 
 import agh.cs.actparser.elements.AbstractElement;
-import agh.cs.actparser.elements.Article;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 public class ElementRegistry implements IElementRegistry {
     NavigableMap<Identifier, AbstractElement> elements = new TreeMap<>();

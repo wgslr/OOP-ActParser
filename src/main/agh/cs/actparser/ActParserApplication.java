@@ -2,7 +2,6 @@ package agh.cs.actparser;
 
 import agh.cs.actparser.argparser.ArgumentParser;
 import agh.cs.actparser.argparser.ArgumentParsers;
-import agh.cs.actparser.argparser.ArgumentType;
 import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Article;
 import agh.cs.actparser.elements.Document;
@@ -81,6 +80,12 @@ public class ActParserApplication {
 
         List<String> inputLines = null;
 
+        if (!argparser.isSet("file")) {
+            System.out.println("File to read must be provided!");
+            System.out.println(argparser.getArgsHelp());
+            System.exit(1);
+        }
+
         try {
             Path path = Paths.get(filepath);
             inputLines = Files.readAllLines(path);
@@ -119,43 +124,51 @@ public class ActParserApplication {
 
         List<AbstractElement> elementsToDisplay;
 
-        if (argparser.isSet("chapters")) {
-            elementsToDisplay = chaptersRegistry.getRange(argparser.getResult
-                    ("chapters"));
-        } else if (argparser.isSet("sections")) {
-            elementsToDisplay = sectionsRegistry.getRange(argparser.getResult
-                    ("sections"));
-        } else if (argparser.isSet("articles")) {
-            elementsToDisplay = articleRegistry.getRange(argparser.getResult
-                    ("articles"));
-        } else {
-            elementsToDisplay = Collections.singletonList(root);
-        }
+        try {
 
-        List<Identifier> elementSpecification =
-                Stream.of(
-                        (Identifier) argparser.getResult("paragraph"),
-                        (Identifier) argparser.getResult("point"),
-                        (Identifier) argparser.getResult("letter")
-                )
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
+            if (argparser.isSet("chapters")) {
+                elementsToDisplay = chaptersRegistry.getRange(argparser.getResult
 
-        if (elementSpecification.isEmpty()) {
-            formatter.print(elementsToDisplay);
-        } else {
-            if (elementsToDisplay.size() != 1 ||
-                    !(elementsToDisplay.get(0) instanceof Article)) {
-                System.out.println("Single article must be chosen to " +
-                        "display more specific elements.");
-                System.exit(1);
+                        ("chapters"));
+            } else if (argparser.isSet("sections")) {
+                elementsToDisplay = sectionsRegistry.getRange(argparser
+                        .getResult
+                        ("sections"));
+            } else if (argparser.isSet("articles")) {
+                elementsToDisplay = articleRegistry.getRange(argparser.getResult
+                        ("articles"));
+            } else {
+                elementsToDisplay = Collections.singletonList(root);
             }
 
-            AbstractElement singleElement = elementsToDisplay.get(0)
-                    .getDescendant(elementSpecification);
-            formatter.print(singleElement);
-        }
+            List<Identifier> elementSpecification =
+                    Stream.of(
+                            (Identifier) argparser.getResult("paragraph"),
+                            (Identifier) argparser.getResult("point"),
+                            (Identifier) argparser.getResult("letter")
+                    )
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
 
-        System.exit(0);
+            if (elementSpecification.isEmpty()) {
+                formatter.print(elementsToDisplay);
+            } else {
+                if (elementsToDisplay.size() != 1 ||
+                        !(elementsToDisplay.get(0) instanceof Article)) {
+                    System.out.println("Single article must be chosen to " +
+                            "display more specific elements.");
+                    System.exit(1);
+                }
+
+                AbstractElement singleElement = elementsToDisplay.get(0)
+                        .getDescendant(elementSpecification);
+                formatter.print(singleElement);
+            }
+
+            System.exit(0);
+        } catch (Exception ex) {
+            System.out.println("Error! " + ex.getMessage());
+            System.exit(1);
+        }
     }
 }

@@ -3,8 +3,6 @@ package agh.cs.actparser.elements;
 import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.Identifier;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 

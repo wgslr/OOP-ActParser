@@ -1,9 +1,7 @@
 package agh.cs.actparser.argparser;
 
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
-import java.awt.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -127,7 +125,9 @@ public class ArgumentParser {
         return nameToOption.values().stream()
                 .sorted((x, y) -> x.name.compareToIgnoreCase(y.name))
                 .map(opt -> opt.toString())
-                .collect(Collectors.joining("\n"));
+                .collect(Collectors.joining("\n"))
+                + "For example:\n"
+                + "-a 2 -p 2 -o 2 -l a -f ../../assets/uokik.txt";
     }
 
 }

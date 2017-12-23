@@ -1,7 +1,5 @@
 package agh.cs.actparser;
 
-import sun.rmi.server.Activation$ActivationSystemImpl_Stub;
-
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,7 +1,5 @@
 package agh.cs.actparser;
 
-import agh.cs.actparser.parsers.ParserFactory;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

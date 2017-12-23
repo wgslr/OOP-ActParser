@@ -1,6 +1,5 @@
 package agh.cs.actparser.argparser;
 
-import agh.cs.actparser.Identifier;
 import agh.cs.actparser.Range;
 
 import java.util.function.Function;
