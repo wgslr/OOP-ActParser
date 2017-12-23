@@ -34,9 +34,9 @@ public class ArgumentParser {
 
         @Override
         public String toString() {
-            return (shortName.isEmpty() ? "" : "-" + shortName + " ")
+            return (shortName.isEmpty() ? "   " : "-" + shortName + " ")
                     + "--" + name
-                    + " " + description
+                    + "\t" + description
                     + " (" + type.toString() + ")";
         }
     }
@@ -70,7 +70,7 @@ public class ArgumentParser {
     }
 
     public void parse(String[] args) {
-        for (int i = 0; i < args.length; i += 2) {
+        for (int i = 0; i < args.length; ++i) {
             Option param = matchOption(args[i]);
 
             if (param.type == ArgumentType.Bool) {
@@ -83,6 +83,7 @@ public class ArgumentParser {
 
                 Function<String, Object> parser = param.type.getParser();
                 nameToResult.put(param.name, parser.apply(args[i + 1]));
+                ++i;
             }
 
         }
@@ -116,6 +117,10 @@ public class ArgumentParser {
     public Object getResult(String name) {
         System.out.println(nameToResult);
         return nameToResult.get(name);
+    }
+
+    public boolean isSet(String name) {
+        return nameToResult.containsKey(name);
     }
 
     public String getArgsHelp() {

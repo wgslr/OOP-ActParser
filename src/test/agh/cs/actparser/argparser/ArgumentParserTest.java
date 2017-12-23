@@ -36,7 +36,7 @@ public class ArgumentParserTest {
         ArgumentParser parser = new ArgumentParser();
         ArgumentParser.Option articleOption = new ArgumentParser.Option
                 ("articles", "a", "",
-                ArgumentType.Range);
+                ArgumentType.IdentifierRange);
         parser.addOption(articleOption);
 
         parser.parse(new String[]{"-a", "25..30a"});

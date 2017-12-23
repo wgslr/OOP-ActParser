@@ -1,17 +1,15 @@
 package agh.cs.actparser.argparser;
 
-import com.sun.org.apache.xpath.internal.Arg;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import agh.cs.actparser.Identifier;
+import agh.cs.actparser.Range;
 
-import java.util.InvalidPropertiesFormatException;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum ArgumentType {
     Number,
-    Range,
+    IdentifierRange,
     Text,
     Bool;
 
@@ -19,7 +17,7 @@ public enum ArgumentType {
         switch (this) {
             case Number:
                 return Integer::parseInt;
-            case Range:
+            case IdentifierRange:
                 return this::RangeParser;
             case Text:
                 return (x -> x);
@@ -31,14 +29,15 @@ public enum ArgumentType {
     }
 
     private Object RangeParser(String arg) {
-        Pattern pattern = Pattern.compile("(\\d+[a-z]*)..(\\d+[a-z]*)");
+        Pattern pattern = Pattern.compile("(\\p{L}+)..(\\p{L}+)");
         Matcher m = pattern.matcher(arg);
         if (m.matches()) {
-            return new agh.cs.actparser.Range<String>(m.group(1), m.group(2));
+            return new Range<String>(
+                    Identifier.fromString(m.group(1)),
+                    Identifier.fromString(m.group(2)));
         } else {
-            throw new IllegalArgumentException("Bad range specifier \"" + arg
-                    + "\"");
-
+            // single identifier
+            return new Range(arg, arg);
         }
     }
 

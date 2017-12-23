@@ -80,7 +80,13 @@ public class Identifier implements Comparable<Identifier> {
         if (kind != other.kind) {
             // more specific kinds should be first
             // at least when being children of the same element
-            return -kind.compareTo(other.kind);
+            if(kind == null) {
+                return -1;
+            } else if (other.kind == null){
+                return 1;
+            } else {
+                return -kind.compareTo(other.kind);
+            }
         } else if (numericPart != other.numericPart) {
             return numericPart - other.numericPart;
         } else {

@@ -21,11 +21,6 @@ public abstract class AbstractElement {
                            LinkedHashMap<Identifier, AbstractElement>
                                    children) {
         this.idString = idString;
-        if(children == null) {
-            System.out.println(this.getKind() + " " + this.idString + "has " +
-                    "null " +
-                    "children");
-        }
         this.children = children;
         this.identifier = Identifier.fromString(idString, getKind());
     }
