@@ -27,7 +27,6 @@ public class Identifier implements Comparable<Identifier> {
     }
 
     public static Identifier fromString(String idString, ElementKind kind) {
-        System.out.println(idString);
         if(idString.isEmpty()) {
             return new Identifier(0, "", kind);
         }
@@ -43,16 +42,11 @@ public class Identifier implements Comparable<Identifier> {
         String digits = m.group(1);
         String chars = m.group(2).toLowerCase();
 
-        System.out.println(String.format("digits: %s, chars: %s", digits,
-                chars));
-
         int numeric = 0;
 
         if(RomanConverter.isRomanNumeral(digits)) {
-            System.out.println(digits + " seems to be a roman nnumer");
             numeric = RomanConverter.romanToInteger(digits);
         } else if (!digits.isEmpty()) {
-            System.out.println(String.format("Parsing %s as decimal", digits));
             numeric = Integer.parseInt(digits);
         }
 
