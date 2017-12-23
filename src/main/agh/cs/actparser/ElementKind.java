@@ -42,7 +42,7 @@ public enum ElementKind {
             case Section:
                 return "^DZIAŁ ([IVXCD]+[A-]*)\\s*(.*)";
             case Chapter:
-                return "^Rozdział (\\d+|[IVXCDL]+[A-Z]*)\\s*(.*)";
+                return "^Rozdział (\\d+[a-zA-Z]*|[IVXCDL]+[A-Za-z]*)\\s*(.*)";
             case Title:
                 return "^([\\p{Lu} ]+)\\s*$";
             case Article:

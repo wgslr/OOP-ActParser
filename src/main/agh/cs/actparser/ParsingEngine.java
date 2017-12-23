@@ -1,8 +1,10 @@
 package agh.cs.actparser;
 
 import agh.cs.actparser.argparser.ArgumentParser;
+import agh.cs.actparser.argparser.ArgumentParsers;
 import agh.cs.actparser.argparser.ArgumentType;
 import agh.cs.actparser.elements.AbstractElement;
+import agh.cs.actparser.elements.Article;
 import agh.cs.actparser.elements.Document;
 import agh.cs.actparser.parsers.DocumentParser;
 
@@ -13,6 +15,9 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ParsingEngine {
     // TODO handle non-existent file
@@ -22,36 +27,45 @@ public class ParsingEngine {
         argparser.addOption(
                 new ArgumentParser.Option("file", "f",
                         "File containing document to parse",
-                        ArgumentType.Text)
+                        ArgumentParsers.getTextParser())
         );
         argparser.addOption(
                 new ArgumentParser.Option("toc", "t",
-                        "Whether to display table of contents", ArgumentType
-                        .Bool)
+                        "Whether to display table of contents", null)
         );
         argparser.addOption(
                 new ArgumentParser.Option("articles", "a",
                         "One or more articles to display. Syntax: 1a..100",
-                        ArgumentType.IdentifierRange)
+                        ArgumentParsers.getIdentifierRangeParser(ElementKind
+                                .Article))
         );
         argparser.addOption(
                 new ArgumentParser.Option("sections", "s",
                         "One or more sections to display. Syntax: I..VI",
-                        ArgumentType.IdentifierRange)
+                        ArgumentParsers.getIdentifierRangeParser(ElementKind
+                                .Section))
         );
         argparser.addOption(
                 new ArgumentParser.Option("chapters", "c",
                         "One or more chapters to display. Syntax: " +
                                 "1..21 or III..IV",
-                        ArgumentType.IdentifierRange)
+                        ArgumentParsers.getIdentifierRangeParser(ElementKind
+                                .Chapter))
         );
         argparser.addOption(
-                new ArgumentParser.Option("paragraph", "p",
-                        "Paragraph to display", ArgumentType.Number)
+                new ArgumentParser.Option("paragraph", "p", "",
+                        ArgumentParsers.getIdentifierParser(ElementKind
+                                .Paragraph))
         );
         argparser.addOption(
                 new ArgumentParser.Option("point", "o",
-                        "Point to display", ArgumentType.Number)
+                        "Point to display",
+                        ArgumentParsers.getIdentifierParser(ElementKind.Point))
+        );
+        argparser.addOption(
+                new ArgumentParser.Option("letter", "l",
+                        "Letter to display",
+                        ArgumentParsers.getIdentifierParser(ElementKind.Letter))
         );
 
         try {
@@ -102,24 +116,46 @@ public class ParsingEngine {
         List<AbstractElement> elementsToDisplay;
 
         if (argparser.isSet("chapters")) {
-            elementsToDisplay = chaptersRegistry.getRange((Range<String>)
-                    argparser.getResult("chapters"));
+            elementsToDisplay = chaptersRegistry.getRange(argparser.getResult
+                    ("chapters"));
         } else if (argparser.isSet("sections")) {
-            elementsToDisplay = sectionsRegistry.getRange((Range<String>)
-                    argparser.getResult("chapters"));
+            elementsToDisplay = sectionsRegistry.getRange(argparser.getResult
+                    ("sections"));
         } else if (argparser.isSet("articles")) {
-            elementsToDisplay = articleRegistry.getRange((Range<String>)
-                    argparser.getResult("chapters"));
+            elementsToDisplay = articleRegistry.getRange(argparser.getResult
+                    ("articles"));
         } else {
             elementsToDisplay = Collections.singletonList(root);
         }
 
-        formatter.print(elementsToDisplay);
+        List<Identifier> elementSpecification =
+                Stream.of(
+                        (Identifier) argparser.getResult("paragraph"),
+                        (Identifier) argparser.getResult("point"),
+                        (Identifier) argparser.getResult("letter")
+                ).filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+
+        if (elementSpecification.isEmpty()) {
+            formatter.print(elementsToDisplay);
+        } else {
+            if (elementsToDisplay.size() != 1 ||
+                    !(elementsToDisplay.get(0) instanceof Article)) {
+                System.out.println("Single article must be chosen to " +
+                        "display more speciifc elements.");
+                return;
+            }
+
+            AbstractElement singleElement = elementsToDisplay.get(0)
+                    .getDescendant(elementSpecification);
+            formatter.print(singleElement);
+        }
+    }
 
 
-        //System.out.println(ElementKind.Section.compareTo(ElementKind
-        //
-        // .Letter));
+    //System.out.println(ElementKind.Section.compareTo(ElementKind
+    //
+    // .Letter));
 //
 //        Preprocessor c = new Preprocessor();
 //
@@ -181,6 +217,4 @@ public class ParsingEngine {
 //
 //        ArgumentParser ap = new ArgumentParser();
 //        ap.parse(args);
-
-    }
 }

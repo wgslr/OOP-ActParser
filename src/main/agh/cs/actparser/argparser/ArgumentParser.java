@@ -15,29 +15,31 @@ public class ArgumentParser {
         public final String name;
         public final String shortName;
         public final String description;
-        public final ArgumentType type;
+        /**
+         * Should be null for boolean flags
+         */
+        public final Function<String, ?> parser;
 
-        public Option(String name, ArgumentType type) {
+        public Option(String name, Function<String, ?> parser) {
             this.name = name;
             this.shortName = "";
             this.description = "";
-            this.type = type;
+            this.parser = parser;
         }
 
         public Option(String name, String shortName, String description,
-                      ArgumentType type) {
+                      Function<String, ?> parser) {
             this.name = name;
             this.shortName = shortName;
             this.description = description;
-            this.type = type;
+            this.parser = parser;
         }
 
         @Override
         public String toString() {
             return (shortName.isEmpty() ? "   " : "-" + shortName + " ")
                     + "--" + name
-                    + "\t" + description
-                    + " (" + type.toString() + ")";
+                    + "\t" + description;
         }
     }
 
@@ -59,8 +61,8 @@ public class ArgumentParser {
         nameToOption.put(option.name, option);
         shortNameToOption.put(option.shortName, option);
 
-        if(option.type == ArgumentType.Bool) {
-            // default value
+        if(option.parser == null) {
+            // boolean
             nameToResult.put(option.name, false);
         }
     }
@@ -73,7 +75,7 @@ public class ArgumentParser {
         for (int i = 0; i < args.length; ++i) {
             Option param = matchOption(args[i]);
 
-            if (param.type == ArgumentType.Bool) {
+            if (param.parser == null) {
                 nameToResult.put(param.name, true);
             } else {
                 if (args.length <= i + 1) {
@@ -81,8 +83,7 @@ public class ArgumentParser {
                             "Missing value for argument \"" + args[i] + "\"");
                 }
 
-                Function<String, Object> parser = param.type.getParser();
-                nameToResult.put(param.name, parser.apply(args[i + 1]));
+                nameToResult.put(param.name, param.parser.apply(args[i + 1]));
                 ++i;
             }
 
@@ -114,9 +115,8 @@ public class ArgumentParser {
         return searchResult;
     }
 
-    public Object getResult(String name) {
-        System.out.println(nameToResult);
-        return nameToResult.get(name);
+    public <T> T getResult(String name) {
+        return (T)nameToResult.get(name);
     }
 
     public boolean isSet(String name) {

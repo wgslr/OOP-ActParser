@@ -32,9 +32,10 @@ public enum ArgumentType {
         Pattern pattern = Pattern.compile("(\\p{L}+)..(\\p{L}+)");
         Matcher m = pattern.matcher(arg);
         if (m.matches()) {
-            return new Range<String>(
-                    Identifier.fromString(m.group(1)),
-                    Identifier.fromString(m.group(2)));
+            return new Range<String>(m.group(1), m.group(2));
+//            return new Range<String>(
+//                    Identifier.fromString(m.group(1)),
+//                    Identifier.fromString(m.group(2)));
         } else {
             // single identifier
             return new Range(arg, arg);
