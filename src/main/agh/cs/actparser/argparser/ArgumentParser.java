@@ -3,11 +3,11 @@ package agh.cs.actparser.argparser;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class ArgumentParser {
 
@@ -31,6 +31,14 @@ public class ArgumentParser {
             this.description = description;
             this.type = type;
         }
+
+        @Override
+        public String toString() {
+            return (shortName.isEmpty() ? "" : "-" + shortName + " ")
+                    + "--" + name
+                    + " " + description
+                    + " (" + type.toString() + ")";
+        }
     }
 
     private HashMap<String, Option> nameToOption = new HashMap<>();
@@ -50,6 +58,11 @@ public class ArgumentParser {
 
         nameToOption.put(option.name, option);
         shortNameToOption.put(option.shortName, option);
+
+        if(option.type == ArgumentType.Bool) {
+            // default value
+            nameToResult.put(option.name, false);
+        }
     }
 
     public Option getOptionByName(String name) {
@@ -59,14 +72,19 @@ public class ArgumentParser {
     public void parse(String[] args) {
         for (int i = 0; i < args.length; i += 2) {
             Option param = matchOption(args[i]);
-            Function<String, Object> parser = param.type.getParser();
 
-            if (args.length <= i + 1) {
-                throw new IllegalArgumentException(
-                        "Missing value for argument \"" + args[i] + "\"");
+            if (param.type == ArgumentType.Bool) {
+                nameToResult.put(param.name, true);
+            } else {
+                if (args.length <= i + 1) {
+                    throw new IllegalArgumentException(
+                            "Missing value for argument \"" + args[i] + "\"");
+                }
+
+                Function<String, Object> parser = param.type.getParser();
+                nameToResult.put(param.name, parser.apply(args[i + 1]));
             }
 
-            nameToResult.put(param.name, parser.apply(args[i + 1]));
         }
     }
 
@@ -98,6 +116,13 @@ public class ArgumentParser {
     public Object getResult(String name) {
         System.out.println(nameToResult);
         return nameToResult.get(name);
+    }
+
+    public String getArgsHelp() {
+        return nameToOption.values().stream()
+                .sorted((x, y) -> x.name.compareToIgnoreCase(y.name))
+                .map(opt -> opt.toString())
+                .collect(Collectors.joining("\n"));
     }
 
 }

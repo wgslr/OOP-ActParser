@@ -86,7 +86,7 @@ public class IdentifierTest {
 
         Identifier id3 = Identifier.fromString("IIIA", ElementKind.Article);
         assertEquals(3, id3.numericPart);
-        assertEquals("A", id3.stringPart);
+        assertEquals("a", id3.stringPart);
     }
 
 }

@@ -1,6 +1,7 @@
 package agh.cs.actparser.argparser;
 
 import com.sun.org.apache.xpath.internal.Arg;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.InvalidPropertiesFormatException;
@@ -11,7 +12,8 @@ import java.util.regex.Pattern;
 public enum ArgumentType {
     Number,
     Range,
-    Text;
+    Text,
+    Bool;
 
     public Function<String, Object> getParser() {
         switch (this) {
@@ -21,6 +23,8 @@ public enum ArgumentType {
                 return this::RangeParser;
             case Text:
                 return (x -> x);
+            case Bool:
+                return (x -> true);
             default:
                 throw new InternalError("Invalid enum value");
         }

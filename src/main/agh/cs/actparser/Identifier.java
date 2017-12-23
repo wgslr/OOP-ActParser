@@ -84,18 +84,8 @@ public class Identifier implements Comparable<Identifier> {
         } else if (numericPart != other.numericPart) {
             return numericPart - other.numericPart;
         } else {
-            return compareLetterPart(stringPart, other.stringPart);
+            return stringPart.compareToIgnoreCase(other.stringPart);
         }
-    }
-
-    private int compareLetterPart(String left, String right) {
-        for (int i = 0; i < left.length() && i < right.length(); ++i) {
-            if (left.charAt(i) != right.charAt(i)) {
-                return left.charAt(i) - right.charAt(i);
-            }
-        }
-        // If one string is a prefix of another, the longer one compares higher
-        return left.length() - right.length();
     }
 
     @Override
