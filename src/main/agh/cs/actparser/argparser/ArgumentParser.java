@@ -126,7 +126,12 @@ public class ArgumentParser {
                 .sorted((x, y) -> x.name.compareToIgnoreCase(y.name))
                 .map(opt -> opt.toString())
                 .collect(Collectors.joining("\n"))
-                + "For example:\n"
+                + "\nAvailable input formats with examples:\n"
+                + "Range: 1..4 or I..IV or 2 (equivalent to 2..2)\n"
+                + "Identifier: 1\n"
+                + "String: konstytucja.txt\n"
+                + "Flag: (does not require any value)\n"
+                + "\nExample invocation: \n"
                 + "-a 2 -p 2 -o 2 -l a -f ../../assets/uokik.txt";
     }
 

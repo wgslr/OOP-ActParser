@@ -6,6 +6,7 @@ import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Article;
 import agh.cs.actparser.elements.Document;
 import agh.cs.actparser.parsers.DocumentParser;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,46 +25,55 @@ public class ActParserApplication {
         ArgumentParser argparser = new ArgumentParser();
         argparser.addOption(
                 new ArgumentParser.Option("file", "f",
-                        "File containing document to parse",
+                        "File containing document to parse. Format: Text",
                         ArgumentParsers.getTextParser())
         );
         argparser.addOption(
                 new ArgumentParser.Option("toc", "t",
-                        "Whether to display table of contents", null)
+                        "Whether to display table of contents. Format: Flag",
+                        null)
         );
         argparser.addOption(
                 new ArgumentParser.Option("articles", "a",
-                        "One or more articles to display. Syntax: 1a..100",
+                        "One or more articles (artykuły) to display. Format:" +
+                                " " +
+                                "Range",
                         ArgumentParsers.getIdentifierRangeParser(ElementKind
                                 .Article))
         );
         argparser.addOption(
                 new ArgumentParser.Option("sections", "s",
-                        "One or more sections to display. Syntax: I..VI",
+                        "One or more sections (działy) to display. Format: " +
+                                "Range",
                         ArgumentParsers.getIdentifierRangeParser(ElementKind
                                 .Section))
         );
         argparser.addOption(
                 new ArgumentParser.Option("chapters", "c",
-                        "One or more chapters to display. Syntax: " +
-                                "1..21 or III..IV",
+                            "Chapters (rozdziały) to dispay. Format: Range",
                         ArgumentParsers.getIdentifierRangeParser(ElementKind
                                 .Chapter))
         );
         argparser.addOption(
-                new ArgumentParser.Option("paragraph", "p", "",
+                new ArgumentParser.Option("paragraph", "p",
+                "Paragraph (ustęp) to display. Format: Identifier",
                         ArgumentParsers.getIdentifierParser(ElementKind
                                 .Paragraph))
         );
         argparser.addOption(
                 new ArgumentParser.Option("point", "o",
-                        "Point to display",
+                        "Point (punkt) to display. Format: Identifier",
                         ArgumentParsers.getIdentifierParser(ElementKind.Point))
         );
         argparser.addOption(
                 new ArgumentParser.Option("letter", "l",
-                        "Letter to display",
+                        "Letter (litera) to display. Format: Identifier",
                         ArgumentParsers.getIdentifierParser(ElementKind.Letter))
+        );
+        argparser.addOption(
+                new ArgumentParser.Option("help", "h",
+                        "Display this help message. Format: Flag",
+                        null)
         );
 
         try {
@@ -73,6 +83,11 @@ public class ActParserApplication {
                     .getMessage() + "\nAvailable arguments:\n"
                     + argparser.getArgsHelp());
             return;
+        }
+
+        if(argparser.getResult("help")){
+            System.out.println(argparser.getArgsHelp());
+            System.exit(0);
         }
 
 
@@ -112,7 +127,6 @@ public class ActParserApplication {
                 chaptersRegistry, sectionsRegistry, articleRegistry
         ));
 
-        // TODO error handling
         Document root = null;
         try {
             root = docparser.makeElement();
