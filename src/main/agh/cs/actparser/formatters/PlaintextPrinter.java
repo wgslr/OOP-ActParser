@@ -1,10 +1,13 @@
-package agh.cs.actparser;
+package agh.cs.actparser.formatters;
 
 import agh.cs.actparser.elements.AbstractElement;
 
 import java.util.Collection;
 
-public class PlaintextFormatter implements IFormatter {
+/**
+ * Printer displaying full element's content.
+ */
+public class PlaintextPrinter implements IPrinter {
 
     @Override
     public void print(Collection<AbstractElement> elements) {

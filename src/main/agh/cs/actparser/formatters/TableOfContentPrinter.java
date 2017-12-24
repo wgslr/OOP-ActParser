@@ -1,5 +1,6 @@
-package agh.cs.actparser;
+package agh.cs.actparser.formatters;
 
+import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.elements.AbstractElement;
 
 import java.util.Collection;
@@ -7,21 +8,28 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TableOfContentFormatter implements IFormatter {
-    private final static ElementKind MaxPrecision = ElementKind.Title;
+/**
+ * Printer displaying only headers of main document elements.
+ */
+public class TableOfContentPrinter implements IPrinter {
+    private final static ElementKind MaxSpecificity = ElementKind.Title;
 
     @Override
     public void print(Collection<AbstractElement> elements) {
         print(elements, 0);
     }
 
-    private void print(Collection<AbstractElement> elements, final int
-            depth) {
+    /**
+     * @param elements Elements to print
+     * @param depth    Depth of printed element in the document tree
+     */
+    private void print(Collection<AbstractElement> elements,
+                       final int depth) {
         elements.stream()
-                .filter(e -> e.getKind().compareTo(MaxPrecision) <= 0)
+                .filter(e -> e.getKind().compareTo(MaxSpecificity) <= 0)
                 .forEach(e -> {
                     System.out.println(
-                            formatElement(e, depth) + formatSpecialInfo(e)
+                            formatElement(e, depth) + formatArticleRange(e)
                     );
                     print(e.getChildren().values(), depth + 1);
                 });
@@ -32,12 +40,14 @@ public class TableOfContentFormatter implements IFormatter {
         return indent + element.headerToString();
     }
 
-    // TODO Should consider indirect descendants
-    private String formatSpecialInfo(AbstractElement element) {
-        // In this case - get the articles range
-        List<AbstractElement> articles = element.getChildren()
-                .values()
-                .stream()
+    /**
+     * Generates information about articles being children of given element
+     *
+     * @param element Parent of the articles
+     * @return Created string
+     */
+    private String formatArticleRange(AbstractElement element) {
+        List<AbstractElement> articles = element.getChildren().values().stream()
                 .filter(e -> e.getKind().equals(ElementKind.Article))
                 .collect(Collectors.toList());
 

@@ -31,16 +31,14 @@ public enum ElementKind {
 
 
     /**
-     * Returns regular expression identifing start of this element. The
-     * expression contains two groups, first matching the idString of element
-     * and second any leftover content.
+     * Returns regular expression identifying start of this element.
      */
     public String getRegexp() {
         switch (this) {
             case Section:
                 return "^DZIAŁ ([IVXCD]+[A-]*)\\s*(.*)";
             case Chapter:
-                return "^Rozdział (\\d+[a-zA-Z]*|[IVXCDL]+[A-Za-z]*)\\s*(.*)";
+                return "^Rozdział (\\d+[a-zA-Z]*|[IVXCDL]+[a-zA-Z]*)\\s*(.*)";
             case Title:
                 return "^([\\p{Lu} ]+)\\s*$";
             case Article:
@@ -48,7 +46,7 @@ public enum ElementKind {
             case Paragraph:
                 return "^(\\d+)\\.\\s(.*)";
             case Point:
-                return "^(\\d+)\\)\\s(.*)";
+                return "^(\\d+\\p{L}*)\\)\\s(.*)";
             case Letter:
                 return "^(\\p{L})\\)\\s(.*)";
             case Plaintext:

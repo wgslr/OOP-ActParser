@@ -2,38 +2,53 @@ package agh.cs.actparser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+/**
+ * Handles cleaning file lines before proper parsing.
+ */
 public class Preprocessor {
-    private final String[] patternsToRemove;
+    private final List<Predicate<String>> patternsToRemovePredicates;
 
     Preprocessor() {
-        this.patternsToRemove = new String[]{
-                "\\d{4}-\\d{2}-\\d{2}",
+        this.patternsToRemovePredicates = Stream.of(
+                "\\d{4}-\\d{2}-\\d{2}", // date
                 ".*\\(uchylony\\).*$",
                 ".*pominięt[ey].*$",
                 "^.$",
-                "©Kancelaria Sejmu",
-        };
+                "©Kancelaria Sejmu"
+                )
+                .map((x) -> Pattern.compile(x).asPredicate())
+                .collect(Collectors.toList());
     }
 
     public Preprocessor(String[] patternsToRemove) {
-        this.patternsToRemove = patternsToRemove;
-    }
-
-    public List<String> process(List<String> lines) {
-        List<String> filtered = filter(lines);
-        return joinLines(filtered);
+        this.patternsToRemovePredicates = Arrays.stream(patternsToRemove)
+                .map(x -> Pattern.compile(x).asPredicate())
+                .collect(Collectors.toList());
     }
 
     /**
-     * Join lines when then do not introduce new element
+     * Filters and (if possible) concatenates lines.
+     *
+     * @param lines
+     * @return Processed lines
+     */
+    public List<String> process(List<String> lines) {
+        return joinLines(filter(lines));
+    }
+
+    /**
+     * Concatenates lines when they do not introduce new element
      */
     protected List<String> joinLines(List<String> lines) {
         List<Predicate<String>> headerPredicates =
+                // Plaintext should not prevent joining lines
                 ElementKind.Plaintext.getLessSpecific().stream()
                         .map(ElementKind::getRegexp)
                         .map(Pattern::compile)
@@ -65,19 +80,13 @@ public class Preprocessor {
 
 
     /**
-     * Removes lines matched by the given patterns from provider list.
+     * Removes lines matching patterns given in the constructor.
      */
     protected List<String> filter(List<String> Lines) {
-        List<Predicate<String>> predicates = getPredicates();
+        List<Predicate<String>> predicates = patternsToRemovePredicates;
         return Lines.stream()
                 .filter(x -> predicates.stream().noneMatch(
                         pred -> pred.test(x)))
-                .collect(Collectors.toList());
-    }
-
-    protected List<Predicate<String>> getPredicates() {
-        return Arrays.stream(patternsToRemove)
-                .map((x) -> Pattern.compile(x).asPredicate())
                 .collect(Collectors.toList());
     }
 

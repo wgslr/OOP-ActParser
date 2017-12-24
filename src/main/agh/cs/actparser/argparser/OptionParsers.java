@@ -8,7 +8,11 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ArgumentParsers {
+/**
+ * This class contains several functions providing parsers for command line
+ * options.
+ */
+public class OptionParsers {
 
     static public Function<String, Identifier>
     getIdentifierParser(ElementKind kind) {

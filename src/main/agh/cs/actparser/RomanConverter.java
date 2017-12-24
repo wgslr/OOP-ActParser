@@ -2,6 +2,9 @@ package agh.cs.actparser;
 
 import java.util.regex.Pattern;
 
+/**
+ * Handles conversion of roman numerals.
+ */
 public class RomanConverter {
     public static boolean isRomanNumeral(String numeral) {
         return Pattern.matches("^[IVXLCDM]+$", numeral);
@@ -16,7 +19,7 @@ public class RomanConverter {
         if (romanNumber.startsWith("D")) return 500 + romanToInteger(romanNumber.substring(1));
         if (romanNumber.startsWith("CD")) return 400 + romanToInteger(romanNumber.substring(2));
         if (romanNumber.startsWith("C")) return 100 + romanToInteger(romanNumber.substring(1));
-        if (romanNumber.startsWith("XC")) return 90 + romanToInteger (romanNumber.substring( 2));
+        if (romanNumber.startsWith("XC")) return 90 + romanToInteger (romanNumber.substring(2));
         if (romanNumber.startsWith("L")) return 50 + romanToInteger(romanNumber.substring(1));
         if (romanNumber.startsWith("XL")) return 40 + romanToInteger(romanNumber.substring(2));
         if (romanNumber.startsWith("X")) return 10 + romanToInteger(romanNumber.substring(1));

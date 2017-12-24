@@ -5,17 +5,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Describes an idString which my consist of a numeric and alphabetic parts.
+ * Document element identifier. Consists of a numeric and text part.
  */
 public class Identifier implements Comparable<Identifier> {
 
-    /**
-     * Kind of identified element. May be null if it's not relevant to the
-     * Identifier usage.
-     */
-    public final ElementKind kind;
     public final int numericPart;
     public final String stringPart;
+
+    /**
+     * Kind of identified element
+     */
+    public final ElementKind kind;
+
 
     public Identifier(int numericPart, String stringPart, ElementKind
             kind) {
@@ -24,6 +25,14 @@ public class Identifier implements Comparable<Identifier> {
         this.kind = kind;
     }
 
+    /**
+     * Parses given string to create identifier. Numeric part may be
+     * in a decimal or roman numeral.
+     * @param idString String to parse
+     * @param kind Kind of identified element
+     * @return Created Identifier
+     * @throws NumberFormatException if given idString cannot be parsed
+     */
     public static Identifier fromString(String idString, ElementKind kind) {
         if(idString.isEmpty()) {
             return new Identifier(0, "", kind);
@@ -54,9 +63,8 @@ public class Identifier implements Comparable<Identifier> {
 
     @Override
     public String toString() {
-        return String.format("%s(%s%s)", kind,
-                numericPart != 0 ? numericPart : "",
-                stringPart);
+        return String.format("%s %s%s", kind,
+                numericPart != 0 ? numericPart : "", stringPart);
     }
 
     @Override

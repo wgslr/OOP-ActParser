@@ -1,12 +1,14 @@
 package agh.cs.actparser;
 
 import agh.cs.actparser.argparser.ArgumentParser;
-import agh.cs.actparser.argparser.ArgumentParsers;
+import agh.cs.actparser.argparser.OptionParsers;
 import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Article;
 import agh.cs.actparser.elements.Document;
+import agh.cs.actparser.formatters.IPrinter;
+import agh.cs.actparser.formatters.PlaintextPrinter;
+import agh.cs.actparser.formatters.TableOfContentPrinter;
 import agh.cs.actparser.parsers.DocumentParser;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,7 +28,7 @@ public class ActParserApplication {
         argparser.addOption(
                 new ArgumentParser.Option("file", "f",
                         "File containing document to parse. Format: Text",
-                        ArgumentParsers.getTextParser())
+                        OptionParsers.getTextParser())
         );
         argparser.addOption(
                 new ArgumentParser.Option("toc", "t",
@@ -38,37 +40,37 @@ public class ActParserApplication {
                         "One or more articles (artykuły) to display. Format:" +
                                 " " +
                                 "Range",
-                        ArgumentParsers.getIdentifierRangeParser(ElementKind
+                        OptionParsers.getIdentifierRangeParser(ElementKind
                                 .Article))
         );
         argparser.addOption(
                 new ArgumentParser.Option("sections", "s",
                         "One or more sections (działy) to display. Format: " +
                                 "Range",
-                        ArgumentParsers.getIdentifierRangeParser(ElementKind
+                        OptionParsers.getIdentifierRangeParser(ElementKind
                                 .Section))
         );
         argparser.addOption(
                 new ArgumentParser.Option("chapters", "c",
                             "Chapters (rozdziały) to dispay. Format: Range",
-                        ArgumentParsers.getIdentifierRangeParser(ElementKind
+                        OptionParsers.getIdentifierRangeParser(ElementKind
                                 .Chapter))
         );
         argparser.addOption(
-                new ArgumentParser.Option("paragraph", "p",
+                new ArgumentParser.Option("paragraph", "u",
                 "Paragraph (ustęp) to display. Format: Identifier",
-                        ArgumentParsers.getIdentifierParser(ElementKind
+                        OptionParsers.getIdentifierParser(ElementKind
                                 .Paragraph))
         );
         argparser.addOption(
-                new ArgumentParser.Option("point", "o",
+                new ArgumentParser.Option("point", "p",
                         "Point (punkt) to display. Format: Identifier",
-                        ArgumentParsers.getIdentifierParser(ElementKind.Point))
+                        OptionParsers.getIdentifierParser(ElementKind.Point))
         );
         argparser.addOption(
                 new ArgumentParser.Option("letter", "l",
                         "Letter (litera) to display. Format: Identifier",
-                        ArgumentParsers.getIdentifierParser(ElementKind.Letter))
+                        OptionParsers.getIdentifierParser(ElementKind.Letter))
         );
         argparser.addOption(
                 new ArgumentParser.Option("help", "h",
@@ -111,9 +113,9 @@ public class ActParserApplication {
 
         inputLines = new Preprocessor().process(inputLines);
 
-        IFormatter formatter = argparser.getResult("toc") ?
-                new TableOfContentFormatter()
-                : new PlaintextFormatter();
+        IPrinter formatter = argparser.getResult("toc") ?
+                new TableOfContentPrinter()
+                : new PlaintextPrinter();
 
         // Process
         ElementRegistry chaptersRegistry =

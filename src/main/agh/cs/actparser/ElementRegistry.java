@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
+/**
+ * Registry storing only elements of given kind.
+ * Allows querying ranges of elements.
+ */
 public class ElementRegistry implements IElementRegistry {
     NavigableMap<Identifier, AbstractElement> elements = new TreeMap<>();
 
@@ -23,11 +27,15 @@ public class ElementRegistry implements IElementRegistry {
         }
     }
 
-
     /**
-     * Returns articles with ids higher or equal to "from"
+     * Returns elements matching given range, inclusively.
+     * Elements given as boundaries must exist.
      *
-     * @return Articles
+     * @param from Identifier of first element to be returend
+     * @param to Identifier of last element to be returend
+     * @return Matching elements
+     * @throws IllegalArgumentException if starting or ending element cannot
+     *                                  be found
      */
     public List<AbstractElement> getRange(Identifier from, Identifier to) {
         if (!(elements.containsKey(from) && elements.containsKey(to))) {
@@ -37,6 +45,15 @@ public class ElementRegistry implements IElementRegistry {
         return new ArrayList<>(elements.subMap(from, true, to, true).values());
     }
 
+    /**
+     * Returns elements matching given range, inclusively.
+     * Elements given as boundaries must exist.
+     *
+     * @param range Range describing elements range to return
+     * @return Matching elements
+     * @throws IllegalArgumentException if starting or ending element cannot
+     *                                  be found
+     */
     public List<AbstractElement> getRange(Range<Identifier> range) {
         return getRange(range.from, range.to);
     }

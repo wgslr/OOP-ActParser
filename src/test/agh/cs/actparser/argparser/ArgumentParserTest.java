@@ -10,46 +10,20 @@ import static org.junit.Assert.*;
 public class ArgumentParserTest {
 
     @Test
-    public void addOptionTest() {
-
-        ArgumentParser parser = new ArgumentParser();
-        ArgumentParser.Option articleOption = new ArgumentParser.Option
-                ("article", "a", "",
-                        ArgumentParsers.getIdentifierParser(ElementKind
-                                .Article));
-
-        parser.addOption(articleOption);
-
-        assertEquals(articleOption, parser.getOptionByName("article"));
-    }
-
-    @Test
-    public void matchOptionTest() {
-        ArgumentParser parser = new ArgumentParser();
-        ArgumentParser.Option articleOption = new ArgumentParser.Option
-                ("article", "a", "",
-                        ArgumentParsers.getIdentifierParser(ElementKind
-                                .Article));
-        parser.addOption(articleOption);
-
-        assertEquals(articleOption, parser.matchOption("--article"));
-        assertEquals(articleOption, parser.matchOption("-a"));
-    }
-
-
-    @Test
     public void rangeOptionTest() {
         ArgumentParser parser = new ArgumentParser();
         ArgumentParser.Option articleOption = new ArgumentParser.Option
                 ("articles", "a", "",
-                        ArgumentParsers.getIdentifierRangeParser(ElementKind
+                        OptionParsers.getIdentifierRangeParser(ElementKind
                                 .Article));
         parser.addOption(articleOption);
 
         parser.parse(new String[]{"-a", "25..30a"});
 
-        assertEquals(new Range<>("25", "30a"), parser.getResult(articleOption
-                .name));
+        assertEquals(new Range<>(
+                        Identifier.fromString("25", ElementKind.Article),
+                        Identifier.fromString("30a", ElementKind.Article)),
+                parser.getResult(articleOption.name));
     }
 
 
@@ -58,7 +32,7 @@ public class ArgumentParserTest {
         ArgumentParser parser = new ArgumentParser();
         ArgumentParser.Option pointOption = new ArgumentParser.Option
                 ("point", "p", "",
-                        ArgumentParsers.getIdentifierParser(ElementKind.Point));
+                        OptionParsers.getIdentifierParser(ElementKind.Point));
         parser.addOption(pointOption);
 
         parser.parse(new String[]{"-p", "13"});
@@ -72,10 +46,10 @@ public class ArgumentParserTest {
         ArgumentParser parser = new ArgumentParser();
         ArgumentParser.Option opt1 = new ArgumentParser.Option
                 ("file", "f", "",
-                        ArgumentParsers.getTextParser());
+                        OptionParsers.getTextParser());
         ArgumentParser.Option opt2 = new ArgumentParser.Option
                 ("opt", "o", "",
-                        ArgumentParsers.getTextParser());
+                        OptionParsers.getTextParser());
         parser.addOption(opt1);
         parser.addOption(opt2);
 

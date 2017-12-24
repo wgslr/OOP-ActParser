@@ -38,11 +38,7 @@ public abstract class AbstractElement {
                     "There is no %s in %s", needle, identifier));
         }
 
-        if(location.size() > 1)
-            return child.getDescendant(location.subList(1, location.size()));
-        else {
-            return child;
-        }
+        return child.getDescendant(location.subList(1, location.size()));
     }
 
     public LinkedHashMap<Identifier, AbstractElement> getChildren() {
