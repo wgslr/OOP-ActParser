@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 public abstract class AbstractParser {
 
     protected String idString;
+    protected String content;
 
     /**
      * Element's content with idString dropped
@@ -60,20 +61,18 @@ public abstract class AbstractParser {
         Matcher startMatcher = getStartPattern().matcher(linesToParse.get(0));
 
         // locate capture groups
-        startMatcher.find();
-        if (startMatcher.groupCount() < 2) {
-            throw new IllegalArgumentException(
-                    "Given content cannot be parsed as " + getKind());
-        }
+        startMatcher.matches();
 
         idString = startMatcher.group(1);
-        String bodyInFirstLine = startMatcher.group(2);
+        content = startMatcher.group(2);
+        String bodyInFirstLine = startMatcher.group(3);
 
-        if (!bodyInFirstLine.trim().isEmpty()) {
+        if (bodyInFirstLine.trim().isEmpty()) {
+            bodyLines = linesToParse.subList(1, linesToParse.size());
+        } else {
+            // pass leftover text to children parsers
             linesToParse.set(0, bodyInFirstLine);
             bodyLines = linesToParse;
-        } else {
-            bodyLines = linesToParse.subList(1, linesToParse.size());
         }
     }
 

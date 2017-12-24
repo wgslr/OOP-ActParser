@@ -1,7 +1,11 @@
 package agh.cs.actparser;
 
+import agh.cs.actparser.elements.AbstractElement;
+
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public enum ElementKind {
@@ -36,25 +40,26 @@ public enum ElementKind {
     public String getRegexp() {
         switch (this) {
             case Section:
-                return "^DZIAŁ ([IVXCD]+[A-]*)\\s*(.*)";
+                return "^DZIAŁ ([IVXCD]+[A-Z]*)\\s*(.*)()";
             case Chapter:
-                return "^Rozdział (\\d+[a-zA-Z]*|[IVXCDL]+[a-zA-Z]*)\\s*(.*)";
+                return "^Rozdział (\\d+[a-zA-Z]*|[IVXCDL]+[a-zA-Z]*)\\s*(.*)()";
             case Title:
-                return "^([\\p{Lu} ]+)\\s*$";
+                return "^(([\\p{Lu} ]+))\\s*()$";
             case Article:
-                return "^Art\\. (\\d+[a-z]*)\\.\\s*(.*)";
+                return "^Art\\. (\\d+[a-z]*)\\.\\s*()(.*)";
             case Paragraph:
-                return "^(\\d+)\\.\\s(.*)";
+                return "^(\\d+)\\.\\s()(.*)";
             case Point:
-                return "^(\\d+\\p{L}*)\\)\\s(.*)";
+                return "^(\\d+\\p{L}*)\\)\\s()(.*)";
             case Letter:
-                return "^(\\p{L})\\)\\s(.*)";
+                return "^(\\p{L})\\)\\s()(.*)";
             case Plaintext:
-                return "()().*"; // always matches
+                return "()()(.*)"; // always matches
             case Document:
                 return "(?!)"; // never matches - there can be only one document
             default:
                 throw new IllegalArgumentException();
         }
     }
+
 }
