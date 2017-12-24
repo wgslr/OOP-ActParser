@@ -1,7 +1,6 @@
 package agh.cs.actparser.parsers;
 
 import agh.cs.actparser.ElementKind;
-import agh.cs.actparser.Identifier;
 import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Letter;
 import agh.cs.actparser.elements.Plaintext;
@@ -9,7 +8,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -43,7 +41,7 @@ public class ElementFinderTest {
                 // One step above Article
                 ElementKind.Chapter, Collections.emptyList(),
                 parserFactoryMock);
-        assertEquals(4, testSubject.makeChildrenElements().size());
+        assertEquals(4, testSubject.makeElements().size());
     }
 
     @Test
@@ -54,7 +52,7 @@ public class ElementFinderTest {
                 parserFactoryMock);
 
         assertEquals(Collections.emptyList(),
-                testSubject.makeChildrenElements());
+                testSubject.makeElements());
     }
 
     @Test
@@ -65,7 +63,7 @@ public class ElementFinderTest {
         ElementFinder testSubject = new ElementFinder(lines, ElementKind
                 .Article );
 
-        List<AbstractElement> children = testSubject.makeChildrenElements();
+        List<AbstractElement> children = testSubject.makeElements();
 
         assertEquals(1, children.size());
         assertTrue(children.get(0) instanceof Letter);

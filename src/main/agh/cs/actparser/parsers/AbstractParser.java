@@ -70,7 +70,7 @@ public abstract class AbstractParser {
     protected void parseChildren(List<String> bodyLines) {
         ElementFinder finder = new ElementFinder(bodyLines, getKind(),
                 registries);
-        List<AbstractElement> children = finder.makeChildrenElements();
+        List<AbstractElement> children = finder.makeElements();
 
         children.forEach(
                 child -> childrenElements.put(child.identifier, child));

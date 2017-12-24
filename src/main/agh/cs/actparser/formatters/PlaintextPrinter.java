@@ -15,7 +15,7 @@ public class PlaintextPrinter implements IPrinter {
                     System.out.print(
                             formatElement(e)
                     );
-                    print(e.getChildren().values());
+                    print(e.getChildren());
                 });
     }
 

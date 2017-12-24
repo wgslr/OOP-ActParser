@@ -31,7 +31,7 @@ public class TableOfContentPrinter implements IPrinter {
                     System.out.println(
                             formatElement(e, depth) + formatArticleRange(e)
                     );
-                    print(e.getChildren().values(), depth + 1);
+                    print(e.getChildren(), depth + 1);
                 });
     }
 
@@ -47,7 +47,7 @@ public class TableOfContentPrinter implements IPrinter {
      * @return Created string
      */
     private String formatArticleRange(AbstractElement element) {
-        List<AbstractElement> articles = element.getChildren().values().stream()
+        List<AbstractElement> articles = element.getChildren().stream()
                 .filter(e -> e.getKind().equals(ElementKind.Article))
                 .collect(Collectors.toList());
 

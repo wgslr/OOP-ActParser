@@ -3,6 +3,7 @@ package agh.cs.actparser.elements;
 import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.Identifier;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -26,6 +27,14 @@ public abstract class AbstractElement {
         this.identifier = Identifier.fromString(idString, getKind());
     }
 
+    /**
+     * Locates a descendant element. If given location is empty - this element.
+     *
+     * @param location Description of element location, in order of
+     *                 increasing element specificity
+     * @return Found element
+     * @throws IllegalArgumentException If looked up element does not exist
+     */
     public AbstractElement getDescendant(List<Identifier> location) {
         if (location.isEmpty()) {
             return this;
@@ -40,8 +49,8 @@ public abstract class AbstractElement {
         return child.getDescendant(location.subList(1, location.size()));
     }
 
-    public LinkedHashMap<Identifier, AbstractElement> getChildren() {
-        return children;
+    public Collection<AbstractElement> getChildren() {
+        return children.values();
     }
 
 
@@ -56,4 +65,5 @@ public abstract class AbstractElement {
     public boolean isHeaderInline() {
         return true;
     }
+
 }

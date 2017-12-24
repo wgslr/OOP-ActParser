@@ -3,8 +3,7 @@ package agh.cs.actparser;
 import java.util.Objects;
 
 /**
- * Represents a range to be parsed for an element child.
- * Identified child type is stored in `kind`.
+ * General purpose range container.
  */
 public class Range<T> {
     public final T from;

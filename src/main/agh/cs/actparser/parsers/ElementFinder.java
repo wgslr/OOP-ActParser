@@ -12,11 +12,10 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Handles identifying and parsing document elements.
+ */
 public class ElementFinder {
-    /**
-     * Represents a range to be parsed for an element child.
-     * Identified child type is stored in `kind`.
-     */
     class RangeToParse extends Range<Integer> {
         /**
          * Kind of element to be created from this lines range.
@@ -44,10 +43,13 @@ public class ElementFinder {
     List<String> lines;
 
     /**
-     * Kind of elements for which children the finder is looking.
+     * Kind of parent element to all found elements.
      */
     ElementKind currentLevel;
 
+    /**
+     * Registries to notify about created elements.
+     */
     List<IElementRegistry> registries;
 
     /**
@@ -55,7 +57,7 @@ public class ElementFinder {
      */
     IParserFactory parserFactory = new ParserFactory();
 
-    public ElementFinder(List<String> lines, ElementKind currentLevel){
+    public ElementFinder(List<String> lines, ElementKind currentLevel) {
         this(lines, currentLevel, Collections.emptyList());
     }
 
@@ -75,46 +77,42 @@ public class ElementFinder {
         this.registries = registries;
     }
 
-    public List<AbstractElement> makeChildrenElements() {
+
+    /**
+     * Creates elements found in given lines.
+     *
+     * @return List of created elements in order of their presence in the
+     * document.
+     */
+    public List<AbstractElement> makeElements() {
         List<RangeToParse> childrenRanges = getChildrenRanges();
-        return parseChildren(childrenRanges);
+        return parseRanges(childrenRanges);
     }
 
+    /**
+     * @return List of line ranges delimited by element headers.
+     */
     private List<RangeToParse> getChildrenRanges() {
         List<RangeToParse> ranges = new ArrayList<>();
-        int firstChildLine = lines.size();
+        // Kinds of element to be found
         List<ElementKind> availableKinds = currentLevel.getMoreSpecific();
+        int firstHeaderLine = lines.size();
 
-        for (int i = 0; i < availableKinds.size() && firstChildLine != 0; ++i) {
-            ElementKind kindToFind = availableKinds.get(i);
-            ranges.addAll(0,
-                    getPartsIndices(lines.subList(0, firstChildLine),
-                            kindToFind));
+        // Look for elements in order of broader to narrower specificity
+        // in order not to break the tree structure
+        for (ElementKind kindToFind : availableKinds) {
+            if (firstHeaderLine == 0) {
+                break; // no lines left to aprse
+            }
+            List<String> linesToParse = lines.subList(0, firstHeaderLine);
+
+            ranges.addAll(0, getPartsIndices(linesToParse, kindToFind));
 
             if (!ranges.isEmpty()) {
-                firstChildLine = ranges.get(0).from;
+                firstHeaderLine = ranges.get(0).from;
             }
         }
-        if (firstChildLine != 0) {
-            ranges.add(new RangeToParse(0, firstChildLine, ElementKind.Plaintext));
-        }
         return ranges;
-    }
-
-    private List<AbstractElement> parseChildren(List<RangeToParse> childrenRanges) {
-        return childrenRanges.stream()
-                .map(range -> parserFactory.makeParser(range.kind,
-                        range.makeSublist(lines), registries))
-                .map(AbstractParser::makeElement)
-                .map(this::registerElement)
-                .collect(Collectors.toList());
-    }
-
-    private AbstractElement registerElement(AbstractElement element) {
-        for (IElementRegistry registry : registries) {
-            registry.add(element);
-        }
-        return element;
     }
 
     /**
@@ -137,9 +135,27 @@ public class ElementFinder {
         }
         if (previous != null) {
             // last element extends to the last parsed lines
-            ranges.add(new RangeToParse(previous, linesToParse.size(), kindToFind));
+            ranges.add(new RangeToParse(previous, linesToParse.size(),
+                    kindToFind));
         }
         return ranges;
+    }
+
+    private List<AbstractElement> parseRanges(List<RangeToParse>
+                                                      childrenRanges) {
+        return childrenRanges.stream()
+                .map(range -> parserFactory.makeParser(range.kind,
+                        range.makeSublist(lines), registries))
+                .map(AbstractParser::makeElement)
+                .map(this::registerElement)
+                .collect(Collectors.toList());
+    }
+
+    private AbstractElement registerElement(AbstractElement element) {
+        for (IElementRegistry registry : registries) {
+            registry.add(element);
+        }
+        return element;
     }
 
 
