@@ -4,6 +4,8 @@ import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.IElementRegistry;
 import agh.cs.actparser.Identifier;
 import agh.cs.actparser.elements.AbstractElement;
+import agh.cs.actparser.elements.ElementFactory;
+import agh.cs.actparser.elements.IElementFactory;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,13 +16,18 @@ import java.util.regex.Pattern;
  * Handles parsing of a single document element
  * and invokes parsing of its children.
  */
-public abstract class AbstractParser {
-
-    protected String idString;
-    protected String content;
+public class ElementParser {
 
     /**
-     * Element's content with idString dropped
+     * Kind of parsed element
+     */
+    protected final ElementKind kind;
+
+    protected String idString;
+    protected String title;
+
+    /**
+     * Element's content with idString and title dropped
      */
     protected List<String> bodyLines;
 
@@ -29,27 +36,31 @@ public abstract class AbstractParser {
      */
     protected List<IElementRegistry> registries;
 
-    protected LinkedHashMap<Identifier, AbstractElement>
-            childrenElements = new LinkedHashMap<>();
+    protected LinkedHashMap<Identifier, AbstractElement> childrenElements =
+            new LinkedHashMap<>();
 
-    public AbstractParser(List<String> linesToParse,
-                          List<IElementRegistry> registries) {
+    protected IElementFactory elementFactory = new ElementFactory();
+
+    public ElementParser(
+            ElementKind kind,
+            List<String> linesToParse,
+            List<IElementRegistry> registries) {
+        this.kind = kind;
         this.registries = registries;
+
         parseStructure(linesToParse);
         parseChildren(bodyLines);
     }
 
     /**
-     * @return Kind od parsed element
-     */
-    protected abstract ElementKind getKind();
-
-    /**
-     * Create Element object for given content.
+     * Create Element object for given title.
      *
      * @return Created Element instance.
      */
-    public abstract AbstractElement makeElement();
+    public AbstractElement makeElement() {
+        return elementFactory.makeElement(kind, idString, title,
+                childrenElements);
+    }
 
     /**
      * Identifies main parts of the parsed element and sets them in the
@@ -61,10 +72,10 @@ public abstract class AbstractParser {
         Matcher startMatcher = getStartPattern().matcher(linesToParse.get(0));
 
         // locate capture groups
-        startMatcher.matches();
+        startMatcher.find();
 
         idString = startMatcher.group(1);
-        content = startMatcher.group(2);
+        title = startMatcher.group(2);
         String bodyInFirstLine = startMatcher.group(3);
 
         if (bodyInFirstLine.trim().isEmpty()) {
@@ -77,8 +88,8 @@ public abstract class AbstractParser {
     }
 
     protected void parseChildren(List<String> bodyLines) {
-        ElementFinder finder = new ElementFinder(bodyLines, getKind(),
-                registries);
+        ElementFinder finder =
+                new ElementFinder(bodyLines, kind, registries);
         List<AbstractElement> children = finder.makeElements();
 
         children.forEach(
@@ -91,7 +102,7 @@ public abstract class AbstractParser {
      * idString and rest of the line
      */
     protected Pattern getStartPattern() {
-        return Pattern.compile(getKind().getRegexp());
+        return Pattern.compile(kind.getRegexp());
     }
 
 

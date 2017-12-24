@@ -11,8 +11,9 @@ public class Paragraph extends AbstractElement {
         return ElementKind.Paragraph;
     }
 
-    public Paragraph(String identifier, LinkedHashMap<Identifier, AbstractElement> children) {
-        super(identifier, children);
+    public Paragraph(String identifier, String content,
+            LinkedHashMap<Identifier, AbstractElement> children) {
+        super(identifier, content, children);
     }
 
     @Override

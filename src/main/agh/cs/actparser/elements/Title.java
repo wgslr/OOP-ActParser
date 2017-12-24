@@ -6,7 +6,8 @@ import agh.cs.actparser.Identifier;
 import java.util.LinkedHashMap;
 
 public class Title extends TitledElement {
-    public Title(String identifier, String title, LinkedHashMap<Identifier, AbstractElement> children) {
+    public Title(String identifier, String title, LinkedHashMap<Identifier,
+            AbstractElement> children) {
         super(identifier, title, children);
     }
 
@@ -17,6 +18,6 @@ public class Title extends TitledElement {
 
     @Override
     public String toString() {
-        return title;
+        return content;
     }
 }

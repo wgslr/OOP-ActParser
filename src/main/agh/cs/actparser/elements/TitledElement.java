@@ -8,13 +8,10 @@ import java.util.LinkedHashMap;
  * Represents document element having a distinct title.
  */
 public abstract class TitledElement extends AbstractElement {
-    String title;
 
     public TitledElement(String identifier, String title,
-                         LinkedHashMap<Identifier, AbstractElement>
-            children) {
-        super(identifier, children);
-        this.title = title;
+            LinkedHashMap<Identifier, AbstractElement> children) {
+        super(identifier, title, children);
     }
 
     @Override

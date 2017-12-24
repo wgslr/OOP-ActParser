@@ -54,7 +54,7 @@ public enum ElementKind {
             case Letter:
                 return "^(\\p{L})\\)\\s()(.*)";
             case Plaintext:
-                return "()()(.*)"; // always matches
+                return "()(.*)()"; // always matches
             case Document:
                 return "(?!)"; // never matches - there can be only one document
             default:

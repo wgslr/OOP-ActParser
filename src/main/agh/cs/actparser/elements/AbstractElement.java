@@ -12,17 +12,17 @@ import java.util.List;
  */
 public abstract class AbstractElement {
     public final String idString;
+    public final String content;
     public final Identifier identifier;
 
     protected LinkedHashMap<Identifier, AbstractElement> children;
 
     abstract public ElementKind getKind();
 
-
-    public AbstractElement(String idString,
-                           LinkedHashMap<Identifier, AbstractElement>
-                                   children) {
+    public AbstractElement(String idString, String content,
+            LinkedHashMap<Identifier, AbstractElement> children) {
         this.idString = idString;
+        this.content = content;
         this.children = children;
         this.identifier = Identifier.fromString(idString, getKind());
     }
@@ -53,13 +53,13 @@ public abstract class AbstractElement {
         return children.values();
     }
 
-
+    @Override
     public String toString() {
         return "";
     }
 
     /**
-     * @return True if this element's content should be on the same line as
+     * @return True if this element's title should be on the same line as
      * header
      */
     public boolean isHeaderInline() {

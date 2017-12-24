@@ -13,6 +13,6 @@ public interface IParserFactory {
      * @param bodyLines Content to be processed by the parser
      * @return Parser matching given kind
      */
-    AbstractParser makeParser(ElementKind kind, List<String>
+    ElementParser makeParser(ElementKind kind, List<String>
             bodyLines, List<IElementRegistry> registries);
 }

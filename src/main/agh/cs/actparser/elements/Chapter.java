@@ -11,13 +11,13 @@ public class Chapter extends TitledElement {
         return ElementKind.Chapter;
     }
 
-    public Chapter(String identifier, String title,
+    public Chapter(String identifier, String content,
                    LinkedHashMap<Identifier, AbstractElement> children) {
-        super(identifier, title, children);
+        super(identifier, content, children);
     }
 
     @Override
     public String toString() {
-        return String.format("Rozdział %s %s", idString, title);
+        return String.format("Rozdział %s %s", idString, content);
     }
 }

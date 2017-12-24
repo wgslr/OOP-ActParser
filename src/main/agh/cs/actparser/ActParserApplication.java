@@ -9,6 +9,7 @@ import agh.cs.actparser.formatters.IPrinter;
 import agh.cs.actparser.formatters.PlaintextPrinter;
 import agh.cs.actparser.formatters.TableOfContentPrinter;
 import agh.cs.actparser.parsers.DocumentParser;
+import agh.cs.actparser.parsers.ElementParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -52,13 +53,13 @@ public class ActParserApplication {
         );
         argparser.addOption(
                 new ArgumentParser.Option("chapters", "c",
-                            "Chapters (rozdziały) to dispay. Format: Range",
+                        "Chapters (rozdziały) to dispay. Format: Range",
                         OptionParsers.getIdentifierRangeParser(ElementKind
                                 .Chapter))
         );
         argparser.addOption(
                 new ArgumentParser.Option("paragraph", "u",
-                "Paragraph (ustęp) to display. Format: Identifier",
+                        "Paragraph (ustęp) to display. Format: Identifier",
                         OptionParsers.getIdentifierParser(ElementKind
                                 .Paragraph))
         );
@@ -87,7 +88,7 @@ public class ActParserApplication {
             return;
         }
 
-        if(argparser.getResult("help")){
+        if (argparser.getResult("help")) {
             System.out.println(argparser.getArgsHelp());
             System.exit(0);
         }
@@ -125,13 +126,14 @@ public class ActParserApplication {
         ElementRegistry articleRegistry =
                 new ElementRegistry(ElementKind.Article);
 
-        DocumentParser docparser = new DocumentParser(inputLines, Arrays.asList(
-                chaptersRegistry, sectionsRegistry, articleRegistry
-        ));
+        ElementParser rootparser = new DocumentParser(
+                inputLines,
+                Arrays.asList(
+                        chaptersRegistry, sectionsRegistry, articleRegistry));
 
         Document root = null;
         try {
-            root = docparser.makeElement();
+            root = (Document)rootparser.makeElement();
         } catch (IllegalArgumentException e) {
             System.out.println("Error occured during parsing of the document:" +
                     e.getMessage());
@@ -143,13 +145,14 @@ public class ActParserApplication {
         try {
 
             if (argparser.isSet("chapters")) {
-                elementsToDisplay = chaptersRegistry.getRange(argparser.getResult
+                elementsToDisplay = chaptersRegistry.getRange(argparser
+                        .getResult
 
-                        ("chapters"));
+                                ("chapters"));
             } else if (argparser.isSet("sections")) {
                 elementsToDisplay = sectionsRegistry.getRange(argparser
                         .getResult
-                        ("sections"));
+                                ("sections"));
             } else if (argparser.isSet("articles")) {
                 elementsToDisplay = articleRegistry.getRange(argparser.getResult
                         ("articles"));

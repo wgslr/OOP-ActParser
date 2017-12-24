@@ -11,7 +11,8 @@ public class Document extends AbstractElement {
         return ElementKind.Document;
     }
 
-    public Document(String identifier, LinkedHashMap<Identifier, AbstractElement> children) {
-        super(identifier, children);
+    public Document(String identifier, String content,
+            LinkedHashMap<Identifier, AbstractElement> children) {
+        super(identifier, content, children);
     }
 }

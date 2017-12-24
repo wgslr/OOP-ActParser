@@ -11,8 +11,9 @@ public class Letter extends AbstractElement {
         return ElementKind.Letter;
     }
 
-    public Letter(String identifier, LinkedHashMap<Identifier, AbstractElement> children) {
-        super(identifier, children);
+    public Letter(String identifier, String content, LinkedHashMap<Identifier,
+            AbstractElement> children) {
+        super(identifier, content, children);
     }
 
     @Override

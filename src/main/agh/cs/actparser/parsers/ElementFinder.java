@@ -52,11 +52,6 @@ public class ElementFinder {
      */
     List<IElementRegistry> registries;
 
-    /**
-     * Supplier of children parsers.
-     */
-    IParserFactory parserFactory = new ParserFactory();
-
     public ElementFinder(List<String> lines, ElementKind currentLevel) {
         this(lines, currentLevel, Collections.emptyList());
     }
@@ -69,11 +64,10 @@ public class ElementFinder {
     }
 
     public ElementFinder(List<String> lines, ElementKind currentLevel,
-                         List<IElementRegistry> registries,
-                         IParserFactory parserFactory) {
+            List<IElementRegistry> registries,
+            IParserFactory parserFactory) {
         this.lines = lines;
         this.currentLevel = currentLevel;
-        this.parserFactory = parserFactory;
         this.registries = registries;
     }
 
@@ -119,7 +113,7 @@ public class ElementFinder {
      * Splits input on lines matching the kind's predicate
      */
     private List<RangeToParse> getPartsIndices(List<String> linesToParse,
-                                               ElementKind kindToFind) {
+            ElementKind kindToFind) {
         Predicate<String> predicate = kindToPredicate(kindToFind);
         List<RangeToParse> ranges = new ArrayList<>();
         Integer previous = null;
@@ -148,11 +142,11 @@ public class ElementFinder {
      * @return Created elements
      */
     private List<AbstractElement> parseRanges(List<RangeToParse>
-                                                      childrenRanges) {
+            childrenRanges) {
         return childrenRanges.stream()
-                .map(range -> parserFactory.makeParser(range.kind,
-                        range.makeSublist(lines), registries))
-                .map(AbstractParser::makeElement)
+                .map(range -> new ElementParser(
+                        range.kind, range.makeSublist(lines), registries))
+                .map(ElementParser::makeElement)
                 .map(this::registerElement)
                 .collect(Collectors.toList());
     }

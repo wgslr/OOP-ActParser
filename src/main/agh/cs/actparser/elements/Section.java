@@ -18,6 +18,6 @@ public class Section extends TitledElement {
 
     @Override
     public String toString() {
-        return String.format("DZIAŁ %s %s", idString, title);
+        return String.format("DZIAŁ %s %s", idString, content);
     }
 }

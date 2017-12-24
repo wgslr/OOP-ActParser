@@ -11,9 +11,10 @@ public class Article extends AbstractElement {
         return ElementKind.Article;
     }
 
-    public Article(String identifier, LinkedHashMap<Identifier, AbstractElement>
+    public Article(String identifier, String content, LinkedHashMap<Identifier,
+            AbstractElement>
             children) {
-        super(identifier, children);
+        super(identifier, content, children);
     }
 
     @Override

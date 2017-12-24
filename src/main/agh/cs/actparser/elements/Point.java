@@ -11,8 +11,9 @@ public class Point extends AbstractElement {
         return ElementKind.Point;
     }
 
-    public Point(String identifier, LinkedHashMap<Identifier, AbstractElement> children) {
-        super(identifier, children);
+    public Point(String idString, String content,
+            LinkedHashMap<Identifier, AbstractElement> children) {
+        super(idString, content, children);
     }
 
     @Override

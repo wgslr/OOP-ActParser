@@ -7,11 +7,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Plaintext extends AbstractElement {
-    String body;
-
-    public Plaintext(List<String> bodyLines) {
-        super("", new LinkedHashMap< Identifier,AbstractElement>());
-        body = joinLines(bodyLines);
+    public Plaintext(String idString, String content,
+            LinkedHashMap<Identifier, AbstractElement> children) {
+        super(idString, content, children);
     }
 
     @Override
@@ -20,11 +18,6 @@ public class Plaintext extends AbstractElement {
     }
 
     public String toString(){
-        return body;
-    }
-
-    private String joinLines(List<String> lines) {
-        String joined = String.join("\n", lines);
-        return joined + "\n";
+        return content + "\n";
     }
 }
