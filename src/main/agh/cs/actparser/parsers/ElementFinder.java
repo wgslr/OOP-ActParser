@@ -141,6 +141,12 @@ public class ElementFinder {
         return ranges;
     }
 
+    /**
+     * Create elements basing on identified ranges.
+     *
+     * @param childrenRanges Ranges from which elements can be created
+     * @return Created elements
+     */
     private List<AbstractElement> parseRanges(List<RangeToParse>
                                                       childrenRanges) {
         return childrenRanges.stream()

@@ -10,27 +10,37 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Handles parsing of a single document element
+ * and invokes parsing of its children.
+ */
 public abstract class AbstractParser {
 
     protected String idString;
 
     /**
-     * Element content with idString dropped
+     * Element's content with idString dropped
      */
     protected List<String> bodyLines;
 
+    /**
+     * Registries to notify when parsing children
+     */
     protected List<IElementRegistry> registries;
 
-    protected LinkedHashMap<Identifier, AbstractElement> childrenElements =
-            new LinkedHashMap<>();
+    protected LinkedHashMap<Identifier, AbstractElement>
+            childrenElements = new LinkedHashMap<>();
 
-    public AbstractParser(List<String> linesToParse, List<IElementRegistry>
-            registries) {
+    public AbstractParser(List<String> linesToParse,
+                          List<IElementRegistry> registries) {
         this.registries = registries;
         parseStructure(linesToParse);
         parseChildren(bodyLines);
     }
 
+    /**
+     * @return Kind od parsed element
+     */
     protected abstract ElementKind getKind();
 
     /**
