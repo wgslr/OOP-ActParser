@@ -6,11 +6,14 @@ import agh.cs.actparser.Identifier;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+/**
+ * Document element. Described by an identifier and containing child elements.
+ */
 public abstract class AbstractElement {
     public final String idString;
     public final Identifier identifier;
 
-    protected final LinkedHashMap<Identifier, AbstractElement> children;
+    protected LinkedHashMap<Identifier, AbstractElement> children;
 
     abstract public ElementKind getKind();
 
@@ -21,10 +24,6 @@ public abstract class AbstractElement {
         this.idString = idString;
         this.children = children;
         this.identifier = Identifier.fromString(idString, getKind());
-    }
-
-    public String toString() {
-        return headerToString();
     }
 
     public AbstractElement getDescendant(List<Identifier> location) {
@@ -42,12 +41,11 @@ public abstract class AbstractElement {
     }
 
     public LinkedHashMap<Identifier, AbstractElement> getChildren() {
-        //return new LinkedHashMap<>(children);
         return children;
     }
 
 
-    public String headerToString() {
+    public String toString() {
         return "";
     }
 
@@ -57,5 +55,5 @@ public abstract class AbstractElement {
      */
     public boolean isHeaderInline() {
         return true;
-    };
+    }
 }

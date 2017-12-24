@@ -37,7 +37,7 @@ public class TableOfContentPrinter implements IPrinter {
 
     private String formatElement(AbstractElement element, int depth) {
         String indent = String.join("", Collections.nCopies(depth, " "));
-        return indent + element.headerToString();
+        return indent + element.toString();
     }
 
     /**

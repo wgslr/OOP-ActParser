@@ -16,7 +16,7 @@ public class Title extends TitledElement {
     }
 
     @Override
-    public String headerToString() {
+    public String toString() {
         return title;
     }
 }
