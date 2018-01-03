@@ -21,7 +21,7 @@ public class OptionParsers {
 
     static public Function<String, Range<Identifier>>
     getIdentifierRangeParser(ElementKind kind) {
-        Pattern pattern = Pattern.compile("([\\p{L}\\d]+)..([\\p{L}\\d]+)");
+        Pattern pattern = Pattern.compile("([\\p{L}\\d]+)\\.\\.([\\p{L}\\d]+)");
 
         Function<String, Identifier> singleParser = getIdentifierParser(kind);
 

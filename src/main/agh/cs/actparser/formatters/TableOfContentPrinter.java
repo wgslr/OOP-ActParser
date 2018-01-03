@@ -28,9 +28,12 @@ public class TableOfContentPrinter implements IPrinter {
         elements.stream()
                 .filter(e -> e.getKind().compareTo(MaxSpecificity) <= 0)
                 .forEach(e -> {
-                    System.out.println(
-                            formatElement(e, depth) + formatArticleRange(e)
-                    );
+                    String current = formatElement(e, depth) +
+                            formatArticleRange(e);
+                    if (!current.isEmpty()) {
+                        System.out.println(current);
+                    }
+
                     print(e.getChildren(), depth + 1);
                 });
     }

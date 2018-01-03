@@ -38,7 +38,7 @@ public class Identifier implements Comparable<Identifier> {
             return new Identifier(0, "", kind);
         }
 
-        Pattern splitter = Pattern.compile("^(\\d+|[IVXCDL]+|)([\\p{L}\\h]*)$");
+        Pattern splitter = Pattern.compile("^(\\d+|[IVXCDL]+|)(.*)$");
         Matcher m = splitter.matcher(idString);
 
         if (!m.matches()) {
