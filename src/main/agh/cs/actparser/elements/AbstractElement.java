@@ -11,8 +11,19 @@ import java.util.List;
  * Document element. Described by an identifier and containing child elements.
  */
 public abstract class AbstractElement {
+    /**
+     * Whole string containing element identifier.
+     */
     public final String idString;
+
+    /**
+     * Textual content of the element. Usually its title.
+     */
     public final String content;
+
+    /**
+     * Parsed identifier based on {@link #idString}
+     */
     public final Identifier identifier;
 
     protected LinkedHashMap<Identifier, AbstractElement> children;

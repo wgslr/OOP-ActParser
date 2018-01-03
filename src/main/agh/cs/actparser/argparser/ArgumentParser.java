@@ -153,7 +153,7 @@ public class ArgumentParser {
     public String getArgsHelp() {
         String bottom = "\nAvailable input formats with examples:\n"
                 + "Range: 1..4 or I..IV or 2 (equivalent to 2..2)\n"
-                + "Identifier: 1\n"
+                + "Identifier: 3 or III or 105ia \n"
                 + "String: konstytucja.txt\n"
                 + "Flag: (does not require any value)\n"
                 + "\nExample invocation: \n"

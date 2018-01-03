@@ -23,8 +23,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ActParserApplication {
-    public static void main(String[] args) throws IOException {
-
+    private static ArgumentParser configureArgumentParser() {
         ArgumentParser argparser = new ArgumentParser();
         argparser.addOption(
                 new ArgumentParser.Option("file", "f",
@@ -38,9 +37,8 @@ public class ActParserApplication {
         );
         argparser.addOption(
                 new ArgumentParser.Option("articles", "a",
-                        "One or more articles (artykuły) to display. Format:" +
-                                " " +
-                                "Range",
+                        "One or more articles (artykuły) to display. " +
+                                "Format: Range",
                         OptionParsers.getIdentifierRangeParser(ElementKind
                                 .Article))
         );
@@ -78,6 +76,11 @@ public class ActParserApplication {
                         "Display this help message. Format: Flag",
                         null)
         );
+        return argparser;
+    }
+
+    public static void main(String[] args) throws IOException {
+        ArgumentParser argparser = configureArgumentParser();
 
         try {
             argparser.parse(args);
@@ -94,7 +97,7 @@ public class ActParserApplication {
         }
 
 
-        String filepath = (String) argparser.getResult("file");
+        String filepath = argparser.getResult("file");
 
         List<String> inputLines = null;
 
@@ -114,11 +117,11 @@ public class ActParserApplication {
 
         inputLines = new Preprocessor().process(inputLines);
 
-        IPrinter formatter = argparser.getResult("toc") ?
+        IPrinter printer = argparser.getResult("toc") ?
                 new TableOfContentPrinter()
                 : new PlaintextPrinter();
 
-        // Process
+
         ElementRegistry chaptersRegistry =
                 new ElementRegistry(ElementKind.Chapter);
         ElementRegistry sectionsRegistry =
@@ -131,9 +134,11 @@ public class ActParserApplication {
                 Arrays.asList(
                         chaptersRegistry, sectionsRegistry, articleRegistry));
 
+        // Parse the document
+
         Document root = null;
         try {
-            root = (Document)rootparser.makeElement();
+            root = (Document) rootparser.makeElement();
         } catch (IllegalArgumentException e) {
             System.out.println("Error occured during parsing of the document:" +
                     e.getMessage());
@@ -143,16 +148,12 @@ public class ActParserApplication {
         List<AbstractElement> elementsToDisplay;
 
         try {
-
             if (argparser.isSet("chapters")) {
                 elementsToDisplay = chaptersRegistry.getRange(argparser
-                        .getResult
-
-                                ("chapters"));
+                        .getResult("chapters"));
             } else if (argparser.isSet("sections")) {
                 elementsToDisplay = sectionsRegistry.getRange(argparser
-                        .getResult
-                                ("sections"));
+                        .getResult("sections"));
             } else if (argparser.isSet("articles")) {
                 elementsToDisplay = articleRegistry.getRange(argparser.getResult
                         ("articles"));
@@ -162,18 +163,17 @@ public class ActParserApplication {
 
             List<Identifier> elementSpecification =
                     Stream.of(
-                            (Identifier) argparser.getResult("paragraph"),
-                            (Identifier) argparser.getResult("point"),
-                            (Identifier) argparser.getResult("letter")
+                            argparser.<Identifier>getResult("paragraph"),
+                            argparser.<Identifier>getResult("point"),
+                            argparser.<Identifier>getResult("letter")
                     )
                             .filter(Objects::nonNull)
                             .collect(Collectors.toList());
 
             if (elementSpecification.isEmpty()) {
-                formatter.print(elementsToDisplay);
+                printer.print(elementsToDisplay);
             } else {
-                if (elementsToDisplay.size() != 1 ||
-                        !(elementsToDisplay.get(0) instanceof Article)) {
+                if (!isSingleArticleSelected(elementsToDisplay)) {
                     System.out.println("Single article must be chosen to " +
                             "display more specific elements.");
                     System.exit(1);
@@ -181,7 +181,7 @@ public class ActParserApplication {
 
                 AbstractElement singleElement = elementsToDisplay.get(0)
                         .getDescendant(elementSpecification);
-                formatter.print(singleElement);
+                printer.print(singleElement);
             }
 
             System.exit(0);
@@ -190,4 +190,11 @@ public class ActParserApplication {
             System.exit(1);
         }
     }
+
+    private static boolean isSingleArticleSelected(List<AbstractElement>
+            elementsToDisplay) {
+        return elementsToDisplay.size() == 1
+                && elementsToDisplay.get(0) instanceof Article;
+    }
+
 }
