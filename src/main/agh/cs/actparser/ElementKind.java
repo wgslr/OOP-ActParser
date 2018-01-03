@@ -44,7 +44,7 @@ public enum ElementKind {
             case Chapter:
                 return "^Rozdział (\\d+[a-zA-Z]*|[IVXCDL]+[a-zA-Z]*)\\s*(.*)()";
             case Title:
-                return "^(([\\p{Lu} ]+))\\s*()$";
+                return "^(([\\p{Lu}\\p{Punct} ]+))\\s*()$";
             case Article:
                 return "^Art\\. (\\d+[a-z]*)\\.\\s*()(.*)";
             case Paragraph:

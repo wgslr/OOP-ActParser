@@ -128,7 +128,7 @@ public class ElementFinder {
             }
         }
         if (previous != null) {
-            // last element extends to the last parsed lines
+            // last element extends to the end of linesToParse
             ranges.add(new RangeToParse(previous, linesToParse.size(),
                     kindToFind));
         }

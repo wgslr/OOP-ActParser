@@ -22,7 +22,7 @@ public class Preprocessor {
                 ".*pominięt[ey].*$",
                 "^.$",
                 "©Kancelaria Sejmu"
-                )
+        )
                 .map((x) -> Pattern.compile(x).asPredicate())
                 .collect(Collectors.toList());
     }
@@ -55,6 +55,15 @@ public class Preprocessor {
                         .map(Pattern::asPredicate)
                         .collect(Collectors.toList());
 
+        // Predicates which force adding **next** line to the current
+        List<Predicate<String>> forwardConsumingPredicates =
+                Stream.of(ElementKind.Chapter,
+                        ElementKind.Section)
+                        .map(ElementKind::getRegexp)
+                        .map(Pattern::compile)
+                        .map(Pattern::asPredicate)
+                        .collect(Collectors.toList());
+
         List<String> result = new ArrayList<>();
         result.add(lines.get(0));
 
@@ -63,18 +72,30 @@ public class Preprocessor {
             if (headerPredicates.stream()
                     .anyMatch(pred -> pred.test(line))) {
                 // Line begins new element
+
                 result.add(line);
+
+                // Unfortunate necessity for detecting chapter titles
+                if (forwardConsumingPredicates.stream()
+                        .anyMatch(pred -> pred.test(line))) {
+
+                    result.set(result.size() - 1,
+                            joinLines(line, lines.get(i + 1)));
+                    ++i;
+                }
             } else {
                 String previous = result.get(result.size() - 1);
-                previous += "\n" + line;
-
-                // Remove hyphenation
-                previous = previous.replace("-\n", "");
-                previous = previous.replace("\n", " ");
-
-                result.set(result.size() - 1, previous);
+                result.set(result.size() - 1, joinLines(previous, line));
             }
         }
+        return result;
+    }
+
+    private String joinLines(String prev, String next) {
+        String result = prev + "\n" + next;
+
+        result = result.replace("-\n", "");
+        result = result.replace("\n", " ");
         return result;
     }
 

@@ -12,6 +12,6 @@ public class RomanConverterTest {
         assertEquals(3, RomanConverter.romanToInteger("III"));
         assertEquals(5, RomanConverter.romanToInteger("V"));
         assertEquals(49, RomanConverter.romanToInteger("XLIX"));
-
+        assertEquals(8, RomanConverter.romanToInteger("VIII"));
     }
 }
