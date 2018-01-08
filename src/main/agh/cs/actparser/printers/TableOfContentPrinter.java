@@ -1,4 +1,4 @@
-package agh.cs.actparser.formatters;
+package agh.cs.actparser.printers;
 
 import agh.cs.actparser.ElementKind;
 import agh.cs.actparser.elements.AbstractElement;

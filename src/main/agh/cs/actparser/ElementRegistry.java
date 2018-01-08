@@ -12,7 +12,8 @@ import java.util.TreeMap;
  * Allows querying ranges of elements.
  */
 public class ElementRegistry implements IElementRegistry {
-    private NavigableMap<Identifier, AbstractElement> elements = new TreeMap<>();
+    private NavigableMap<Identifier, AbstractElement> elements =
+            new TreeMap<>();
 
     public final ElementKind storedKind;
 
@@ -32,7 +33,7 @@ public class ElementRegistry implements IElementRegistry {
      * Elements given as boundaries must exist.
      *
      * @param from Identifier of first element to be returend
-     * @param to Identifier of last element to be returend
+     * @param to   Identifier of last element to be returend
      * @return Matching elements
      * @throws IllegalArgumentException if starting or ending element cannot
      *                                  be found

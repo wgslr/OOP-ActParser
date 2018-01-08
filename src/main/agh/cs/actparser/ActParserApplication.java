@@ -5,9 +5,9 @@ import agh.cs.actparser.argparser.OptionParsers;
 import agh.cs.actparser.elements.AbstractElement;
 import agh.cs.actparser.elements.Article;
 import agh.cs.actparser.elements.Document;
-import agh.cs.actparser.formatters.IPrinter;
-import agh.cs.actparser.formatters.PlaintextPrinter;
-import agh.cs.actparser.formatters.TableOfContentPrinter;
+import agh.cs.actparser.printers.IPrinter;
+import agh.cs.actparser.printers.PlaintextPrinter;
+import agh.cs.actparser.printers.TableOfContentPrinter;
 import agh.cs.actparser.parsers.DocumentParser;
 import agh.cs.actparser.parsers.ElementParser;
 

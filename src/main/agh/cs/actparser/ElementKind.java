@@ -14,11 +14,11 @@ public enum ElementKind {
     Document,
     Section, // Dział
     Chapter, // Rozdział
-    Title,
+    Title, // Tytuł
     Article, // Artykuł
     Paragraph, // Ustęp
     Point, // Punkt
-    Letter, // litera
+    Letter, // Litera
     Plaintext;
 
     public List<ElementKind> getMoreSpecific() {
